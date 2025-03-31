@@ -28,7 +28,7 @@ class _PhoneloginState extends State<Phonelogin> {
                 )),
             Container(height: 250),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(15.0),
               child: PhoneLoginForm(formkey: _formkey),
             )
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/Widgets/sign_in_button.dart';
 import 'package:tasky/features/Presentation/SignUpPage/SignPage.dart';
@@ -17,28 +18,16 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
   final TextEditingController phoneController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
-
+  final String phoneRegex =
+      r'^\+(\d{1,4})[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}$';
   @override
   Widget build(BuildContext context) {
     return Form(
       key: widget.formkey,
       child: Column(
         children: [
-          const SizedBox(
-            width: 275,
-            child: Text(
-              "Login",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          const LoginLogoInPhoneForm(),
           Container(height: 20),
-          /* The work field will be here */
           SizedBox(
             width: 300,
             child: Column(children: [
@@ -46,6 +35,10 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                 validator: (val) {
                   if (val!.trim() == "" || val.isEmpty) {
                     return "Please enter a valid phone number";
+                  }
+                  final phoneReg = RegExp(phoneRegex);
+                  if (!phoneReg.hasMatch(val)) {
+                    return 'Enter a valid phone number';
                   }
                   return null;
                 },
@@ -117,29 +110,63 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
           Container(
             height: 5,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Didn't have any account"),
-              Container(width: 1),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => SignPage(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  "Sign Up here",
-                  style: TextStyle(decoration: TextDecoration.underline),
-                ),
-              )
-            ],
-          ),
+          const DidnotHaveAccountPhoneForm(),
           Container(height: 20),
         ],
       ),
+    );
+  }
+}
+
+class LoginLogoInPhoneForm extends StatelessWidget {
+  const LoginLogoInPhoneForm({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          "Login",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DidnotHaveAccountPhoneForm extends StatelessWidget {
+  const DidnotHaveAccountPhoneForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Didn't have any account"),
+        Container(width: 1),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => SignPage(),
+              ),
+            );
+          },
+          child: const Text(
+            "Sign Up here",
+            style: TextStyle(decoration: TextDecoration.underline),
+          ),
+        )
+      ],
     );
   }
 }
