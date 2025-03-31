@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Widgets/add_task_button.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Widgets/calender_button.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Widgets/priority_choose.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/main.dart';
 import 'package:tasky/core/sharedPrefs/DataFun.dart';
@@ -60,12 +63,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               Container(height: 10),
-              TextField(
-                decoration: inputStyle.copyWith(
-                  hintText: "Enter title here...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+              SizedBox(
+                height: averageHeight,
+                child: TextField(
+                  decoration: inputStyle.copyWith(
+                      hintText: "Enter title here...",
+                      border: OutlineInputBorder(
+                          borderSide: const BorderSide(width: 1.0),
+                          borderRadius: BorderRadius.circular(kborderSize))),
                 ),
               ),
               Container(height: 20),
@@ -82,8 +87,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
               Container(height: 10),
               TextField(
                 maxLines: 5,
-                decoration:
-                    inputStyle.copyWith(hintText: "Enter description here...."),
+                decoration: inputStyle.copyWith(
+                    hintText: "Enter description here....",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(kborderSize))),
               ),
               Container(height: 20),
               SizedBox(
@@ -97,30 +104,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               Container(height: 10),
-              MaterialButton(
-                padding: const EdgeInsets.all(15),
-                color: const Color.fromARGB(255, 188, 181, 208),
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.flag, size: 40, color: mainColor),
-                        Container(width: 5),
-                        Text(
-                          "Medium Priority",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: mainColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Icon(Icons.arrow_downward, color: mainColor),
-                  ],
-                ),
-              ),
+              const PriorityChoose(),
               Container(height: 20),
               SizedBox(
                 child: Row(
@@ -133,50 +117,34 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               Container(height: 10),
-              TextField(
-                keyboardType: TextInputType.datetime,
-                decoration: inputStyle.copyWith(
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.date_range_rounded, color: mainColor),
-                    onPressed: () {
-                      showDatePicker(
-                        context: context,
-                        firstDate:
-                            DateTime(DateTime.now().year, DateTime.now().month),
-                        lastDate: DateTime(DateTime.now().year,
-                            DateTime.now().month, DateTime.now().day),
-                      );
-                    },
-                  ),
-                  hintText: "choose due date...",
-                ),
-              ),
+              const CalenderButton(),
               Container(
                 height: 20,
               ),
-              MaterialButton(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: const StadiumBorder(),
-                color: const Color(0xFF5F33E1),
-                onPressed: () {
-                  setState(
-                    () {
-                      saveData(
-                          titleController.text, descriptionController.text);
-                      loadData();
-                    },
-                  );
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  "Add Task",
-                  style: TextStyle(color: Colors.white),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(kborderSize),
+                child: MaterialButton(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
+                  color: mainColor,
+                  onPressed: () {
+                    setState(
+                      () {
+                        saveData(
+                            titleController.text, descriptionController.text);
+                        loadData();
+                      },
+                    );
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    "Add Task",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ],

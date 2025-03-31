@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/core/utils/style/colors.dart';
-import 'package:tasky/features/Presentation/TaskDetails/task_options.dart';
+import 'package:tasky/features/Presentation/TaskDetails/Widgets/task_options.dart';
 
 class TaskDetails extends StatefulWidget {
   const TaskDetails({super.key});

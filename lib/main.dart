@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/AddTaskPage.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Widgets/add_task_button.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/features/Presentation/IntroPage/intro.dart';
 import 'package:tasky/core/sharedPrefs/DataFun.dart';
@@ -31,7 +33,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Varela'),
-      home: const HomePage(),
+      home: const AddTaskPage(),
       debugShowCheckedModeBanner: false,
     );
   }
