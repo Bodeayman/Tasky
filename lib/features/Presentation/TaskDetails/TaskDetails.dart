@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/components/priority_choose.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/features/Presentation/TaskDetails/Widgets/task_options.dart';
@@ -81,12 +82,11 @@ class _TaskDetailsState extends State<TaskDetails> {
                   Container(height: 10),
                   Container(
                     decoration: BoxDecoration(
-                      color: lightPurple,
+                      color: priorityColor,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    height: 80,
                     child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      padding: EdgeInsets.all(15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -108,12 +108,11 @@ class _TaskDetailsState extends State<TaskDetails> {
                   Container(height: 10),
                   Container(
                     decoration: BoxDecoration(
-                      color: lightPurple,
+                      color: priorityColor,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    height: 80,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      padding: const EdgeInsets.all(15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -130,35 +129,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     ),
                   ),
                   Container(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: lightPurple,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    height: 80,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.flag, size: 40, color: mainColor),
-                              Container(width: 5),
-                              Text(
-                                "Medium Priority",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: mainColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Icon(Icons.arrow_downward, color: mainColor),
-                        ],
-                      ),
-                    ),
-                  ),
+                  const PriorityChoose(),
                 ],
               ),
             ),

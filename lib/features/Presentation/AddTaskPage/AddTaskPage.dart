@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Widgets/add_task_button.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Widgets/calender_button.dart';
-import 'package:tasky/features/Presentation/AddTaskPage/Widgets/priority_choose.dart';
+import 'package:tasky/core/components/priority_choose.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/main.dart';
 import 'package:tasky/core/sharedPrefs/DataFun.dart';
