@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 InputDecoration inputStyle = InputDecoration(
   border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5),
+    borderRadius: BorderRadius.circular(10),
   ),
 );
 

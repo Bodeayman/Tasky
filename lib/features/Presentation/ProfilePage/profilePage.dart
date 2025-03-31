@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
-import 'package:tasky/core/utils/style/inputStyle.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -81,7 +80,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       trailing: (index == 2)
                           ? IconButton(
-                              icon: Icon(Icons.copy),
+                              icon: const Icon(Icons.copy),
                               onPressed: () {},
                             )
                           : null,
