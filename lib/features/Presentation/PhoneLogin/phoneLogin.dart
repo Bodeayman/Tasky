@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/Widgets/phoneLoginForm.dart';
 
 class Phonelogin extends StatefulWidget {
@@ -9,7 +10,7 @@ class Phonelogin extends StatefulWidget {
 }
 
 class _PhoneloginState extends State<Phonelogin> {
-  final String assetName = 'assets/art.svg';
+  final String assetName = 'assets/ART.svg';
 
   final _formkey = GlobalKey<FormState>();
   @override
@@ -21,12 +22,7 @@ class _PhoneloginState extends State<Phonelogin> {
           children: [
             Padding(
                 padding: const EdgeInsets.only(top: 50),
-                child: Container(
-                  color: Colors.black,
-                  width: 200,
-                  height: 150,
-                )),
-            Container(height: 250),
+                child: Image.asset("assets/girlImage.png")),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: PhoneLoginForm(formkey: _formkey),
