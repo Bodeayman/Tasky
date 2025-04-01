@@ -24,16 +24,10 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Varela'),
-      home: const AddTaskPage(),
+      home: const SplashPage(),
       debugShowCheckedModeBanner: false,
     );
   }

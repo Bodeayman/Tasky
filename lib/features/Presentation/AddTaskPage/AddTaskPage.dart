@@ -129,11 +129,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   color: mainColor,
                   onPressed: () {
                     setState(
-                      () {
-                        saveData(
-                            titleController.text, descriptionController.text);
-                        loadData();
-                      },
+                      () {},
                     );
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(

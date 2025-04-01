@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/features/Presentation/IntroPage/intro.dart'; // Make sure this path is correct
+import 'package:tasky/core/utils/shared_prefs_service.dart';
+import 'package:tasky/features/Presentation/HomePage/homePage.dart';
+import 'package:tasky/features/Presentation/IntroPage/intro.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/phoneLogin.dart'; // Make sure this path is correct
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -12,14 +15,25 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+    _checkOnBoarding();
+  }
 
-    // Delay for 3 seconds and navigate to the IntroductionPage
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const IntroductionPage()),
-      );
-    });
+  Future<void> _checkOnBoarding() async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    bool onBoard = await onBoarding();
+    if (onBoard) {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomePage()));
+      }
+    } else {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const Phonelogin()));
+      }
+      setOnBoarding(true);
+    }
   }
 
   @override
