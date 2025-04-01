@@ -79,7 +79,7 @@ class taskDetailsInTile extends StatelessWidget {
         children: [
           Text(
             "Grocery Shopping",
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           Text(
             "The application is designed ....",
@@ -88,10 +88,22 @@ class taskDetailsInTile extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.flag),
+              Row(
+                children: [
+                  Icon(Icons.flag),
+                  Text(
+                    "Medium",
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 15,
+              ),
               Text(
-                "Medium",
+                "20/9/2025",
                 style: TextStyle(fontSize: 12),
               ),
             ],
