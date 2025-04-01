@@ -12,7 +12,19 @@ class PriorityChoose extends StatelessWidget {
       child: MaterialButton(
           padding: const EdgeInsets.all(15),
           color: priorityColor,
-          onPressed: () {},
+          onPressed: () {
+            showMenu(
+                context: context,
+                popUpAnimationStyle: AnimationStyle(curve: Curves.bounceIn),
+                items: [
+                  const PopupMenuItem(child: Text("Low Priority")),
+                  const PopupMenuItem(child: Text("Medium Priority")),
+                  const PopupMenuItem(child: Text("High Priority"))
+                ],
+                constraints: const BoxConstraints.expand(height: 150),
+                position: RelativeRect.fromLTRB(
+                    0, MediaQuery.of(context).size.height / 1.5, 0, 0));
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

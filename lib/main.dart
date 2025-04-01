@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:tasky/features/Presentation/AddTaskPage/AddTaskPage.dart';
-import 'package:tasky/features/Presentation/AddTaskPage/Widgets/add_task_button.dart';
-import 'package:tasky/features/Presentation/HomePage/homePage.dart';
-import 'package:tasky/features/Presentation/IntroPage/intro.dart';
-import 'package:tasky/core/sharedPrefs/DataFun.dart';
-import 'package:tasky/features/Presentation/ProfilePage/profilePage.dart';
 
 import 'package:tasky/features/Presentation/SplashScreen/splash.dart';
-import 'package:tasky/features/Presentation/TaskDetails/TaskDetails.dart';
 
 Future<void> main() async {
   runApp(const MainApp());

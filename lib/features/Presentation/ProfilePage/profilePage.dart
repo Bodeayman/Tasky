@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/style/colors.dart' show mainColor;
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -11,11 +12,11 @@ class ProfilePage extends StatelessWidget {
     "LOCATION"
   ];
   List<String> testFields = [
-    "Islam Sayed",
-    "+20 123 456-7890",
-    "Senior",
-    "7 years",
-    "Fayyum, Egypt"
+    "Amr Mahmoud",
+    "+20 106 685-2536",
+    "Best React Developer (He hates anyone creating apis)",
+    "2 years",
+    "Fayyum, Egypt (Kaaaaaak)"
   ];
 
   @override
@@ -80,7 +81,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       trailing: (index == 2)
                           ? IconButton(
-                              icon: const Icon(Icons.copy),
+                              icon: Icon(Icons.copy, color: mainColor),
                               onPressed: () {},
                             )
                           : null,
