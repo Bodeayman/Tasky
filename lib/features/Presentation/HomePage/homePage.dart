@@ -3,6 +3,7 @@ import 'package:tasky/core/utils/pageControllerHandler.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/AddTaskPage.dart';
 import 'package:tasky/features/Presentation/HomePage/AlltasksPage.dart';
 import 'package:tasky/features/Presentation/HomePage/Widgets/allTabs.dart';
+import 'package:tasky/features/Presentation/HomePage/Widgets/fab.dart';
 import 'package:tasky/features/Presentation/HomePage/finishedTasksPage.dart';
 import 'package:tasky/features/Presentation/HomePage/inProgressTasksPage.dart';
 import 'package:tasky/features/Presentation/HomePage/waitingTasksPage.dart';
@@ -23,19 +24,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const AddTaskPage(),
-            ),
-          );
-        },
-        backgroundColor: const Color(0xFF5F33E1),
-        shape: const CircleBorder(),
-        elevation: 10,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+      floatingActionButton: const Fab(),
+      // FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.of(context).pushReplacement(
+      //       MaterialPageRoute(
+      //         builder: (context) => const AddTaskPage(),
+      //       ),
+      //     );
+      //   },
+      //   backgroundColor: const Color(0xFF5F33E1),
+      //   shape: const CircleBorder(),
+      //   elevation: 10,
+      //   child: const Icon(Icons.add, color: Colors.white),
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       appBar: AppBar(
@@ -54,25 +56,37 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(),
-                ),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: Image.asset("assets/profileButton.png")),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ),
+                );
+              },
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const Phonelogin(),
-                ),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: Image.asset("assets/backbutton.png")),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const Phonelogin(),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

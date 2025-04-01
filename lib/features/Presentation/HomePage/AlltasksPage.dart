@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/features/Presentation/TaskDetails/TaskDetails.dart';
 
 class Alltaskspage extends StatelessWidget {
@@ -54,7 +53,7 @@ class MoreDetailsIconButton extends StatelessWidget {
       child: IconButton(
         icon: const Icon(Icons.more_vert),
         onPressed: () {
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const TaskDetails(),
             ),

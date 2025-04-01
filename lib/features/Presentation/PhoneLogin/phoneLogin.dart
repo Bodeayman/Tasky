@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/Widgets/phoneLoginForm.dart';
 
 class Phonelogin extends StatefulWidget {
@@ -24,7 +23,7 @@ class _PhoneloginState extends State<Phonelogin> {
                 padding: const EdgeInsets.only(top: 50),
                 child: Image.asset("assets/girlImage.png")),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: PhoneLoginForm(formkey: _formkey),
             )
           ],

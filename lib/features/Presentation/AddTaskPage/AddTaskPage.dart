@@ -4,8 +4,6 @@ import 'package:tasky/features/Presentation/AddTaskPage/Widgets/add_task_button.
 import 'package:tasky/features/Presentation/AddTaskPage/Widgets/calender_button.dart';
 import 'package:tasky/core/components/priority_choose.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
-import 'package:tasky/main.dart';
-import 'package:tasky/core/sharedPrefs/DataFun.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 
@@ -24,23 +22,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ),
-                );
-              },
-            ),
-            const Text(
-              "Add New Task",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ],
+        title: const Text(
+          "Add New Task",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

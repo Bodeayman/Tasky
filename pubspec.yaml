@@ -24,8 +24,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-  flutter_svg: ^1.1.0
+  flutter_lints: any
+  flutter_svg: any
   hive_generator: any
   build_runner: any
 

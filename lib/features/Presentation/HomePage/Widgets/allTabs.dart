@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/core/utils/pageControllerHandler.dart';
 import 'package:tasky/core/utils/style/colors.dart';
-import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 
 class AllTabsWidget extends StatefulWidget {
   const AllTabsWidget({super.key});

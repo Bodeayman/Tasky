@@ -19,23 +19,9 @@ class _TaskDetailsState extends State<TaskDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ),
-                );
-              },
-            ),
-            const Text(
-              "Task details",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            )
-          ],
+        title: const Text(
+          "Task details",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: const [TaskOptionsActionButton()],
       ),

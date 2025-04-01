@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/style/colors.dart' show mainColor;
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
   List<String> titleFields = [
@@ -23,23 +24,9 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ),
-                );
-              },
-            ),
-            const Text(
-              "Profile",
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
+        title: const Text(
+          "Profile",
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/Widgets/sign_in_button.dart';
 import 'package:tasky/features/Presentation/SignUpPage/SignPage.dart';
@@ -49,15 +48,20 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                     onTap: () {
                       showMenu(
                         context: context,
-                        position: RelativeRect.fromSize(
-                            Rect.fromCenter(
-                                center: Offset.infinite,
-                                width: 360,
-                                height: 150),
-                            Size.infinite),
+                        position: RelativeRect.fromLTRB(
+                            0,
+                            MediaQuery.of(context).size.height / 1.5,
+                            MediaQuery.of(context).size.width,
+                            0),
                         items: [
                           const PopupMenuItem(
                             child: Text("Egypt"),
+                          ),
+                          const PopupMenuItem(
+                            child: Text("Saudi Arabia"),
+                          ),
+                          const PopupMenuItem(
+                            child: Text("UAE"),
                           ),
                         ],
                       );

@@ -1,7 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/phoneLogin.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:http/http.dart' as http;
@@ -22,9 +21,8 @@ class SignPage extends StatelessWidget {
         child: Column(
           children: [
             Image.asset("assets/girlImage.png"),
-            Container(height: 20),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 children: [
                   const SizedBox(
@@ -116,26 +114,28 @@ class SignPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: MaterialButton(
-                        shape: const StadiumBorder(),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 100, vertical: 20),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        color: const Color(0xFF5F33E1),
-                        onPressed: () async {
-                          dynamic response;
-                          try {
-                            response = await http
-                                .get(Uri.parse("http://127.0.0.1:8000/posts"));
-                          } catch (e) {
-                            print("Can't fetch the data");
-                            response.body = "Invalid";
-                          }
-                          print(response.body);
-                        },
-                        child: const Text(
-                          "Sign Up",
-                          style: TextStyle(color: Colors.white),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(kborderSize),
+                        child: MaterialButton(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 100, vertical: 20),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          color: const Color(0xFF5F33E1),
+                          onPressed: () async {
+                            dynamic response;
+                            try {
+                              response = await http.get(
+                                  Uri.parse("http://127.0.0.1:8000/posts"));
+                            } catch (e) {
+                              print("Can't fetch the data");
+                              response.body = "Invalid";
+                            }
+                            print(response.body);
+                          },
+                          child: const Text(
+                            "Sign Up",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),

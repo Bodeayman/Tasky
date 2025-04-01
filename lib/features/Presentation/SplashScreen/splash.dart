@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
-import 'package:tasky/features/Presentation/IntroPage/intro.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/phoneLogin.dart'; // Make sure this path is correct
 
 class SplashPage extends StatefulWidget {
@@ -19,7 +18,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _checkOnBoarding() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(
+      const Duration(seconds: 3),
+    );
 
     bool onBoard = await onBoarding();
     if (onBoard) {
@@ -42,7 +43,7 @@ class _SplashPageState extends State<SplashPage> {
       backgroundColor: const Color(0xFF5F33E1), // Purple background color
       body: Center(
         child: Image.asset(
-          "assets/splash.png",
+          "assets/SPLASH.png",
           fit: BoxFit.contain,
         ),
       ),

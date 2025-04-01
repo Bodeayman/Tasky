@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/constants.dart';
+import 'package:tasky/core/utils/style/colors.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/AddTaskPage.dart';
 
 class Fab extends StatelessWidget {
-  final VoidCallback onFirstButtonPressed;
-  final VoidCallback onSecondButtonPressed;
-
-  const Fab(
-      {super.key,
-      required this.onFirstButtonPressed,
-      required this.onSecondButtonPressed});
+  const Fab({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +17,8 @@ class Fab extends StatelessWidget {
           bottom: 10, // Adjust the position as needed
           right: 10, // Adjust the position as needed
           child: FloatingActionButton(
-            onPressed:
-                onFirstButtonPressed, // Make sure this calls the callback correctly
+            onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AddTaskPage())),
             backgroundColor: const Color(0xFF5F33E1),
             shape: const CircleBorder(),
             elevation: 10,
@@ -28,16 +27,22 @@ class Fab extends StatelessWidget {
         ),
         // Second FAB (new one)
         Positioned(
-          bottom: 70,
-          right: 10,
-          child: FloatingActionButton(
-            mini: true,
-            onPressed:
-                onSecondButtonPressed, // Make sure this calls the callback correctly
-            backgroundColor: const Color(0xFFFF5733),
-            shape: const CircleBorder(),
-            elevation: 10,
-            child: const Icon(Icons.edit, color: Colors.white),
+          bottom: 75,
+          right: 19,
+          child: InkWell(
+            onTap: () {},
+            child: Container(
+              decoration: BoxDecoration(
+                  color: priorityColor,
+                  borderRadius: BorderRadius.circular(500)),
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    "assets/qrcode.png",
+                    width: iconsSize,
+                    height: iconsSize,
+                  )),
+            ),
           ),
         ),
       ],
