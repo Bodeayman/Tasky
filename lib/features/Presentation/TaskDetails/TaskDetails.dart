@@ -48,14 +48,8 @@ class _TaskDetailsState extends State<TaskDetails> {
             Expanded(
               child: SizedBox(
                 height: 200,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.amber,
-                  ),
-                  child: const Center(
-                    child: Text("Placholder for the image here"),
-                  ),
+                child: Image.asset(
+                  "assets/groceryHuge.png",
                 ),
               ),
             ),

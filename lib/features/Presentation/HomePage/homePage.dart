@@ -76,41 +76,39 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            const Text(
-              "My Tasks",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.start,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Text(
+            "My Tasks",
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            Container(
-              height: 10,
+            textAlign: TextAlign.start,
+          ),
+          Container(
+            height: 10,
+          ),
+          const SizedBox(
+            height: 40,
+            child: AllTabsWidget(),
+          ),
+          Container(height: 15),
+          Expanded(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              children: const [
+                Alltaskspage(),
+                Inprogresstaskspage(),
+                Waitingtaskspage(),
+                Finishedtaskspage(),
+              ],
             ),
-            const SizedBox(
-              height: 40,
-              child: AllTabsWidget(),
-            ),
-            Container(height: 15),
-            //There should be for loop here if you want to loop over the elements
-            Expanded(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                children: const [
-                  Alltaskspage(),
-                  Inprogresstaskspage(),
-                  Waitingtaskspage(),
-                  Finishedtaskspage(),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
