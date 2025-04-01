@@ -41,7 +41,11 @@ class PriorityChoose extends StatelessWidget {
                   ),
                 ],
               ),
-              Icon(Icons.arrow_downward, color: mainColor),
+              SizedBox(
+                  width: 24,
+                  height: 24,
+                  child:
+                      Image.asset("assets/arrow_down.png", color: mainColor)),
             ],
           )),
     );

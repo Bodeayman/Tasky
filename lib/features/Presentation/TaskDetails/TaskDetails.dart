@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tasky/core/components/priority_choose.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/core/utils/style/colors.dart';
@@ -61,6 +62,7 @@ class _TaskDetailsState extends State<TaskDetails> {
             Container(height: 20),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     "Grocery Shopping App",
@@ -73,34 +75,41 @@ class _TaskDetailsState extends State<TaskDetails> {
                   Container(
                     height: 10,
                   ),
-                  Text(
-                    infoTask,
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
+                  Text(infoTask,
+                      style: GoogleFonts.dmSans(
+                        color: const Color(0xff24252C),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        height: 24 / 14,
+                      )),
                   Container(height: 10),
                   Container(
                     decoration: BoxDecoration(
                       color: priorityColor,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(15),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("End date"),
+                              Text("End date",
+                                  style: GoogleFonts.dmSans(fontSize: 9)),
                               Text(
                                 "30 June,2022",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: GoogleFonts.dmSans(fontSize: 14),
                               ),
                             ],
                           ),
-                          Icon(Icons.date_range),
+                          SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Image.asset("assets/calendarIcon.png",
+                                  color: mainColor)),
                         ],
                       ),
                     ),
@@ -123,7 +132,11 @@ class _TaskDetailsState extends State<TaskDetails> {
                               color: mainColor,
                             ),
                           ),
-                          Icon(Icons.arrow_downward, color: mainColor),
+                          SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Image.asset("assets/arrow_down.png",
+                                  color: mainColor)),
                         ],
                       ),
                     ),
