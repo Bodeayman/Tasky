@@ -36,6 +36,7 @@ class PriorityChoose extends StatelessWidget {
                     "Medium Priority",
                     style: TextStyle(
                       fontSize: 20,
+                      fontWeight: FontWeight.bold,
                       color: mainColor,
                     ),
                   ),

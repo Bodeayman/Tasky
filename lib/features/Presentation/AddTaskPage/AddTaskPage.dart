@@ -111,27 +111,36 @@ class _AddTaskPageState extends State<AddTaskPage> {
               Container(
                 height: 20,
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(kborderSize),
-                child: MaterialButton(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
-                  color: mainColor,
-                  onPressed: () {
-                    setState(
-                      () {},
-                    );
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const HomePage(),
+              Row(
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: MaterialButton(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 110, vertical: 20),
+                        color: mainColor,
+                        onPressed: () {
+                          setState(
+                            () {},
+                          );
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Add Task",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
                       ),
-                    );
-                  },
-                  child: const Text(
-                    "Add Task",
-                    style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),

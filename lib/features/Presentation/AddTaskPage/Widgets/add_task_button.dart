@@ -65,7 +65,9 @@ class _AddTaskButtonState extends State<AddTaskButton> {
             SizedBox(
               height: 100,
               width: 100,
-              child: Image.file(_image!),
+              child: (_image != null)
+                  ? Image.file(_image!)
+                  : Image.asset("assets/groceryHuge.png"),
             ),
             Icon(Icons.photo, color: mainColor, size: 35),
             Container(width: 20),
