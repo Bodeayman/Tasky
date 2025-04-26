@@ -17,6 +17,7 @@ dependencies:
   flutter_svg: any
   google_fonts : any
   crypto: any
+  image_picker : any
 
 
 

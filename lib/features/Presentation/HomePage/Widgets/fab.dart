@@ -30,6 +30,7 @@ class Fab extends StatelessWidget {
           bottom: 75,
           right: 19,
           child: InkWell(
+            borderRadius: BorderRadius.circular(15),
             onTap: () {},
             child: Container(
               decoration: BoxDecoration(
@@ -38,7 +39,7 @@ class Fab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.asset(
-                    "assets/qrcode.png",
+                    "assets/qrCode.png",
                     width: iconsSize,
                     height: iconsSize,
                   )),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/features/Presentation/TaskDetails/TaskDetails.dart';
 
 class Alltaskspage extends StatelessWidget {
@@ -7,23 +8,13 @@ class Alltaskspage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(children: [
-        SizedBox(
-          height: 96,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const TaskImageTile(),
-              Container(width: 20),
-              const taskDetailsInTile(),
-              const MoreDetailsIconButton(),
-            ],
-          ),
-        ),
-      ]),
-    );
+        padding: const EdgeInsets.all(10.0),
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return const TaskTile();
+          },
+          itemCount: 10,
+        ));
   }
 }
 
@@ -77,9 +68,15 @@ class taskDetailsInTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Grocery Shopping",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Grocery Shopping",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              TaskBadge()
+            ],
           ),
           Text(
             "The application is designed ....",
@@ -109,6 +106,50 @@ class taskDetailsInTile extends StatelessWidget {
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+class TaskTile extends StatelessWidget {
+  const TaskTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 96,
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const TaskImageTile(),
+          Container(width: 20),
+          const Expanded(child: taskDetailsInTile()),
+          const MoreDetailsIconButton(),
+        ],
+      ),
+    );
+  }
+}
+
+class TaskBadge extends StatelessWidget {
+  const TaskBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: SizedBox(
+        width: 55,
+        height: 22,
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Container(
+            color: waitingTaskBadge,
+            child: Text("Waiting", style: TextStyle(color: waitingTaskText)),
+          ),
+        ),
       ),
     );
   }
