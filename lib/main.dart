@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tasky/cubits/TaskCubit.dart';
 
 import 'package:tasky/features/Presentation/SplashScreen/splash.dart';
 
@@ -17,10 +19,13 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(textTheme: GoogleFonts.dmSansTextTheme()),
-      home: const SplashPage(),
-      debugShowCheckedModeBanner: false,
+    return BlocProvider(
+      create: (context) => TaskCubit(),
+      child: MaterialApp(
+        theme: ThemeData(textTheme: GoogleFonts.dmSansTextTheme()),
+        home: const SplashPage(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

@@ -111,15 +111,18 @@ class _HomePageState extends State<HomePage> {
           ),
           Container(height: 15),
           Expanded(
-            child: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: pageController,
-              children: const [
-                Alltaskspage(),
-                Inprogresstaskspage(),
-                Waitingtaskspage(),
-                Finishedtaskspage(),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: pageController,
+                children: const [
+                  Alltaskspage(),
+                  Inprogresstaskspage(),
+                  Waitingtaskspage(),
+                  Finishedtaskspage(),
+                ],
+              ),
             ),
           )
         ],

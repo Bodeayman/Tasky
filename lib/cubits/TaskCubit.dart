@@ -1,3 +1,4 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/cubits/TaskState.dart';
 
 class TaskCubit extends Cubit<TaskState> {
@@ -16,12 +17,12 @@ class TaskCubit extends Cubit<TaskState> {
         emit(TaskLoading());
       }
 
-      // Simulate network delay
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 3));
 
-      // Simulate fetched data
       List<String> newTasks = List.generate(
-          pageSize, (index) => 'Task ${(page - 1) * pageSize + index + 1}');
+        pageSize,
+        (index) => 'Task ${(page - 1) * pageSize + index + 1}',
+      );
 
       List<String> allTasks = [];
 
@@ -31,7 +32,6 @@ class TaskCubit extends Cubit<TaskState> {
         allTasks = newTasks;
       }
 
-      // Stop at 50 tasks for example
       bool hasReachedMax = allTasks.length >= 50;
 
       emit(TaskLoaded(tasks: allTasks, hasReachedMax: hasReachedMax));
