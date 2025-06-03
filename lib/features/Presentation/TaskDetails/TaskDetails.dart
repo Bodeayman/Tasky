@@ -123,7 +123,9 @@ class _TaskDetailsState extends State<TaskDetails> {
                     ),
                   ),
                   Container(height: 10),
-                  const PriorityChoose(),
+                  const PriorityChoose(
+                    PriorityChooseActive: false,
+                  ),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,

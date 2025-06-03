@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/cubits/TaskState.dart';
 
@@ -17,12 +18,13 @@ class TaskCubit extends Cubit<TaskState> {
         emit(TaskLoading());
       }
 
-      await Future.delayed(const Duration(seconds: 3));
-
+      await Future.delayed(const Duration(milliseconds: 500));
+      //List generate it will take the length of the list , and it will give it a specific item
       List<String> newTasks = List.generate(
         pageSize,
         (index) => 'Task ${(page - 1) * pageSize + index + 1}',
       );
+      debugPrint(newTasks.first);
 
       List<String> allTasks = [];
 

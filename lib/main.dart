@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tasky/cubits/TaskCubit.dart';
+import 'package:tasky/cubits/profile_loading_cubit.dart';
 
 import 'package:tasky/features/Presentation/SplashScreen/splash.dart';
 
@@ -19,8 +20,15 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TaskCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TaskCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ProfileLoadingCubit(),
+        ),
+      ],
       child: MaterialApp(
         theme: ThemeData(textTheme: GoogleFonts.dmSansTextTheme()),
         home: const SplashPage(),

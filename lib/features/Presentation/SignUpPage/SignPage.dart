@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/colors.dart';
+import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/phoneLogin.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
@@ -205,9 +206,29 @@ class _SignPageState extends State<SignPage> {
                                 horizontal: 100, vertical: 20),
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             color: const Color(0xFF5F33E1),
-                            onPressed: () {
+                            onPressed: () async {
                               if (formKey.currentState!.validate()) {
                                 // I made it whatever you change in the field it won't be affected
+                                debugPrint(nameController.text);
+                                debugPrint(choosenExp);
+                                debugPrint(expController.text);
+                                debugPrint(addressController.text);
+                                debugPrint(phoneController.text);
+                                debugPrint(passwordController.text);
+                                ////
+                                final response = await http.post(
+                                    Uri.parse('$baseUrl/auth/register'),
+                                    body: {
+                                      "phone": phoneController.text,
+                                      "password": passwordController.text,
+                                      "displayName": nameController.text,
+                                      "experienceYears": expController.text,
+                                      "address": addressController.text,
+                                      "level": choosenExp
+                                    });
+                                print(response);
+
+                                /////
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (context) =>

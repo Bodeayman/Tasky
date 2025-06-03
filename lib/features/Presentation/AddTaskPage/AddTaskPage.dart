@@ -94,7 +94,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               Container(height: 10),
-              const PriorityChoose(),
+              const PriorityChoose(
+                PriorityChooseActive: true,
+              ),
               Container(height: 20),
               SizedBox(
                 child: Row(

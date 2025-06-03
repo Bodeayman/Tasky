@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:tasky/core/utils/constants.dart';
+import 'package:tasky/core/utils/refresh_token.dart';
+import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
+import 'package:tasky/core/utils/url.dart';
+import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/Widgets/sign_in_button.dart';
 import 'package:tasky/features/Presentation/SignUpPage/SignPage.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -34,6 +41,7 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
             width: 300,
             child: Column(children: [
               IntlPhoneField(
+                controller: phoneController,
                 decoration: InputDecoration(
                   labelText: 'Phone Number',
                   border: OutlineInputBorder(
@@ -62,9 +70,7 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                   ),
                 ),
                 initialCountryCode: 'EG', // Egypt as example
-                onChanged: (phone) {
-                  print('Complete phone number: ${phone.completeNumber}');
-                },
+
                 validator: (phone) {
                   if (phone == null || phone.number.isEmpty) {
                     return 'Phone Number required';
@@ -106,7 +112,60 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
             ]),
           ),
           /* The work field will be here */
-          SignInButton(formkey: widget.formkey),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(kborderSize),
+                child: MaterialButton(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  color: const Color(0xFF5F33E1),
+                  onPressed: () async {
+                    if (widget.formkey.currentState!.validate()) {
+                      try {
+                        debugPrint(phoneController.text);
+                        debugPrint(passwordController.text);
+
+                        final response = await http
+                            .post(Uri.parse('$baseUrl/auth/login'), body: {
+                          "phone": phoneController.text,
+                          "password": passwordController.text,
+                        });
+                        if (response.statusCode == 401) {
+                          throw Exception(
+                              "There's a problem in password or the name");
+                        }
+
+                        final data = jsonDecode(response.body);
+                        debugPrint(data["access_token"]);
+                        debugPrint(data["refresh_token"]);
+                        saveTokens(data["access_token"], data["refresh_token"]);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Successful")));
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(e.toString())));
+                      }
+                    }
+                  },
+                  child: const Text(
+                    "Sign In",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
           Container(
             height: 5,
           ),

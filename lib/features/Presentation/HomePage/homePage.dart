@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/pageControllerHandler.dart';
+import 'package:tasky/core/utils/refresh_token.dart';
+import 'package:tasky/core/utils/shared_prefs_service.dart';
+import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/cubits/page_cubit.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/AddTaskPage.dart';
 import 'package:tasky/features/Presentation/HomePage/AlltasksPage.dart';
@@ -70,12 +77,33 @@ class _HomePageState extends State<HomePage> {
                     height: 24,
                     width: 24,
                     child: Image.asset("assets/backbutton.png")),
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const Phonelogin(),
-                    ),
-                  );
+                onTap: () async {
+                  try {
+                    final token = await getAccessToken();
+
+                    final response = await http.post(
+                      Uri.parse('$baseUrl/auth/logout'),
+                      headers: {
+                        'Authorization': 'Bearer $token',
+                        'Content-Type': 'application/json',
+                      },
+                    );
+                    if (response.statusCode == 401) {
+                      refreshAccessToken();
+                      throw Exception("Failed to Logout, Try again please");
+                    }
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Logged out")));
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const Phonelogin(),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(e.toString())));
+                  }
                 },
               ),
             ),
@@ -84,14 +112,25 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text(
-              "My Tasks",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "My Tasks",
+                  style: TextStyle(
+                    color: Color.fromARGB(
+                      60,
+                      36,
+                      37,
+                      44,
+                    ),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
               ),
-              textAlign: TextAlign.start,
             ),
             Container(
               height: 10,

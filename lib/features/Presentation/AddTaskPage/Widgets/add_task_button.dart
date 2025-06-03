@@ -60,17 +60,17 @@ class _AddTaskButtonState extends State<AddTaskButton> {
         ),
         onPressed: pickImage,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 100,
-              width: 100,
+              height: 56,
+              width: 334,
               child: (_image != null)
                   ? Image.file(_image!)
-                  : Image.asset("assets/groceryHuge.png"),
+                  : SizedBox(
+                      width: 50,
+                      child: Image.asset("assets/groceryHuge.png", scale: 40)),
             ),
             Icon(Icons.photo, color: mainColor, size: 35),
-            Container(width: 20),
             Text(
               "Add Img",
               style: TextStyle(color: mainColor, fontSize: 20),
