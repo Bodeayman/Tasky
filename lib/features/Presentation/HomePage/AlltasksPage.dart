@@ -74,8 +74,8 @@ class _AlltaskspageState extends State<Alltaskspage> {
                       "This is the best grocercy shop that you will ever test",
                   dueDate: "2025-06-09",
                   name: "Grocery Shopping",
-                  priority: "med",
-                  progress: "inprogress",
+                  priority: TaskBadges.low,
+                  progress: TaskProgress.inProgress,
                 );
               } else {
                 // Loading indicator at bottom while fetching more
@@ -144,8 +144,8 @@ class TaskDetailsInTile extends StatelessWidget {
   final String name;
   final String desc;
   final String dueDate; //This is for the test
-  final String priority;
-  final String progress;
+  final TaskBadges priority;
+  final TaskProgress progress;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -161,24 +161,28 @@ class TaskDetailsInTile extends StatelessWidget {
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              (progress == 'waiting')
+              (progress == TaskProgress.waiting)
                   ? TaskBadgeTest.waiting()
-                  : (progress == 'inprogress')
+                  : (progress == TaskProgress.inProgress)
                       ? TaskBadgeTest.inprogress()
                       : TaskBadgeTest.finished(),
             ],
           ),
           Text(
             desc,
-            style: const TextStyle(fontSize: 12, overflow: TextOverflow.clip),
+            style: const TextStyle(
+              fontSize: 12,
+              overflow: TextOverflow.clip,
+            ),
+            maxLines: 1,
           ),
           const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              (priority == 'low')
+              (priority == TaskBadges.low)
                   ? TaskPriorityIcon.low()
-                  : (priority == 'med')
+                  : (priority == TaskBadges.medium)
                       ? TaskPriorityIcon.med()
                       : TaskPriorityIcon.high(),
               const SizedBox(width: 15),
@@ -205,8 +209,8 @@ class TaskTile extends StatelessWidget {
   final String name;
   final String desc;
   final String dueDate; //This is for the test
-  final String priority;
-  final String progress;
+  final TaskBadges priority;
+  final TaskProgress progress;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

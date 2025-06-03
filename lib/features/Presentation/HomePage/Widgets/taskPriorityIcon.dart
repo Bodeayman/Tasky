@@ -33,3 +33,9 @@ class TaskPriorityIcon extends StatelessWidget {
     );
   }
 }
+
+enum TaskBadges {
+  low,
+  medium,
+  high,
+}

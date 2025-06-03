@@ -50,3 +50,9 @@ class TaskBadgeTest extends StatelessWidget {
     );
   }
 }
+
+enum TaskProgress {
+  waiting,
+  inProgress,
+  finished,
+}
