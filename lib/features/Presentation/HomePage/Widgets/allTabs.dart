@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/core/utils/style/colors.dart';
+import 'package:tasky/core/utils/style/colors.dart'; // assuming you have these colors
 
 class AllTabsWidget extends StatefulWidget {
   const AllTabsWidget({super.key});
@@ -15,46 +15,51 @@ class _AllTabsWidgetState extends State<AllTabsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: tabs.length,
-      itemBuilder: (context, index) {
-        return Row(
-          children: [
-            const SizedBox(
-              width: 10,
-            ),
-            InkWell(
-              hoverColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              onTap: () {
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: selectedIndex == index ? mainColor : unselectedColor,
+    return SizedBox(
+      height: 48,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: tabs.length,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        separatorBuilder: (_, __) => const SizedBox(width: 10),
+        itemBuilder: (context, index) {
+          final isSelected = selectedIndex == index;
+
+          return TextButton(
+            onPressed: () {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(
+                isSelected ? mainColor : Colors.grey.shade200,
+              ),
+              foregroundColor: WidgetStateProperty.all(
+                isSelected ? Colors.white : Colors.grey.shade600,
+              ),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                  child: Text(
-                    tabs[index],
-                    style: TextStyle(
-                      color: selectedIndex == index
-                          ? Colors.white
-                          : const Color(0xff7C7C80),
-                      fontSize: 17,
-                    ),
-                  ),
-                ),
+              ),
+              padding: WidgetStateProperty.all(
+                const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+              ),
+              overlayColor: WidgetStateProperty.all(
+                mainColor.withOpacity(0.2),
               ),
             ),
-          ],
-        );
-      },
+            child: Text(
+              tabs[index],
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

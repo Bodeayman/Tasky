@@ -18,7 +18,11 @@ dependencies:
   google_fonts : any
   crypto: any
   image_picker : any
-
+  intl_phone_field : any
+  qr_flutter : any
+  qr_code_scanner : any
+  flutter_bloc : any
+  mobile_scanner : any
 
 
 
@@ -26,7 +30,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: any
-  flutter_svg: any
   hive_generator: any
   build_runner: any
 

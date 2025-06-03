@@ -8,20 +8,19 @@ class Alltaskspage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            return const TaskTile();
-          },
-          itemCount: 10,
-        ));
+      padding: const EdgeInsets.all(10.0),
+      child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return const TaskTile();
+        },
+      ),
+    );
   }
 }
 
 class TaskImageTile extends StatelessWidget {
-  const TaskImageTile({
-    super.key,
-  });
+  const TaskImageTile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,38 +33,31 @@ class TaskImageTile extends StatelessWidget {
 }
 
 class MoreDetailsIconButton extends StatelessWidget {
-  const MoreDetailsIconButton({
-    super.key,
-  });
+  const MoreDetailsIconButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: IconButton(
-        icon: const Icon(Icons.more_vert),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const TaskDetails(),
-            ),
-          );
-        },
-      ),
+    return IconButton(
+      icon: const Icon(Icons.more_vert),
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const TaskDetails(),
+          ),
+        );
+      },
     );
   }
 }
 
-class taskDetailsInTile extends StatelessWidget {
-  const taskDetailsInTile({
-    super.key,
-  });
+class TaskDetailsInTile extends StatelessWidget {
+  const TaskDetailsInTile({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
       height: 64,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -75,36 +67,34 @@ class taskDetailsInTile extends StatelessWidget {
                 "Grocery Shopping",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              TaskBadge()
+              TaskBadge(),
             ],
           ),
           Text(
             "The application is designed ....",
-            style: TextStyle(
-              fontSize: 12,
-            ),
+            style: TextStyle(fontSize: 12),
           ),
+          SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                  Icon(Icons.flag),
+                  Icon(Icons.flag, size: 16),
+                  SizedBox(width: 4),
                   Text(
                     "Medium",
                     style: TextStyle(fontSize: 12),
                   ),
                 ],
               ),
-              SizedBox(
-                width: 15,
-              ),
+              SizedBox(width: 15),
               Text(
                 "20/9/2025",
                 style: TextStyle(fontSize: 12),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -116,17 +106,16 @@ class TaskTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       height: 96,
       width: double.infinity,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const TaskImageTile(),
-          Container(width: 20),
-          const Expanded(child: taskDetailsInTile()),
-          const MoreDetailsIconButton(),
+          TaskImageTile(),
+          SizedBox(width: 20),
+          Expanded(child: TaskDetailsInTile()),
+          MoreDetailsIconButton(),
         ],
       ),
     );
@@ -140,15 +129,14 @@ class TaskBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
-      child: SizedBox(
+      child: Container(
         width: 55,
         height: 22,
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Container(
-            color: waitingTaskBadge,
-            child: Text("Waiting", style: TextStyle(color: waitingTaskText)),
-          ),
+        color: waitingTaskBadge,
+        alignment: Alignment.center,
+        child: Text(
+          "Waiting",
+          style: TextStyle(color: waitingTaskText, fontSize: 12),
         ),
       ),
     );

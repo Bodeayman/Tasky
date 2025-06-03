@@ -107,7 +107,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               Container(height: 10),
-              const CalenderButton(),
+              const CalendarButton(),
               Container(
                 height: 20,
               ),
@@ -142,6 +142,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

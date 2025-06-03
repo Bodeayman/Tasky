@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/constants.dart';
+import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/Widgets/sign_in_button.dart';
 import 'package:tasky/features/Presentation/SignUpPage/SignPage.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class PhoneLoginForm extends StatefulWidget {
   const PhoneLoginForm({super.key, required this.formkey});
@@ -30,51 +33,44 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
           SizedBox(
             width: 300,
             child: Column(children: [
-              TextFormField(
-                validator: (val) {
-                  if (val!.trim() == "" || val.isEmpty) {
-                    return "Please enter a valid phone number";
-                  }
-                  final phoneReg = RegExp(phoneRegex);
-                  if (!phoneReg.hasMatch(val)) {
-                    return 'Enter a valid phone number';
-                  }
-                  return null;
-                },
-                decoration: inputStyle.copyWith(
-                  hintText: "123-456-7890",
-                  hintStyle: const TextStyle(fontWeight: FontWeight.w100),
+              IntlPhoneField(
+                decoration: InputDecoration(
+                  labelText: 'Phone Number',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(kborderSize),
+                      borderSide:
+                          BorderSide(color: inputFieldBorderColor, width: 1)),
                   prefixIcon: InkWell(
                     onTap: () {
-                      showMenu(
-                        context: context,
-                        position: RelativeRect.fromLTRB(
-                            0,
-                            MediaQuery.of(context).size.height / 1.5,
-                            MediaQuery.of(context).size.width,
-                            0),
-                        items: [
-                          const PopupMenuItem(
-                            child: Text("Egypt"),
-                          ),
-                          const PopupMenuItem(
-                            child: Text("Saudi Arabia"),
-                          ),
-                          const PopupMenuItem(
-                            child: Text("UAE"),
-                          ),
-                        ],
-                      );
+                      print("Tapped the prefix icon");
                     },
                     child: const SizedBox(
-                      width: 60,
+                      width: 70,
                       child: Row(
-                        children: [Icon(Icons.flag), Text("+20"), Text(">")],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.flag,
+                              size: 20), // You can replace with actual flag
+                          SizedBox(width: 4),
+                          Text("+20",
+                              style: TextStyle(fontWeight: FontWeight.w500)),
+                          SizedBox(width: 4),
+                          Icon(Icons.arrow_drop_down),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                controller: phoneController,
+                initialCountryCode: 'EG', // Egypt as example
+                onChanged: (phone) {
+                  print('Complete phone number: ${phone.completeNumber}');
+                },
+                validator: (phone) {
+                  if (phone == null || phone.number.isEmpty) {
+                    return 'Phone Number required';
+                  }
+                  return null;
+                },
               ),
               Container(
                 height: 20,
@@ -161,7 +157,7 @@ class DidnotHaveAccountPhoneForm extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => SignPage(),
+                builder: (context) => const SignPage(),
               ),
             );
           },

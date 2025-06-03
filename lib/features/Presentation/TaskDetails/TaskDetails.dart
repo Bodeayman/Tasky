@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tasky/core/components/priority_choose.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/core/utils/style/colors.dart';
@@ -123,6 +124,15 @@ class _TaskDetailsState extends State<TaskDetails> {
                   ),
                   Container(height: 10),
                   const PriorityChoose(),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Center(
+                        child: QrImageView(
+                      data: "",
+                      version: QrVersions.auto,
+                    )),
+                  ),
                 ],
               ),
             ),

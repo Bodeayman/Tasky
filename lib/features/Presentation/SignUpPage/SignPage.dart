@@ -1,9 +1,12 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/constants.dart';
+import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/features/Presentation/HomePage/homePage.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/phoneLogin.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+
 import 'package:http/http.dart' as http;
 
 class SignPage extends StatefulWidget {
@@ -70,32 +73,45 @@ class _SignPageState extends State<SignPage> {
                         Container(
                           height: 10,
                         ),
-                        TextFormField(
-                          decoration: inputStyle.copyWith(
-                            hintText: "123-456-7890",
-                            hintStyle:
-                                const TextStyle(fontWeight: FontWeight.w100),
+                        IntlPhoneField(
+                          decoration: InputDecoration(
+                            labelText: 'Phone Number',
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.circular(kborderSize),
+                                borderSide: BorderSide(
+                                    color: inputFieldBorderColor, width: 1)),
                             prefixIcon: InkWell(
                               onTap: () {
-                                print("Tapped the whole icon");
+                                print("Tapped the prefix icon");
                               },
                               child: const SizedBox(
-                                width: 60,
+                                width: 70,
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.flag),
-                                    Text("+20"),
-                                    Text(">")
+                                    Icon(Icons.flag,
+                                        size:
+                                            20), // You can replace with actual flag
+                                    SizedBox(width: 4),
+                                    Text("+20",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500)),
+                                    SizedBox(width: 4),
+                                    Icon(Icons.arrow_drop_down),
                                   ],
                                 ),
                               ),
                             ),
                           ),
-                          keyboardType: TextInputType.phone,
-                          controller: phoneController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Phone Number required";
+                          initialCountryCode: 'EG', // Egypt as example
+                          onChanged: (phone) {
+                            print(
+                                'Complete phone number: ${phone.completeNumber}');
+                          },
+                          validator: (phone) {
+                            if (phone == null || phone.number.isEmpty) {
+                              return 'Phone Number required';
                             }
                             return null;
                           },
@@ -116,15 +132,16 @@ class _SignPageState extends State<SignPage> {
                           },
                         ),
                         Container(height: 10),
-                        TextFormField(
-                          decoration: inputStyle.copyWith(
-                              hintText: "Choose your level of exp..."),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Your level of experience required";
-                            }
-                            return null;
-                          },
+                        DropdownMenu<String>(
+                          width: MediaQuery.of(context)
+                              .size
+                              .width, // Full width for the button
+                          hintText: "Choose your level of exp...",
+                          dropdownMenuEntries: const [
+                            DropdownMenuEntry(value: "junior", label: "Junior"),
+                            DropdownMenuEntry(value: "mid", label: "Mid-Level"),
+                            DropdownMenuEntry(value: "senior", label: "Senior"),
+                          ],
                         ),
                         Container(height: 10),
                         TextFormField(
