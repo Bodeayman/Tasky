@@ -18,11 +18,18 @@ class TaskBadgeTest extends StatelessWidget {
     );
   }
 
-  factory TaskBadgeTest.completed() {
-    return const TaskBadgeTest(
-      badgeText: "Completed",
-      badgeColor: Colors.green,
-      textColor: Colors.white,
+  factory TaskBadgeTest.finished() {
+    return TaskBadgeTest(
+      badgeText: "Finished",
+      badgeColor: finishingTaskBadge,
+      textColor: finishingTaskText,
+    );
+  }
+  factory TaskBadgeTest.inprogress() {
+    return TaskBadgeTest(
+      badgeText: "Inprogress",
+      badgeColor: inProgressTaskBadge,
+      textColor: inProgressTaskText,
     );
   }
 

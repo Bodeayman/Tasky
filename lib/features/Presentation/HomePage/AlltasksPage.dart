@@ -3,6 +3,7 @@ import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/cubits/TaskCubit.dart';
 import 'package:tasky/cubits/TaskState.dart';
 import 'package:tasky/features/Presentation/HomePage/Widgets/taskBadge.dart';
+import 'package:tasky/features/Presentation/HomePage/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/Presentation/TaskDetails/TaskDetails.dart';
 
 import 'package:flutter/material.dart';
@@ -68,7 +69,14 @@ class _AlltaskspageState extends State<Alltaskspage> {
             itemBuilder: (context, index) {
               if (index < state.tasks.length) {
                 final task = state.tasks[index];
-                return const TaskTile();
+                return const TaskTile(
+                  desc:
+                      "This is the best grocercy shop that you will ever test",
+                  dueDate: "2025-06-09",
+                  name: "Grocery Shopping",
+                  priority: "med",
+                  progress: "inprogress",
+                );
               } else {
                 // Loading indicator at bottom while fetching more
                 return const Padding(
@@ -126,8 +134,18 @@ class TaskImageTile extends StatelessWidget {
 }
 
 class TaskDetailsInTile extends StatelessWidget {
-  const TaskDetailsInTile({super.key});
-
+  const TaskDetailsInTile(
+      {super.key,
+      required this.name,
+      required this.desc,
+      required this.dueDate,
+      required this.priority,
+      required this.progress});
+  final String name;
+  final String desc;
+  final String dueDate; //This is for the test
+  final String priority;
+  final String progress;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -138,36 +156,35 @@ class TaskDetailsInTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Grocery Shopping",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Text(
+                name,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              TaskBadgeTest
-                  .waiting(), // I implemented the factory design pattern here
+              (progress == 'waiting')
+                  ? TaskBadgeTest.waiting()
+                  : (progress == 'inprogress')
+                      ? TaskBadgeTest.inprogress()
+                      : TaskBadgeTest.finished(),
             ],
           ),
-          const Text(
-            "The application is designed ....",
-            style: TextStyle(fontSize: 12),
+          Text(
+            desc,
+            style: const TextStyle(fontSize: 12, overflow: TextOverflow.clip),
           ),
           const SizedBox(height: 4),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Icon(Icons.flag, size: 16),
-                  SizedBox(width: 4),
-                  Text(
-                    "Medium",
-                    style: TextStyle(fontSize: 12),
-                  ),
-                ],
-              ),
-              SizedBox(width: 15),
+              (priority == 'low')
+                  ? TaskPriorityIcon.low()
+                  : (priority == 'med')
+                      ? TaskPriorityIcon.med()
+                      : TaskPriorityIcon.high(),
+              const SizedBox(width: 15),
               Text(
-                "20/9/2025",
-                style: TextStyle(fontSize: 12),
+                dueDate,
+                style: const TextStyle(fontSize: 12),
               ),
             ],
           ),
@@ -178,20 +195,37 @@ class TaskDetailsInTile extends StatelessWidget {
 }
 
 class TaskTile extends StatelessWidget {
-  const TaskTile({super.key});
-
+  const TaskTile(
+      {super.key,
+      required this.name,
+      required this.desc,
+      required this.dueDate,
+      required this.priority,
+      required this.progress});
+  final String name;
+  final String desc;
+  final String dueDate; //This is for the test
+  final String priority;
+  final String progress;
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       height: 96,
       width: double.infinity,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          TaskImageTile(),
-          SizedBox(width: 20),
-          Expanded(child: TaskDetailsInTile()),
-          MoreDetailsIconButton(),
+          const TaskImageTile(),
+          const SizedBox(width: 20),
+          Expanded(
+              child: TaskDetailsInTile(
+            desc: desc,
+            dueDate: dueDate,
+            name: name,
+            priority: priority,
+            progress: progress,
+          )),
+          const MoreDetailsIconButton(),
         ],
       ),
     );

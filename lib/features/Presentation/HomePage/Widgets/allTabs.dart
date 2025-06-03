@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/core/utils/style/colors.dart'; // assuming you have these colors
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasky/core/utils/style/colors.dart';
+import 'package:tasky/cubits/page_cubit.dart'; // assuming you have these colors
 
 class AllTabsWidget extends StatefulWidget {
   const AllTabsWidget({super.key});
@@ -29,6 +31,7 @@ class _AllTabsWidgetState extends State<AllTabsWidget> {
             onPressed: () {
               setState(() {
                 selectedIndex = index;
+                context.read<PageCubit>().changePageNumber(index);
               });
             },
             style: ButtonStyle(

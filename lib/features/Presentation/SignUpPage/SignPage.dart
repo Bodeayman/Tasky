@@ -28,6 +28,7 @@ class _SignPageState extends State<SignPage> {
   final TextEditingController expController = TextEditingController();
 
   final TextEditingController addressController = TextEditingController();
+  late String choosenExp = "fresh";
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -62,6 +63,7 @@ class _SignPageState extends State<SignPage> {
                       width: 300,
                       child: Column(children: [
                         TextFormField(
+                          controller: nameController,
                           decoration: inputStyle.copyWith(hintText: "Name...."),
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -74,6 +76,7 @@ class _SignPageState extends State<SignPage> {
                           height: 10,
                         ),
                         IntlPhoneField(
+                          controller: phoneController,
                           decoration: InputDecoration(
                             labelText: 'Phone Number',
                             border: OutlineInputBorder(
@@ -105,10 +108,7 @@ class _SignPageState extends State<SignPage> {
                             ),
                           ),
                           initialCountryCode: 'EG', // Egypt as example
-                          onChanged: (phone) {
-                            print(
-                                'Complete phone number: ${phone.completeNumber}');
-                          },
+
                           validator: (phone) {
                             if (phone == null || phone.number.isEmpty) {
                               return 'Phone Number required';
@@ -132,16 +132,31 @@ class _SignPageState extends State<SignPage> {
                           },
                         ),
                         Container(height: 10),
-                        DropdownMenu<String>(
-                          width: MediaQuery.of(context)
-                              .size
-                              .width, // Full width for the button
-                          hintText: "Choose your level of exp...",
-                          dropdownMenuEntries: const [
-                            DropdownMenuEntry(value: "junior", label: "Junior"),
-                            DropdownMenuEntry(value: "mid", label: "Mid-Level"),
-                            DropdownMenuEntry(value: "senior", label: "Senior"),
-                          ],
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kborderSize),
+                          ),
+                          child: DropdownMenu<String>(
+                            onSelected: (value) {
+                              setState(() {
+                                choosenExp = value!;
+                              });
+                            },
+                            width: MediaQuery.of(context)
+                                .size
+                                .width, // Full width for the button
+                            hintText: "Choose your level of exp...",
+                            initialSelection: "Fresh",
+                            dropdownMenuEntries: const [
+                              DropdownMenuEntry(value: "fresh", label: "Fresh"),
+                              DropdownMenuEntry(
+                                  value: "junior", label: "Junior"),
+                              DropdownMenuEntry(
+                                  value: "midLevel", label: "Mid-Level"),
+                              DropdownMenuEntry(
+                                  value: "senior", label: "Senior"),
+                            ],
+                          ),
                         ),
                         Container(height: 10),
                         TextFormField(
@@ -192,6 +207,7 @@ class _SignPageState extends State<SignPage> {
                             color: const Color(0xFF5F33E1),
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
+                                // I made it whatever you change in the field it won't be affected
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (context) =>
