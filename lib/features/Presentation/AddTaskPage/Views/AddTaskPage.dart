@@ -10,6 +10,7 @@ import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/url.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Manager/adding_task_cubit.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/add_task_button.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/calender_button.dart';
@@ -124,56 +125,64 @@ class _AddTaskPageState extends State<AddTaskPage> {
               Row(
                 children: [
                   Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: MaterialButton(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 110, vertical: 20),
-                        color: mainColor,
-                        onPressed: () async {
-                          try {
-                            final token = await getAccessToken();
-                            debugPrint(titleController.text);
-                            debugPrint(descriptionController.text);
+                      child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: BlocBuilder<AddingTaskCubit, AddingTaskState>(
+                      builder: (context, state) {
+                        if (state is AddingTaskInitial) {
+                          return MaterialButton(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 110, vertical: 20),
+                            color: mainColor,
+                            onPressed: () async {
+                              try {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Working")));
+                                final token = await getAccessToken();
 
-                            final response = await http.post(
-                              Uri.parse('$baseUrl/todos'),
-                              body: {
-                                "image": "path.png",
-                                "dueDate": "2024-05-15",
-                                "priority": "low",
-                                "title": titleController.text,
-                                "desc": descriptionController.text,
-                              },
-                              headers: {
-                                'Authorization': 'Bearer $token',
-                              },
-                            );
-                            if (response.statusCode == 401) {
-                              refreshAccessToken();
-                              throw Exception(
-                                  "Failed to Add another Task, Please Try again");
-                            }
-                            context.read<TaskCubit>().fetchTasks();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Added Task Successfully")));
-                            Navigator.of(context).pop();
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(e.toString())));
-                          }
-                        },
-                        child: const Text(
-                          "Add Task",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
+                                final response = await http.post(
+                                  Uri.parse('$baseUrl/todos'),
+                                  body: {
+                                    "image": "path.png",
+                                    "dueDate": state.date,
+                                    "priority": state.priority,
+                                    "title": titleController.text,
+                                    "desc": descriptionController.text,
+                                  },
+                                  headers: {
+                                    'Authorization': 'Bearer $token',
+                                  },
+                                );
+                                if (response.statusCode == 401) {
+                                  refreshAccessToken();
+                                  throw Exception(
+                                      "Failed to Add another Task, Please Try again");
+                                }
+                                context.read<TaskCubit>().fetchTasks();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text("Added Task Successfully")));
+                                Navigator.of(context).pop();
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(e.toString())));
+                              }
+                            },
+                            child: const Text(
+                              "Add Task",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const Center();
+                        }
+                      },
                     ),
-                  ),
+                  ))
                 ],
               ),
               const SizedBox(height: 20),

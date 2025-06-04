@@ -1,57 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/colors.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Manager/adding_task_cubit.dart';
 
-class PriorityChoose extends StatelessWidget {
+class PriorityChoose extends StatefulWidget {
   const PriorityChoose({super.key, required this.PriorityChooseActive});
   final bool PriorityChooseActive;
+
+  @override
+  _PriorityChooseState createState() => _PriorityChooseState();
+}
+
+class _PriorityChooseState extends State<PriorityChoose> {
+  String selectedPriority = "Medium Priority";
+
+  final List<String> priorities = [
+    'Low Priority',
+    'Medium Priority',
+    'High Priority',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(kborderSize),
-      child: MaterialButton(
-          padding: const EdgeInsets.all(15),
-          color: priorityColor,
-          onPressed: (PriorityChooseActive)
-              ? () {
-                  showMenu(
-                      context: context,
-                      popUpAnimationStyle:
-                          AnimationStyle(curve: Curves.bounceIn),
-                      items: [
-                        const PopupMenuItem(child: Text("Low Priority")),
-                        const PopupMenuItem(child: Text("Medium Priority")),
-                        const PopupMenuItem(child: Text("High Priority"))
-                      ],
-                      constraints: const BoxConstraints.expand(height: 150),
-                      position: RelativeRect.fromLTRB(
-                          0, MediaQuery.of(context).size.height / 1.5, 0, 0));
+      child: Container(
+        color: priorityColor,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: DropdownButton<String>(
+          value: selectedPriority,
+          dropdownColor: priorityColor,
+          iconEnabledColor: mainColor,
+          underline: const SizedBox(), // Removes the underline
+          isExpanded: true,
+          onChanged: widget.PriorityChooseActive
+              ? (String? newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      selectedPriority = newValue;
+                    });
+                    final mappedValue = switch (newValue) {
+                      "Low Priority" => "low",
+                      "Medium Priority" => "medium",
+                      "High Priority" => "high",
+                      _ => "medium"
+                    };
+                    context.read<AddingTaskCubit>().setPriority(mappedValue);
+                  }
                 }
-              : () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.flag, size: 40, color: mainColor),
-                  Container(width: 5),
-                  Text(
-                    "Medium Priority",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: mainColor,
-                    ),
-                  ),
-                ],
+              : null,
+          items: priorities.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: TextStyle(
+                  color: mainColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
-              SizedBox(
-                  width: 24,
-                  height: 24,
-                  child:
-                      Image.asset("assets/arrow_down.png", color: mainColor)),
-            ],
-          )),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }

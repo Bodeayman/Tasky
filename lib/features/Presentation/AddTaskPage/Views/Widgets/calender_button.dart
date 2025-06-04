@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Manager/adding_task_cubit.dart';
 
 class CalendarButton extends StatefulWidget {
   const CalendarButton({super.key});
@@ -33,6 +35,23 @@ class _CalendarButtonState extends State<CalendarButton> {
           "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
       setState(() {
         _controller.text = formattedDate;
+        DateTime date = DateTime.parse(formattedDate);
+
+        DateTime now = DateTime.now();
+
+        // Combine the input date with the current time
+        DateTime combined = DateTime.utc(
+          date.year,
+          date.month,
+          date.day,
+          now.hour,
+          now.minute,
+          now.second,
+          now.millisecond,
+        );
+
+        String isoString = combined.toIso8601String();
+        context.read<AddingTaskCubit>().setDate(isoString);
       });
     }
   }

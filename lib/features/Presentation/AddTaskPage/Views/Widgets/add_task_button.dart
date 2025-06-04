@@ -43,9 +43,9 @@ class _AddTaskButtonState extends State<AddTaskButton> {
     final response = await request.send();
 
     if (response.statusCode == 200) {
-      print('Upload successful');
+      debugPrint('Upload successful');
     } else {
-      print('Upload failed: ${response.statusCode}');
+      debugPrint('Upload failed: ${response.statusCode}');
     }
   }
 
