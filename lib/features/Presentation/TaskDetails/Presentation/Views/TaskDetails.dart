@@ -15,7 +15,7 @@ import 'package:tasky/features/Presentation/TaskDetails/Presentation/Views/Widge
 
 class TaskDetails extends StatelessWidget {
   const TaskDetails({super.key, required this.taskModel});
-  final Task taskModel;
+  final TaskModel taskModel;
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/utils/style/colors.dart';
-import 'package:tasky/cubits/page_cubit.dart'; // assuming you have these colors
+import 'package:tasky/features/Presentation/HomePage/Presentation/Manager/page_cubit.dart'; // assuming you have these colors
 
 class AllTabsWidget extends StatefulWidget {
   const AllTabsWidget({super.key});

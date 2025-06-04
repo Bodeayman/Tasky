@@ -1,7 +1,7 @@
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 
-class Task {
+class TaskModel {
   final String id;
   final String image;
   final String title;
@@ -12,7 +12,7 @@ class Task {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  Task({
+  TaskModel({
     required this.id,
     required this.image,
     required this.title,
@@ -24,8 +24,8 @@ class Task {
     required this.updatedAt,
   });
 
-  factory Task.fromJson(Map<String, dynamic> json) {
-    return Task(
+  factory TaskModel.fromJson(Map<String, dynamic> json) {
+    return TaskModel(
       id: json['_id'],
       image: json['image'],
       title: json['title'],

@@ -7,7 +7,7 @@ class TaskInitial extends TaskState {}
 class TaskLoading extends TaskState {}
 
 class TaskLoaded extends TaskState {
-  final List<Task> tasks;
+  final List<TaskModel> tasks;
 
   TaskLoaded({required this.tasks});
 }

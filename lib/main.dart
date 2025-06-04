@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tasky/cubits/TaskCubit.dart';
+import 'package:tasky/features/Presentation/HomePage/Data/Repo/HomeRepo.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/Presentation/ProfilePage/Data/Repo/ProfileRepo.dart';
 import 'package:tasky/features/Presentation/ProfilePage/Presentation/Manager/profile_loading_cubit.dart';
 
@@ -24,7 +25,7 @@ class _MainAppState extends State<MainApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TaskCubit(),
+          create: (context) => TaskCubit(HomeRepo())..fetchTasks(),
         ),
         BlocProvider(
           create: (context) =>

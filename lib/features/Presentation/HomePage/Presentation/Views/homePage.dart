@@ -8,7 +8,7 @@ import 'package:tasky/core/utils/pageControllerHandler.dart';
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/url.dart';
-import 'package:tasky/cubits/page_cubit.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Manager/page_cubit.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/AddTaskPage.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/AlltasksPage.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/allTabs.dart';

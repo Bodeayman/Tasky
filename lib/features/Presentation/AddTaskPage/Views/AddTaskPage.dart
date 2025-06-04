@@ -10,7 +10,7 @@ import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/url.dart';
-import 'package:tasky/cubits/TaskCubit.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/add_task_button.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/calender_button.dart';
 import 'package:tasky/core/components/priority_choose.dart';
