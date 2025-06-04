@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tasky/core/models/Task.dart';
+import 'package:tasky/features/Presentation/HomePage/Data/Models/Task.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/cubits/TaskCubit.dart';
 import 'package:tasky/cubits/TaskState.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/Widgets/taskBadge.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/Widgets/taskPriorityIcon.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/taskBadge.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/Presentation/TaskDetails/Presentation/Views/TaskDetails.dart';
 
 class Alltaskspage extends StatefulWidget {

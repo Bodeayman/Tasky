@@ -5,12 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tasky/core/components/priority_choose.dart';
-import 'package:tasky/core/models/Task.dart';
+import 'package:tasky/features/Presentation/HomePage/Data/Models/Task.dart';
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/url.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/homePage.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/homePage.dart';
 import 'package:tasky/features/Presentation/TaskDetails/Presentation/Views/Widgets/task_options.dart';
 
 class TaskDetails extends StatelessWidget {

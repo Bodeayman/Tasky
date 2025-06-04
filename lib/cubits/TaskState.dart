@@ -1,4 +1,4 @@
-import 'package:tasky/core/models/Task.dart';
+import 'package:tasky/features/Presentation/HomePage/Data/Models/Task.dart';
 
 abstract class TaskState {}
 

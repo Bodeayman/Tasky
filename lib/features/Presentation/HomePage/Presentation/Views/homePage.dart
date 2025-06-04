@@ -10,14 +10,14 @@ import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/cubits/page_cubit.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/AddTaskPage.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/AlltasksPage.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/Widgets/allTabs.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/Widgets/fab.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/finishedTasksPage.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/inProgressTasksPage.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/waitingTasksPage.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/AlltasksPage.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/allTabs.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/fab.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/finishedTasksPage.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/inProgressTasksPage.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/waitingTasksPage.dart';
 import 'package:tasky/features/Presentation/PhoneLogin/Views/phoneLogin.dart';
-import 'package:tasky/features/Presentation/ProfilePage/Views/profilePage.dart';
+import 'package:tasky/features/Presentation/ProfilePage/Presentation/Views/profilePage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

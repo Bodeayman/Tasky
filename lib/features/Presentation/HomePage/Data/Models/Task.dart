@@ -1,5 +1,5 @@
-import 'package:tasky/features/Presentation/HomePage/Views/Widgets/taskBadge.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/Widgets/taskPriorityIcon.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/taskBadge.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 
 class Task {
   final String id;

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tasky/cubits/TaskCubit.dart';
-import 'package:tasky/cubits/profile_loading_cubit.dart';
+import 'package:tasky/features/Presentation/ProfilePage/Data/Repo/ProfileRepo.dart';
+import 'package:tasky/features/Presentation/ProfilePage/Presentation/Manager/profile_loading_cubit.dart';
 
 import 'package:tasky/features/Presentation/SplashScreen/Views/splash.dart';
 
@@ -26,7 +27,8 @@ class _MainAppState extends State<MainApp> {
           create: (context) => TaskCubit(),
         ),
         BlocProvider(
-          create: (context) => ProfileLoadingCubit(),
+          create: (context) =>
+              ProfileLoadingCubit(ProfileRepo())..fetchingUsersData(),
         ),
       ],
       child: MaterialApp(

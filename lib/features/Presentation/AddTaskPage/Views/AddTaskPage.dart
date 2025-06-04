@@ -14,7 +14,7 @@ import 'package:tasky/cubits/TaskCubit.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/add_task_button.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/calender_button.dart';
 import 'package:tasky/core/components/priority_choose.dart';
-import 'package:tasky/features/Presentation/HomePage/Views/homePage.dart';
+import 'package:tasky/features/Presentation/HomePage/Presentation/Views/homePage.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 
@@ -158,11 +158,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text("Added Task Successfully")));
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
+                            Navigator.of(context).pop();
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(e.toString())));
