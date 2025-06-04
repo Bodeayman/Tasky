@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/style/colors.dart' show mainColor;
 import 'package:tasky/features/Presentation/ProfilePage/Presentation/Manager/profile_loading_cubit.dart';
-import 'package:tasky/features/Presentation/HomePage/Presentation/Views/homePage.dart';
 
 // ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {

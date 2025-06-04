@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
@@ -15,7 +10,6 @@ import 'package:tasky/features/Presentation/HomePage/Presentation/Manager/TaskCu
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/add_task_button.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/calender_button.dart';
 import 'package:tasky/core/components/priority_choose.dart';
-import 'package:tasky/features/Presentation/HomePage/Presentation/Views/homePage.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 

@@ -1,6 +1,3 @@
-import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/taskBadge.dart';
-import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
-
 class TaskModel {
   final String id;
   final String image;

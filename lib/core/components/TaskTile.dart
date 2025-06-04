@@ -35,7 +35,7 @@ ListTile taskTile = ListTile(
       Expanded(
         flex: 1,
         child: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: () {
             print("Nothing");
           },
