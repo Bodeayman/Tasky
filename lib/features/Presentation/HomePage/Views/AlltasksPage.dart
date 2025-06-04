@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasky/core/models/Task.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/cubits/TaskCubit.dart';
 import 'package:tasky/cubits/TaskState.dart';
 import 'package:tasky/features/Presentation/HomePage/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/Presentation/HomePage/Views/Widgets/taskPriorityIcon.dart';
-import 'package:tasky/features/Presentation/TaskDetails/Views/TaskDetails.dart';
+import 'package:tasky/features/Presentation/TaskDetails/Presentation/Views/TaskDetails.dart';
 
 class Alltaskspage extends StatefulWidget {
   const Alltaskspage({super.key});
@@ -16,32 +17,12 @@ class Alltaskspage extends StatefulWidget {
 }
 
 class _AlltaskspageState extends State<Alltaskspage> {
-  final ScrollController _scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
     context.read<TaskCubit>().fetchTasks();
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) {
-        final cubit = context.read<TaskCubit>();
-        final state = cubit.state;
-        if (state is TaskLoaded && !state.hasReachedMax) {
-          cubit.fetchTasks();
-        }
-      }
-    });
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  // Helper function to map priority string to enum
   TaskBadges mapPriority(String priority) {
     switch (priority.toLowerCase()) {
       case 'low':
@@ -55,7 +36,6 @@ class _AlltaskspageState extends State<Alltaskspage> {
     }
   }
 
-  // Helper function to map status string to enum
   TaskProgress mapProgress(String status) {
     switch (status.toLowerCase()) {
       case 'waiting':
@@ -82,50 +62,44 @@ class _AlltaskspageState extends State<Alltaskspage> {
             return const Center(child: Text("No tasks found"));
           }
 
-          return ListView.builder(
-            controller: _scrollController,
-            itemCount: state.hasReachedMax
-                ? state.tasks.length
-                : state.tasks.length + 1,
-            itemBuilder: (context, index) {
-              if (index < state.tasks.length) {
-                final task = state.tasks[index]; // task is TaskModel
+          return RefreshIndicator(
+            onRefresh: () => context.read<TaskCubit>().refreshTasks(),
+            child: ListView.builder(
+              itemCount: state.tasks.length,
+              itemBuilder: (context, index) {
+                final task = state.tasks[index];
 
                 return TaskTile(
-                    name: task.title,
-                    desc: task.desc,
-                    dueDate: task.createdAt.toLocal().toString().split(' ')[0],
-                    priority: mapPriority(task.priority),
-                    progress: mapProgress(task.status),
-                    imagePath: task.image);
-              } else {
-                return const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Center(child: CircularProgressIndicator()),
+                  id: task.id,
+                  name: task.title,
+                  desc: task.desc,
+                  dueDate: task.createdAt.toLocal().toString().split(' ')[0],
+                  priority: mapPriority(task.priority),
+                  progress: mapProgress(task.status),
+                  imagePath: task.image,
                 );
-              }
-              return null;
-            },
+              },
+            ),
           );
         }
+
         return const SizedBox.shrink();
       },
     );
   }
 }
 
-// -- Task Tile Related Widgets --
-
 class TaskTile extends StatelessWidget {
   const TaskTile(
       {super.key,
+      required this.id,
       required this.name,
       required this.desc,
       required this.dueDate,
       required this.priority,
       required this.progress,
       required this.imagePath});
-
+  final String id;
   final String name;
   final String desc;
   final String dueDate;
@@ -141,8 +115,10 @@ class TaskTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          TaskImageTile(
-            image: imagePath,
+          const SizedBox(
+            height: 64,
+            width: 64,
+            // child: Image.network("$baseUrl/images/$image"),
           ),
           const SizedBox(width: 20),
           Expanded(
@@ -154,22 +130,29 @@ class TaskTile extends StatelessWidget {
               progress: progress,
             ),
           ),
-          const MoreDetailsIconButton(),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TaskDetails(
+                    taskModel: Task(
+                        image: imagePath,
+                        desc: desc,
+                        priority: "Low",
+                        status: "Waiting",
+                        title: name,
+                        createdAt: DateTime.now(),
+                        updatedAt: DateTime.now(),
+                        user: "",
+                        id: id),
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
-    );
-  }
-}
-
-class TaskImageTile extends StatelessWidget {
-  const TaskImageTile({super.key, required this.image});
-  final String image;
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 64,
-      width: 64,
-      // child: Image.network("$baseUrl/images/$image"),
     );
   }
 }
@@ -240,24 +223,6 @@ class TaskDetailsInTile extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class MoreDetailsIconButton extends StatelessWidget {
-  const MoreDetailsIconButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.more_vert),
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const TaskDetails(),
-          ),
-        );
-      },
     );
   }
 }
