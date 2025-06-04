@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tasky/cubits/TaskCubit.dart';
 import 'package:tasky/cubits/profile_loading_cubit.dart';
 
-import 'package:tasky/features/Presentation/SplashScreen/splash.dart';
+import 'package:tasky/features/Presentation/SplashScreen/Views/splash.dart';
 
 Future<void> main() async {
   runApp(const MainApp());

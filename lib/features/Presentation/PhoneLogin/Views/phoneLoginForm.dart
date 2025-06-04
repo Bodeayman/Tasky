@@ -8,9 +8,9 @@ import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:tasky/core/utils/url.dart';
-import 'package:tasky/features/Presentation/HomePage/homePage.dart';
-import 'package:tasky/features/Presentation/PhoneLogin/Widgets/sign_in_button.dart';
-import 'package:tasky/features/Presentation/SignUpPage/SignPage.dart';
+import 'package:tasky/features/Presentation/HomePage/Views/homePage.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/Views/Widgets/sign_in_button.dart';
+import 'package:tasky/features/Presentation/SignUpPage/Views/SignPage.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class PhoneLoginForm extends StatefulWidget {

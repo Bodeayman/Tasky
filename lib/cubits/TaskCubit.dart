@@ -1,5 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+import 'package:tasky/core/models/Task.dart';
+import 'package:tasky/core/utils/refresh_token.dart';
+import 'package:tasky/core/utils/shared_prefs_service.dart';
+import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/cubits/TaskState.dart';
 
 class TaskCubit extends Cubit<TaskState> {
@@ -18,15 +24,28 @@ class TaskCubit extends Cubit<TaskState> {
         emit(TaskLoading());
       }
 
-      await Future.delayed(const Duration(milliseconds: 500));
-      //List generate it will take the length of the list , and it will give it a specific item
-      List<String> newTasks = List.generate(
-        pageSize,
-        (index) => 'Task ${(page - 1) * pageSize + index + 1}',
-      );
-      debugPrint(newTasks.first);
+      final token = await getAccessToken();
 
-      List<String> allTasks = [];
+      final response = await http.get(
+        Uri.parse('$baseUrl/todos?page=$page'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode != 200) {
+        refreshAccessToken();
+
+        throw Exception("Failed to load tasks: ${response.statusCode}");
+      }
+
+      final List<dynamic> data = jsonDecode(response.body);
+
+      final List<Task> newTasks =
+          data.map((json) => Task.fromJson(json)).toList();
+
+      List<Task> allTasks = [];
 
       if (state is TaskLoaded) {
         allTasks = List.from((state as TaskLoaded).tasks)..addAll(newTasks);
@@ -34,7 +53,9 @@ class TaskCubit extends Cubit<TaskState> {
         allTasks = newTasks;
       }
 
-      bool hasReachedMax = allTasks.length >= 50;
+      // Determine if this is the last page
+      const int pageSize = 10; // Backend's fixed page size (assumption)
+      bool hasReachedMax = newTasks.length < pageSize;
 
       emit(TaskLoaded(tasks: allTasks, hasReachedMax: hasReachedMax));
 

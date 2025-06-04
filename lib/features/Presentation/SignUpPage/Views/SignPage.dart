@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/url.dart';
-import 'package:tasky/features/Presentation/HomePage/homePage.dart';
-import 'package:tasky/features/Presentation/PhoneLogin/phoneLogin.dart';
+import 'package:tasky/features/Presentation/HomePage/Views/homePage.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/Views/phoneLogin.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 

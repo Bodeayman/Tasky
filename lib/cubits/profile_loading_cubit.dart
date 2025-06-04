@@ -8,7 +8,7 @@ import 'package:tasky/core/models/User.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/url.dart';
-import 'package:tasky/features/Presentation/QrScanner/qr_scanner_view.dart';
+import 'package:tasky/features/Presentation/QrScanner/Views/qr_scanner_view.dart';
 
 part 'profile_loading_state.dart';
 

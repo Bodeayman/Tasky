@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tasky/core/components/priority_choose.dart';
-import 'package:tasky/features/Presentation/HomePage/homePage.dart';
+import 'package:tasky/features/Presentation/HomePage/Views/homePage.dart';
 import 'package:tasky/core/utils/style/colors.dart';
-import 'package:tasky/features/Presentation/TaskDetails/Widgets/task_options.dart';
+import 'package:tasky/features/Presentation/TaskDetails/Views/Widgets/task_options.dart';
 
 class TaskDetails extends StatefulWidget {
   const TaskDetails({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
-import 'package:tasky/features/Presentation/HomePage/homePage.dart';
-import 'package:tasky/features/Presentation/PhoneLogin/phoneLogin.dart'; // Make sure this path is correct
+import 'package:tasky/features/Presentation/HomePage/Views/homePage.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/Views/phoneLogin.dart'; // Make sure this path is correct
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

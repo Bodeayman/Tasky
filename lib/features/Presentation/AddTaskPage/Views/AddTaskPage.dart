@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,10 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tasky/core/utils/constants.dart';
-import 'package:tasky/features/Presentation/AddTaskPage/Widgets/add_task_button.dart';
-import 'package:tasky/features/Presentation/AddTaskPage/Widgets/calender_button.dart';
+import 'package:tasky/core/utils/refresh_token.dart';
+import 'package:tasky/core/utils/shared_prefs_service.dart';
+import 'package:tasky/core/utils/url.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/add_task_button.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/calender_button.dart';
 import 'package:tasky/core/components/priority_choose.dart';
-import 'package:tasky/features/Presentation/HomePage/homePage.dart';
+import 'package:tasky/features/Presentation/HomePage/Views/homePage.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 
@@ -56,6 +60,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               SizedBox(
                 height: averageHeight,
                 child: TextField(
+                  controller: titleController,
                   decoration: inputStyle.copyWith(
                       hintText: "Enter title here...",
                       border: OutlineInputBorder(
@@ -76,6 +81,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               Container(height: 10),
               TextField(
+                controller: descriptionController,
                 maxLines: 5,
                 decoration: inputStyle.copyWith(
                     hintText: "Enter description here....",
@@ -122,15 +128,43 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 110, vertical: 20),
                         color: mainColor,
-                        onPressed: () {
-                          setState(
-                            () {},
-                          );
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const HomePage(),
-                            ),
-                          );
+                        onPressed: () async {
+                          try {
+                            final token = await getAccessToken();
+                            debugPrint(titleController.text);
+                            debugPrint(descriptionController.text);
+
+                            final response = await http.post(
+                              Uri.parse('$baseUrl/todos'),
+                              body: {
+                                "image": "path.png",
+                                "dueDate": "2024-05-15",
+                                "priority": "low",
+                                "title": titleController.text,
+                                "desc": descriptionController.text,
+                              },
+                              headers: {
+                                'Authorization': 'Bearer $token',
+                              },
+                            );
+                            if (response.statusCode == 401) {
+                              refreshAccessToken();
+                              throw Exception(
+                                  "Failed to Add another Task, Please Try again");
+                            }
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Added Task Successfully")));
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())));
+                          }
                         },
                         child: const Text(
                           "Add Task",
@@ -152,3 +186,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 }
+
+// {
+//     "image"  : "path.png",
+//     "title" : "title",
+//     "desc" : "desc",
+//     "priority" : "low",//low , medium , high
+//     "dueDate" : "2024-05-15"
+// }

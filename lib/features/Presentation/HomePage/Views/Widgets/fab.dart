@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/colors.dart';
-import 'package:tasky/features/Presentation/AddTaskPage/AddTaskPage.dart';
-import 'package:tasky/features/Presentation/QrScanner/qr_scanner_view.dart';
+import 'package:tasky/features/Presentation/AddTaskPage/Views/AddTaskPage.dart';
+import 'package:tasky/features/Presentation/QrScanner/Views/qr_scanner_view.dart';
 
 class Fab extends StatelessWidget {
   const Fab({
