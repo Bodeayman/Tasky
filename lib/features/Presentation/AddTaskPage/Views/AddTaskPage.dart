@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:tasky/core/components/progress_choose.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
@@ -14,8 +15,8 @@ import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 
 class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key});
-
+  const AddTaskPage({super.key, required this.editingPageMode});
+  final bool editingPageMode;
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
 }
@@ -24,14 +25,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Add New Task",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        title: Text(
+          (!widget.editingPageMode) ? "Add New Task" : "Editing Task",
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -59,10 +59,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 child: TextField(
                   controller: titleController,
                   decoration: inputStyle.copyWith(
-                      hintText: "Enter title here...",
-                      border: OutlineInputBorder(
-                          borderSide: const BorderSide(width: 1.0),
-                          borderRadius: BorderRadius.circular(kborderSize))),
+                    hintText: "Enter title here...",
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(width: 1.0),
+                      borderRadius: BorderRadius.circular(kborderSize),
+                    ),
+                  ),
                 ),
               ),
               Container(height: 20),
@@ -100,6 +102,25 @@ class _AddTaskPageState extends State<AddTaskPage> {
               const PriorityChoose(
                 PriorityChooseActive: true,
               ),
+              widget.editingPageMode
+                  ? Column(
+                      children: [
+                        Container(height: 20),
+                        SizedBox(
+                          child: Row(
+                            children: [
+                              Container(width: 10),
+                              const Text(
+                                "Progress",
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(height: 10),
+                        const ProgressChoose(),
+                      ],
+                    )
+                  : const SizedBox.shrink(),
               Container(height: 20),
               SizedBox(
                 child: Row(
@@ -154,13 +175,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 }
                                 context.read<TaskCubit>().fetchTasks();
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text("Added Task Successfully")));
+                                  const SnackBar(
+                                    content: Text("Added Task Successfully"),
+                                  ),
+                                );
                                 Navigator.of(context).pop();
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(e.toString())));
+                                  SnackBar(
+                                    content: Text(
+                                      e.toString(),
+                                    ),
+                                  ),
+                                );
                               }
                             },
                             child: const Text(

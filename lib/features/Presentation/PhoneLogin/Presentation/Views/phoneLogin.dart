@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/features/Presentation/PhoneLogin/Views/phoneLoginForm.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/Presentation/Views/phoneLoginForm.dart';
 
 class Phonelogin extends StatefulWidget {
   const Phonelogin({super.key});
@@ -16,6 +16,7 @@ class _PhoneloginState extends State<Phonelogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

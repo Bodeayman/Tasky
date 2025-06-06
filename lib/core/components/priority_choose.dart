@@ -20,7 +20,6 @@ class _PriorityChooseState extends State<PriorityChoose> {
     'Medium Priority',
     'High Priority',
   ];
-
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -28,41 +27,48 @@ class _PriorityChooseState extends State<PriorityChoose> {
       child: Container(
         color: priorityColor,
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: DropdownButton<String>(
-          value: selectedPriority,
-          dropdownColor: priorityColor,
-          iconEnabledColor: mainColor,
-          underline: const SizedBox(), // Removes the underline
-          isExpanded: true,
-          onChanged: widget.PriorityChooseActive
-              ? (String? newValue) {
-                  if (newValue != null) {
-                    setState(() {
-                      selectedPriority = newValue;
-                    });
-                    final mappedValue = switch (newValue) {
-                      "Low Priority" => "low",
-                      "Medium Priority" => "medium",
-                      "High Priority" => "high",
-                      _ => "medium"
-                    };
-                    context.read<AddingTaskCubit>().setPriority(mappedValue);
-                  }
-                }
-              : null,
-          items: priorities.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-                style: TextStyle(
-                  color: mainColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-            );
-          }).toList(),
+        child: AbsorbPointer(
+          // This controls interaction
+          absorbing: !widget.PriorityChooseActive,
+          child: DropdownButton<String>(
+            value: selectedPriority,
+            dropdownColor: priorityColor,
+            iconEnabledColor: mainColor,
+            underline: const SizedBox(),
+            isExpanded: true,
+            icon: Image.asset(
+              "assets/arrow_down.png",
+            ),
+            borderRadius: BorderRadius.circular(10),
+            onChanged: (String? newValue) {
+              if (newValue != null) {
+                setState(() {
+                  selectedPriority = newValue;
+                });
+                final mappedValue = switch (newValue) {
+                  "Low Priority" => "low",
+                  "Medium Priority" => "medium",
+                  "High Priority" => "high",
+                  _ => "medium",
+                };
+                context.read<AddingTaskCubit>().setPriority(mappedValue);
+              }
+            },
+            items: priorities.map(
+              (String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      color: mainColor,
+                      fontSize: 18,
+                    ),
+                  ),
+                );
+              },
+            ).toList(),
+          ),
         ),
       ),
     );

@@ -17,8 +17,10 @@ class Fab extends StatelessWidget {
           bottom: 10, // Adjust the position as needed
           right: 10, // Adjust the position as needed
           child: FloatingActionButton(
-            onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AddTaskPage())),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const AddTaskPage(
+                      editingPageMode: false,
+                    ))),
             backgroundColor: const Color(0xFF5F33E1),
             shape: const CircleBorder(),
             elevation: 10,

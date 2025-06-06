@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage_windows/flutter_secure_storage_windows.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Manager/adding_task_cubit.dart';
 import 'package:tasky/features/Presentation/HomePage/Data/Repo/HomeRepo.dart';
@@ -10,6 +11,7 @@ import 'package:tasky/features/Presentation/ProfilePage/Presentation/Manager/pro
 import 'package:tasky/features/Presentation/SplashScreen/Views/splash.dart';
 
 Future<void> main() async {
+  FlutterSecureStorageWindows.registerWith();
   runApp(const MainApp());
 }
 

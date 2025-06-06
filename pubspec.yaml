@@ -24,6 +24,9 @@ dependencies:
   flutter_bloc : any
   mobile_scanner : any
   dartz : any
+  dotted_border : ^2.0.0
+  flutter_secure_storage : any
+  flutter_secure_storage_windows: any
 
 
 

@@ -37,14 +37,24 @@ class HomeRepo {
           );
         }
       }
+      if (jsonDecode(response.body) == []) {
+        throw Exception(
+          "No Tasks Found",
+        );
+      }
 
       final List<dynamic> data = jsonDecode(response.body);
-      final List<TaskModel> tasks =
-          data.map((json) => TaskModel.fromJson(json)).toList();
+      final List<TaskModel> tasks = data
+          .map(
+            (json) => TaskModel.fromJson(json),
+          )
+          .toList();
 
       return right(tasks);
     } catch (e) {
-      return left((e.toString()));
+      return left(
+        (e.toString()),
+      );
     }
   }
 }

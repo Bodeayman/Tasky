@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/constants.dart';
 // ignore: depend_on_referenced_packages
-import 'package:tasky/features/Presentation/PhoneLogin/Views/phoneLogin.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/Presentation/Views/phoneLogin.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class IntroductionPage extends StatelessWidget {

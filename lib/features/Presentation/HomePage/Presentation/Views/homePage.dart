@@ -12,7 +12,7 @@ import 'package:tasky/features/Presentation/HomePage/Presentation/Views/Widgets/
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/finishedTasksPage.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/inProgressTasksPage.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/waitingTasksPage.dart';
-import 'package:tasky/features/Presentation/PhoneLogin/Views/phoneLogin.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/Presentation/Views/phoneLogin.dart';
 import 'package:tasky/features/Presentation/ProfilePage/Presentation/Views/profilePage.dart';
 
 class HomePage extends StatefulWidget {

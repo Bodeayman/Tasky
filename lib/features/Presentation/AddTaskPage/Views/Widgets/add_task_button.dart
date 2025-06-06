@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -51,31 +52,38 @@ class _AddTaskButtonState extends State<AddTaskButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(kborderSize),
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.all(10),
-          side: BorderSide(style: BorderStyle.solid, color: mainColor),
-        ),
-        onPressed: pickImage,
-        child: Row(
-          children: [
-            SizedBox(
-              height: 56,
-              width: 334,
-              child: (_image != null)
-                  ? Image.file(_image!)
-                  : SizedBox(
-                      width: 50,
-                      child: Image.asset("assets/groceryHuge.png", scale: 40)),
-            ),
-            Icon(Icons.photo, color: mainColor, size: 35),
-            Text(
-              "Add Img",
-              style: TextStyle(color: mainColor, fontSize: 20),
-            ),
-          ],
+    return DottedBorder(
+      color: mainColor,
+      strokeWidth: 1,
+      dashPattern: const [6, 3],
+      borderType: BorderType.RRect,
+      radius: const Radius.circular(kborderSize),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(kborderSize),
+        child: OutlinedButton(
+          onPressed: pickImage,
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            side: BorderSide.none, // Remove solid border
+            backgroundColor: Colors.transparent,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 56,
+                child: (_image != null)
+                    ? Image.file(_image!, fit: BoxFit.cover)
+                    : const Icon(Icons.image, size: 30),
+              ),
+              const SizedBox(width: 10),
+              const SizedBox(width: 10),
+              Text(
+                "Add Img",
+                style: TextStyle(color: mainColor, fontSize: 18),
+              ),
+            ],
+          ),
         ),
       ),
     );

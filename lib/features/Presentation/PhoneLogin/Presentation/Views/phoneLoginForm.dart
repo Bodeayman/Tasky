@@ -8,7 +8,8 @@ import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/homePage.dart';
-import 'package:tasky/features/Presentation/SignUpPage/Views/SignPage.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/Presentation/Manager/phone_login_func.dart';
+import 'package:tasky/features/Presentation/SignUpPage/Presentation/Views/SignPage.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class PhoneLoginForm extends StatefulWidget {
@@ -126,23 +127,10 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                   onPressed: () async {
                     if (widget.formkey.currentState!.validate()) {
                       try {
-                        debugPrint(phoneController.text);
-                        debugPrint(passwordController.text);
-
-                        final response = await http
-                            .post(Uri.parse('$baseUrl/auth/login'), body: {
-                          "phone": phoneController.text,
-                          "password": passwordController.text,
-                        });
-                        if (response.statusCode == 401) {
-                          throw Exception(
-                              "There's a problem in password or the name");
-                        }
-
-                        final data = jsonDecode(response.body);
-                        debugPrint(data["access_token"]);
-                        debugPrint(data["refresh_token"]);
-                        saveTokens(data["access_token"], data["refresh_token"]);
+                        phoneLogin(
+                          phoneController.text,
+                          passwordController.text,
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text("Successful")));
                         Navigator.of(context).pushReplacement(

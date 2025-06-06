@@ -4,7 +4,7 @@ import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/homePage.dart';
-import 'package:tasky/features/Presentation/PhoneLogin/Views/phoneLogin.dart';
+import 'package:tasky/features/Presentation/PhoneLogin/Presentation/Views/phoneLogin.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -36,6 +36,7 @@ class _SignPageState extends State<SignPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             Image.asset("assets/girlImage.png"),

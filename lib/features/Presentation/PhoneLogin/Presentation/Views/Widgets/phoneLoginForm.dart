@@ -8,7 +8,7 @@ import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Views/homePage.dart';
-import 'package:tasky/features/Presentation/SignUpPage/Views/SignPage.dart';
+import 'package:tasky/features/Presentation/SignUpPage/Presentation/Views/SignPage.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class PhoneLoginForm extends StatefulWidget {
