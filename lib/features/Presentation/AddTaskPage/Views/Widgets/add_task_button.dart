@@ -67,23 +67,27 @@ class _AddTaskButtonState extends State<AddTaskButton> {
             side: BorderSide.none, // Remove solid border
             backgroundColor: Colors.transparent,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 56,
-                child: (_image != null)
-                    ? Image.file(_image!, fit: BoxFit.cover)
-                    : const Icon(Icons.image, size: 30),
-              ),
-              const SizedBox(width: 10),
-              const SizedBox(width: 10),
-              Text(
-                "Add Img",
-                style: TextStyle(color: mainColor, fontSize: 18),
-              ),
-            ],
-          ),
+          child: (_image == null)
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 56,
+                      child: Icon(Icons.image, size: 30),
+                    ),
+                    const SizedBox(width: 10),
+                    const SizedBox(width: 10),
+                    Text(
+                      "Add Img",
+                      style: TextStyle(color: mainColor, fontSize: 18),
+                    ),
+                  ],
+                )
+              : SizedBox(
+                  width: double.infinity,
+                  height: 160,
+                  child: Image.file(_image!, fit: BoxFit.fitWidth),
+                ),
         ),
       ),
     );

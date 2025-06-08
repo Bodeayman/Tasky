@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/AddTaskPage.dart';
+import 'package:tasky/features/Presentation/HomePage/Data/Models/Task.dart';
 
 class Fab extends StatelessWidget {
   const Fab({
@@ -17,10 +18,13 @@ class Fab extends StatelessWidget {
           bottom: 10, // Adjust the position as needed
           right: 10, // Adjust the position as needed
           child: FloatingActionButton(
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
                 builder: (context) => const AddTaskPage(
-                      editingPageMode: false,
-                    ))),
+                  editingPageMode: false,
+                ),
+              ),
+            ),
             backgroundColor: const Color(0xFF5F33E1),
             shape: const CircleBorder(),
             elevation: 10,

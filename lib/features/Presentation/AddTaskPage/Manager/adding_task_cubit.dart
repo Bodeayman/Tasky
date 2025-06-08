@@ -1,36 +1,34 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-
 part 'adding_task_state.dart';
 
 class AddingTaskCubit extends Cubit<AddingTaskState> {
   AddingTaskCubit()
       : super(AddingTaskInitial(
-            'medium', DateTime.now().toUtc().toIso8601String()));
+          'medium',
+          DateTime.now().toUtc().toIso8601String(),
+          'waiting',
+        ));
+
   void setPriority(String newPriority) {
     final currentState = state as AddingTaskInitial;
-    emit(
-      AddingTaskInitial(
-        newPriority,
-        currentState.date,
-      ),
-    );
+    emit(currentState.copyWith(priority: newPriority));
   }
 
   void setDate(String newDate) {
     final currentState = state as AddingTaskInitial;
-    emit(
-      AddingTaskInitial(
-        currentState.priority,
-        newDate,
-      ),
-    );
+    emit(currentState.copyWith(date: newDate));
+  }
+
+  void setProgress(String newProgress) {
+    final currentState = state as AddingTaskInitial;
+    emit(currentState.copyWith(progress: newProgress));
   }
 
   void getData() {
     final currentState = state as AddingTaskInitial;
-
-    debugPrint(currentState.date);
-    debugPrint(currentState.priority);
+    debugPrint('Priority: ${currentState.priority}');
+    debugPrint('Date: ${currentState.date}');
+    debugPrint('Progress: ${currentState.progress}');
   }
 }

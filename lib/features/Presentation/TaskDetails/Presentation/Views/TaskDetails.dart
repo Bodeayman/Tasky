@@ -36,8 +36,11 @@ class TaskDetails extends StatelessWidget {
                 PopupMenuItem(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const AddTaskPage(editingPageMode: true)),
+                      builder: (context) => AddTaskPage(
+                        editingPageMode: true,
+                        taskModel: taskModel,
+                      ),
+                    ),
                   ),
                   child: const Text(
                     "Edit",
@@ -74,7 +77,9 @@ class TaskDetails extends StatelessWidget {
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(e.toString()),
+                          content: Text(
+                            e.toString(),
+                          ),
                         ),
                       );
                     }
@@ -150,8 +155,10 @@ class TaskDetails extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("End date",
-                                  style: GoogleFonts.dmSans(fontSize: 9)),
+                              Text(
+                                "End date",
+                                style: GoogleFonts.dmSans(fontSize: 9),
+                              ),
                               Text(
                                 "30 June,2022",
                                 style: GoogleFonts.dmSans(fontSize: 14),
@@ -159,10 +166,13 @@ class TaskDetails extends StatelessWidget {
                             ],
                           ),
                           SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Image.asset("assets/calendarIcon.png",
-                                  color: mainColor)),
+                            width: 24,
+                            height: 24,
+                            child: Image.asset(
+                              "assets/calendarIcon.png",
+                              color: mainColor,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -179,25 +189,27 @@ class TaskDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Inprogress",
+                            taskModel.status,
                             style: TextStyle(
                               fontSize: 20,
                               color: mainColor,
                             ),
                           ),
                           SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Image.asset("assets/arrow_down.png",
-                                  color: mainColor)),
+                            width: 24,
+                            height: 24,
+                            child: Image.asset(
+                              "assets/arrow_down.png",
+                              color: mainColor,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                   Container(height: 10),
-                  const PriorityChoose(
-                    PriorityChooseActive: false,
-                  ),
+                  PriorityChoose(
+                      PriorityChooseActive: false, value: taskModel.priority),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,

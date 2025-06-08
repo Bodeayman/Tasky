@@ -7,6 +7,7 @@ import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Manager/adding_task_cubit.dart';
+import 'package:tasky/features/Presentation/HomePage/Data/Models/Task.dart';
 import 'package:tasky/features/Presentation/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/add_task_button.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Views/Widgets/calender_button.dart';
@@ -15,16 +16,37 @@ import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
 
 class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key, required this.editingPageMode});
+  const AddTaskPage({super.key, required this.editingPageMode, this.taskModel});
   final bool editingPageMode;
+  final TaskModel? taskModel;
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
   @override
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+  @override
+  void initState() {
+    super.initState();
+
+    titleController = widget.editingPageMode
+        ? TextEditingController(text: widget.taskModel!.title)
+        : TextEditingController();
+
+    descriptionController = widget.editingPageMode
+        ? TextEditingController(text: widget.taskModel!.desc)
+        : TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,9 +105,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 controller: descriptionController,
                 maxLines: 5,
                 decoration: inputStyle.copyWith(
-                    hintText: "Enter description here....",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(kborderSize))),
+                  hintText: "Enter description here....",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kborderSize),
+                  ),
+                ),
               ),
               Container(height: 20),
               SizedBox(
@@ -99,7 +123,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               Container(height: 10),
-              const PriorityChoose(
+              PriorityChoose(
+                value: widget.taskModel!.priority,
                 PriorityChooseActive: true,
               ),
               widget.editingPageMode
@@ -117,7 +142,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           ),
                         ),
                         Container(height: 10),
-                        const ProgressChoose(),
+                        ProgressChoose(
+                          progressChooseActive: true,
+                          value: widget.taskModel!.status,
+                        ),
                       ],
                     )
                   : const SizedBox.shrink(),
@@ -152,7 +180,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             onPressed: () async {
                               try {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Working")));
+                                  const SnackBar(
+                                    content: Text("Working"),
+                                  ),
+                                );
                                 final token = await getAccessToken();
 
                                 final response = await http.post(
@@ -171,7 +202,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 if (response.statusCode == 401) {
                                   refreshAccessToken();
                                   throw Exception(
-                                      "Failed to Add another Task, Please Try again");
+                                    "Failed to Add another Task, Please Try again",
+                                  );
                                 }
                                 context.read<TaskCubit>().fetchTasks();
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -206,7 +238,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ))
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),

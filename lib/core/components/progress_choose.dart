@@ -5,20 +5,61 @@ import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/features/Presentation/AddTaskPage/Manager/adding_task_cubit.dart';
 
 class ProgressChoose extends StatefulWidget {
-  const ProgressChoose({super.key});
+  const ProgressChoose({
+    super.key,
+    required this.progressChooseActive,
+    this.value,
+  });
+
+  final bool progressChooseActive;
+  final String? value; // Can be "waiting", "inprogress", or "finished"
 
   @override
   _ProgressChooseState createState() => _ProgressChooseState();
 }
 
 class _ProgressChooseState extends State<ProgressChoose> {
-  String selectedPriority = "Waiting";
+  late String selectedProgress;
 
-  final List<String> priorities = [
+  final List<String> progressOptions = [
     'Waiting',
     'Inprogress',
     'Finished',
   ];
+
+  /// Maps backend value to dropdown label
+  String _mapValueToLabel(String? value) {
+    switch (value?.toLowerCase()) {
+      case 'waiting':
+        return 'Waiting';
+      case 'inprogress':
+        return 'Inprogress';
+      case 'finished':
+        return 'Finished';
+      default:
+        return 'Waiting';
+    }
+  }
+
+  /// Maps dropdown label to backend value
+  String _mapLabelToValue(String label) {
+    switch (label) {
+      case 'Waiting':
+        return 'waiting';
+      case 'Inprogress':
+        return 'inprogress';
+      case 'Finished':
+        return 'finished';
+      default:
+        return 'waiting';
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectedProgress = _mapValueToLabel(widget.value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,32 +68,27 @@ class _ProgressChooseState extends State<ProgressChoose> {
       child: Container(
         color: priorityColor,
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: DropdownButton<String>(
-          value: selectedPriority,
-          dropdownColor: priorityColor,
-          iconEnabledColor: mainColor,
-          underline: const SizedBox(),
-          isExpanded: true,
-          icon: Image.asset(
-            "assets/arrow_down.png",
-          ),
-          borderRadius: BorderRadius.circular(10),
-          onChanged: (String? newValue) {
-            if (newValue != null) {
-              setState(() {
-                selectedPriority = newValue;
-              });
-              final mappedValue = switch (newValue) {
-                "Waiting" => "low",
-                "Inprogress" => "medium",
-                "Finished" => "high",
-                _ => "medium",
-              };
-              context.read<AddingTaskCubit>().setPriority(mappedValue);
-            }
-          },
-          items: priorities.map(
-            (String value) {
+        child: AbsorbPointer(
+          absorbing: !widget.progressChooseActive,
+          child: DropdownButton<String>(
+            value: selectedProgress,
+            dropdownColor: priorityColor,
+            iconEnabledColor: mainColor,
+            underline: const SizedBox(),
+            isExpanded: true,
+            icon: Image.asset("assets/arrow_down.png"),
+            borderRadius: BorderRadius.circular(10),
+            onChanged: (String? newValue) {
+              if (newValue != null) {
+                setState(() {
+                  selectedProgress = newValue;
+                });
+
+                final mappedValue = _mapLabelToValue(newValue);
+                context.read<AddingTaskCubit>().setProgress(mappedValue);
+              }
+            },
+            items: progressOptions.map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(
@@ -63,8 +99,8 @@ class _ProgressChooseState extends State<ProgressChoose> {
                   ),
                 ),
               );
-            },
-          ).toList(),
+            }).toList(),
+          ),
         ),
       ),
     );
