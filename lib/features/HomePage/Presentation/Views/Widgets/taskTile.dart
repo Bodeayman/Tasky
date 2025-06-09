@@ -39,11 +39,19 @@ class TaskTile extends StatelessWidget {
             child: Image.network(
               "$baseUrl/images/$imagePath",
               errorBuilder: (context, error, stackTrace) {
-                return Container(
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
                     color: Colors.red,
                     child: const Center(
-                      child: Text("Error"),
-                    ));
+                      child: Text(
+                        "Error",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
           ),

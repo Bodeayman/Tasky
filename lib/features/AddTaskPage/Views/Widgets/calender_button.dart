@@ -13,6 +13,16 @@ class CalendarButton extends StatefulWidget {
 
 class _CalendarButtonState extends State<CalendarButton> {
   final TextEditingController _controller = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+
+    final cubitState = context.read<AddingTaskCubit>().state;
+    if (cubitState is AddingTaskInitial) {
+      final cubitDate = cubitState.date;
+      _controller.text = cubitDate;
+    }
+  }
 
   @override
   void dispose() {

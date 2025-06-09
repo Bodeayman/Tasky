@@ -115,11 +115,20 @@ class TaskDetails extends StatelessWidget {
                 child: Image.network(
                   "$baseUrl/images/${taskModel.image}",
                   errorBuilder: (context, error, stackTrace) {
-                    return Container(
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
                         color: Colors.red,
                         child: const Center(
-                          child: Text("Error"),
-                        ));
+                          child: Text(
+                            "Error",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -203,7 +212,7 @@ class TaskDetails extends StatelessWidget {
                     width: double.infinity,
                     child: Center(
                       child: QrImageView(
-                        data: "",
+                        data: taskModel.id,
                         version: QrVersions.auto,
                       ),
                     ),
