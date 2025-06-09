@@ -27,6 +27,7 @@ dependencies:
   dotted_border : ^2.0.0
   flutter_secure_storage : any
   flutter_secure_storage_windows: any
+  intl : any
 
 
 

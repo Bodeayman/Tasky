@@ -191,12 +191,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     ),
                                   );
                                   final token = await getAccessToken();
-
+                                  debugPrint(state.date.toString());
                                   final response = await http.post(
                                     Uri.parse('$baseUrl/todos'),
                                     body: {
-                                      "image": "path.png",
-                                      "dueDate": state.date,
+                                      "image": state.imagePath,
+                                      "dueDate": state.date.toString(),
                                       "priority": state.priority,
                                       "title": titleController.text,
                                       "desc": descriptionController.text,
@@ -249,7 +249,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     Uri.parse(
                                         '$baseUrl/todos/${widget.taskModel?.id}'),
                                     body: {
-                                      "image": "path.png",
+                                      "image": state.imagePath,
                                       "status": state.progress,
                                       "priority": state.priority,
                                       "title": titleController.text,

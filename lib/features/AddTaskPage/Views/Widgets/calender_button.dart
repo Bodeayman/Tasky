@@ -30,29 +30,16 @@ class _CalendarButtonState extends State<CalendarButton> {
     );
 
     if (picked != null) {
-      // Format the date as you want
+      // Format as YYYY-MM-DD
       final formattedDate =
           "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+
       setState(() {
         _controller.text = formattedDate;
-        DateTime date = DateTime.parse(formattedDate);
-
-        DateTime now = DateTime.now();
-
-        // Combine the input date with the current time
-        DateTime combined = DateTime.utc(
-          date.year,
-          date.month,
-          date.day,
-          now.hour,
-          now.minute,
-          now.second,
-          now.millisecond,
-        );
-
-        String isoString = combined.toIso8601String();
-        context.read<AddingTaskCubit>().setDate(isoString);
       });
+
+      // Store formatted date in Cubit
+      context.read<AddingTaskCubit>().setDate(formattedDate);
     }
   }
 

@@ -6,6 +6,7 @@ class AddingTaskInitial extends AddingTaskState {
   final String priority;
   final String date;
   final String progress; // ✅ Add this
+  final String imagePath;
 
-  AddingTaskInitial(this.priority, this.date, this.progress);
+  AddingTaskInitial(this.priority, this.date, this.progress, this.imagePath);
 }

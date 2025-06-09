@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/features/HomePage/Data/Models/Task.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
@@ -32,10 +33,19 @@ class TaskTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
+          SizedBox(
             height: 64,
             width: 64,
-            // child: Image.network("$baseUrl/images/$image"),
+            child: Image.network(
+              "$baseUrl/images/$imagePath",
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                    color: Colors.red,
+                    child: const Center(
+                      child: Text("Error"),
+                    ));
+              },
+            ),
           ),
           const SizedBox(width: 20),
           Expanded(

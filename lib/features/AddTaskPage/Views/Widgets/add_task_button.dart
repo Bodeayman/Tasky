@@ -1,12 +1,18 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tasky/core/utils/constants.dart';
+import 'package:tasky/core/utils/refresh_token.dart';
+import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/style/colors.dart';
+import 'package:tasky/core/utils/url.dart';
+import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 
 class AddTaskButton extends StatefulWidget {
   const AddTaskButton({super.key});
@@ -31,22 +37,47 @@ class _AddTaskButtonState extends State<AddTaskButton> {
     }
   }
 
-  Future<void> uploadFile(File file) async {
-    final uri = Uri.parse('https://your-api-endpoint.com/upload');
-    var request = http.MultipartRequest('POST', uri);
+  Future<String?> uploadFile(File file) async {
+    try {
+      final token = await getAccessToken();
+      final uri = Uri.parse('$baseUrl/upload/image');
 
-    request.files.add(await http.MultipartFile.fromPath(
-      'file', // name expected by server
-      file.path,
-      contentType: MediaType('image', 'jpeg'), // adjust based on file type
-    ));
+      var request = http.MultipartRequest('POST', uri);
 
-    final response = await request.send();
+      request.headers.addAll({
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      });
 
-    if (response.statusCode == 200) {
-      debugPrint('Upload successful');
-    } else {
-      debugPrint('Upload failed: ${response.statusCode}');
+      request.files.add(await http.MultipartFile.fromPath(
+        'image', // Use the correct field name expected by your backend
+        file.path,
+        contentType: MediaType('image', 'jpeg'),
+      ));
+
+      final response = await request.send();
+      final responseBody = await response.stream.bytesToString();
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        debugPrint('Upload successful: $responseBody');
+
+        final data = jsonDecode(responseBody);
+        final filename = data['image']; // ✅ Get filename
+        final imageUrl =
+            '$baseUrl/uploads/$filename'; // ✅ Full URL (adjust path)
+
+        debugPrint('Full image URL: $imageUrl');
+
+        context.read<AddingTaskCubit>().setImagePath(filename);
+        return imageUrl;
+      } else {
+        debugPrint('Upload failed: ${response.stream.bytesToString()}');
+        return null;
+      }
+    } catch (e) {
+      await refreshAccessToken();
+      debugPrint('Exception: ${e.toString()}');
+      return null;
     }
   }
 

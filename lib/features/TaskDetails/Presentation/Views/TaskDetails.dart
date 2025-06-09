@@ -112,8 +112,15 @@ class TaskDetails extends StatelessWidget {
             Expanded(
               child: SizedBox(
                 height: 200,
-                child: Image.asset(
-                  "assets/groceryHuge.png",
+                child: Image.network(
+                  "$baseUrl/images/${taskModel.image}",
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                        color: Colors.red,
+                        child: const Center(
+                          child: Text("Error"),
+                        ));
+                  },
                 ),
               ),
             ),
