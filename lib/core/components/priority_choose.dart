@@ -65,18 +65,20 @@ class _PriorityChooseState extends State<PriorityChoose> {
                 context.read<AddingTaskCubit>().setPriority(mappedValue);
               }
             },
-            items: priorities.map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(
-                  value,
-                  style: TextStyle(
-                    color: mainColor,
-                    fontSize: 18,
+            items: priorities.map(
+              (String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      color: mainColor,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              },
+            ).toList(),
           ),
         ),
       ),

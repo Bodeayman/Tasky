@@ -38,77 +38,60 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
           Container(height: 20),
           SizedBox(
             width: 300,
-            child: Column(children: [
-              IntlPhoneField(
-                controller: phoneController,
-                decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(
+            child: Column(
+              children: [
+                IntlPhoneField(
+                  showCountryFlag: true,
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                    labelText: 'Phone Number',
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(kborderSize),
                       borderSide:
-                          BorderSide(color: inputFieldBorderColor, width: 1)),
-                  prefixIcon: InkWell(
-                    onTap: () {
-                      print("Tapped the prefix icon");
-                    },
-                    child: const SizedBox(
-                      width: 70,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.flag,
-                              size: 20), // You can replace with actual flag
-                          SizedBox(width: 4),
-                          Text("+20",
-                              style: TextStyle(fontWeight: FontWeight.w500)),
-                          SizedBox(width: 4),
-                          Icon(Icons.arrow_drop_down),
-                        ],
+                          BorderSide(color: inputFieldBorderColor, width: 1),
+                    ),
+                  ),
+                  initialCountryCode: 'EG',
+                  validator: (phone) {
+                    if (phone == null || phone.number.isEmpty) {
+                      return 'Phone Number required';
+                    }
+                    return null;
+                  },
+                ),
+                Container(
+                  height: 20,
+                ),
+                TextFormField(
+                  validator: (val) {
+                    if (val!.trim() == "" || val.isEmpty) {
+                      return "Please enter a valid password";
+                    }
+                    return null;
+                  },
+                  decoration: inputStyle.copyWith(
+                    hintText: "Password...",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        seePass
+                            ? Icons.remove_red_eye
+                            : Icons.remove_red_eye_outlined,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          seePass = !seePass;
+                        });
+                      },
                     ),
                   ),
+                  obscureText: !seePass,
+                  controller: passwordController,
                 ),
-                initialCountryCode: 'EG', // Egypt as example
-
-                validator: (phone) {
-                  if (phone == null || phone.number.isEmpty) {
-                    return 'Phone Number required';
-                  }
-                  return null;
-                },
-              ),
-              Container(
-                height: 20,
-              ),
-              TextFormField(
-                validator: (val) {
-                  if (val!.trim() == "" || val.isEmpty) {
-                    return "Please enter a valid password";
-                  }
-                  return null;
-                },
-                decoration: inputStyle.copyWith(
-                  hintText: "Password...",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      seePass
-                          ? Icons.remove_red_eye
-                          : Icons.remove_red_eye_outlined,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        seePass = !seePass;
-                      });
-                    },
-                  ),
+                Container(
+                  height: 20,
                 ),
-                obscureText: !seePass,
-                controller: passwordController,
-              ),
-              Container(
-                height: 20,
-              ),
-            ]),
+              ],
+            ),
           ),
           /* The work field will be here */
           Padding(
@@ -140,7 +123,12 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                         );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(e.toString())));
+                          SnackBar(
+                            content: Text(
+                              e.toString(),
+                            ),
+                          ),
+                        );
                       }
                     }
                   },

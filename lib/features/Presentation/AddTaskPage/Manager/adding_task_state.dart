@@ -1,24 +1,11 @@
 part of 'adding_task_cubit.dart';
 
-abstract class AddingTaskState {}
+class AddingTaskState {}
 
 class AddingTaskInitial extends AddingTaskState {
   final String priority;
   final String date;
-  final String progress;
+  final String progress; // ✅ Add this
 
   AddingTaskInitial(this.priority, this.date, this.progress);
-
-  // ✅ Add copyWith
-  AddingTaskInitial copyWith({
-    String? priority,
-    String? date,
-    String? progress,
-  }) {
-    return AddingTaskInitial(
-      priority ?? this.priority,
-      date ?? this.date,
-      progress ?? this.progress,
-    );
-  }
 }

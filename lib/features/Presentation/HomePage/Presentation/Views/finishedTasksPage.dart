@@ -40,7 +40,7 @@ class _FinishedtaskspageState extends State<Finishedtaskspage> {
     switch (status.toLowerCase()) {
       case 'waiting':
         return TaskProgress.waiting;
-      case 'in_progress':
+      case 'inprogress':
         return TaskProgress.inProgress;
       case 'finished':
         return TaskProgress.finished;
@@ -74,14 +74,14 @@ class _FinishedtaskspageState extends State<Finishedtaskspage> {
                 final task = finishedTasks[index];
 
                 return TaskTile(
-                  id: task.id,
-                  name: task.title,
-                  desc: task.desc,
-                  dueDate: task.createdAt.toLocal().toString().split(' ')[0],
-                  priority: mapPriority(task.priority),
-                  progress: mapProgress(task.status),
-                  imagePath: task.image,
-                );
+                    id: task.id,
+                    name: task.title,
+                    desc: task.desc,
+                    dueDate: task.createdAt.toLocal().toString().split(' ')[0],
+                    priority: mapPriority(task.priority),
+                    progress: mapProgress(task.status),
+                    imagePath: task.image,
+                    user: task.user);
               },
             ),
           );

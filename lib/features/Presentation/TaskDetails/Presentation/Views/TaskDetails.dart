@@ -160,9 +160,11 @@ class TaskDetails extends StatelessWidget {
                                 style: GoogleFonts.dmSans(fontSize: 9),
                               ),
                               Text(
-                                "30 June,2022",
+                                taskModel.createdAt != null
+                                    ? "${taskModel.createdAt.year}-${taskModel.createdAt.month.toString().padLeft(2, '0')}-${taskModel.createdAt.day.toString().padLeft(2, '0')}"
+                                    : "No Date",
                                 style: GoogleFonts.dmSans(fontSize: 14),
-                              ),
+                              )
                             ],
                           ),
                           SizedBox(
@@ -177,47 +179,27 @@ class TaskDetails extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(height: 10),
                   Container(
-                    decoration: BoxDecoration(
-                      color: priorityColor,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            taskModel.status,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: mainColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: Image.asset(
-                              "assets/arrow_down.png",
-                              color: mainColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height: 10,
+                  ),
+                  ProgressChoose(
+                    progressChooseActive: false,
+                    value: taskModel.status,
                   ),
                   Container(height: 10),
                   PriorityChoose(
-                      PriorityChooseActive: false, value: taskModel.priority),
+                    PriorityChooseActive: false,
+                    value: taskModel.priority,
+                  ),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
                     child: Center(
-                        child: QrImageView(
-                      data: "",
-                      version: QrVersions.auto,
-                    )),
+                      child: QrImageView(
+                        data: "",
+                        version: QrVersions.auto,
+                      ),
+                    ),
                   ),
                 ],
               ),

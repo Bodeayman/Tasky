@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
@@ -13,19 +14,20 @@ class HomeRepo {
       final token = await getAccessToken();
 
       final response = await http.get(
-        Uri.parse('$baseUrl/todos'),
+        Uri.parse('$baseUrl/todos?page=1'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
       );
+      debugPrint(response.body.toString());
 
       if (response.statusCode != 200) {
         await refreshAccessToken();
         final token = await getAccessToken();
 
         final response = await http.get(
-          Uri.parse('$baseUrl/todos'),
+          Uri.parse('$baseUrl/todos?page=1'),
           headers: {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',

@@ -31,11 +31,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
   void initState() {
     super.initState();
 
-    titleController = widget.editingPageMode
+    titleController = widget.editingPageMode && widget.taskModel != null
         ? TextEditingController(text: widget.taskModel!.title)
         : TextEditingController();
 
-    descriptionController = widget.editingPageMode
+    descriptionController = widget.editingPageMode && widget.taskModel != null
         ? TextEditingController(text: widget.taskModel!.desc)
         : TextEditingController();
   }
@@ -124,7 +124,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               Container(height: 10),
               PriorityChoose(
-                value: widget.taskModel!.priority,
+                value: widget.taskModel?.priority ?? "Medium Priority",
                 PriorityChooseActive: true,
               ),
               widget.editingPageMode
@@ -144,7 +144,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         Container(height: 10),
                         ProgressChoose(
                           progressChooseActive: true,
-                          value: widget.taskModel!.status,
+                          value: widget.taskModel?.status ?? "Waiting",
                         ),
                       ],
                     )
@@ -178,57 +178,123 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 horizontal: 110, vertical: 20),
                             color: mainColor,
                             onPressed: () async {
-                              try {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Working"),
-                                  ),
-                                );
-                                final token = await getAccessToken();
+                              if (!widget.editingPageMode) {
+                                try {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Working"),
+                                    ),
+                                  );
+                                  final token = await getAccessToken();
 
-                                final response = await http.post(
-                                  Uri.parse('$baseUrl/todos'),
-                                  body: {
-                                    "image": "path.png",
-                                    "dueDate": state.date,
-                                    "priority": state.priority,
-                                    "title": titleController.text,
-                                    "desc": descriptionController.text,
-                                  },
-                                  headers: {
-                                    'Authorization': 'Bearer $token',
-                                  },
-                                );
-                                if (response.statusCode == 401) {
-                                  refreshAccessToken();
-                                  throw Exception(
-                                    "Failed to Add another Task, Please Try again",
+                                  final response = await http.post(
+                                    Uri.parse('$baseUrl/todos'),
+                                    body: {
+                                      "image": "path.png",
+                                      "dueDate": state.date,
+                                      "priority": state.priority,
+                                      "title": titleController.text,
+                                      "desc": descriptionController.text,
+                                    },
+                                    headers: {
+                                      'Authorization': 'Bearer $token',
+                                    },
+                                  );
+                                  if (response.statusCode == 401) {
+                                    refreshAccessToken();
+                                    throw Exception(
+                                      "Failed to Add another Task, Please Try again",
+                                    );
+                                  }
+                                  context.read<TaskCubit>().fetchTasks();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Added Task Successfully"),
+                                    ),
+                                  );
+                                  Navigator.of(context).pop();
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        e.toString(),
+                                      ),
+                                    ),
                                   );
                                 }
-                                context.read<TaskCubit>().fetchTasks();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Added Task Successfully"),
-                                  ),
-                                );
-                                Navigator.of(context).pop();
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      e.toString(),
+                              } else {
+                                try {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Editing"),
                                     ),
-                                  ),
-                                );
+                                  );
+                                  final token = await getAccessToken();
+                                  debugPrint(
+                                    [
+                                      state.progress,
+                                      state.priority,
+                                      titleController.text,
+                                      descriptionController.text,
+                                      widget.taskModel?.user
+                                    ].toString(),
+                                  );
+
+                                  final response = await http.put(
+                                    Uri.parse(
+                                        '$baseUrl/todos/${widget.taskModel?.id}'),
+                                    body: {
+                                      "image": "path.png",
+                                      "status": state.progress,
+                                      "priority": state.priority,
+                                      "title": titleController.text,
+                                      "desc": descriptionController.text,
+                                      "user": widget.taskModel?.user,
+                                    },
+                                    headers: {
+                                      'Authorization': 'Bearer $token',
+                                    },
+                                  );
+                                  if (response.statusCode == 401) {
+                                    refreshAccessToken();
+                                    throw Exception(
+                                      "Failed to Add another Task, Please Try again",
+                                    );
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Edited Task Successfully"),
+                                    ),
+                                  );
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  context.read<TaskCubit>().fetchTasks();
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        e.toString(),
+                                      ),
+                                    ),
+                                  );
+                                }
                               }
                             },
-                            child: const Text(
-                              "Add Task",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
-                            ),
+                            child: (!widget.editingPageMode)
+                                ? const Text(
+                                    "Add Task",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  )
+                                : const Text(
+                                    "Edit Task",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                           );
                         } else {
                           return const Center();
@@ -256,3 +322,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
 //     "priority" : "low",//low , medium , high
 //     "dueDate" : "2024-05-15"
 // }
+/*
+ "image": "path.png",
+        "title": "title",
+        "desc": "desc",
+        "priority": "low",
+        "status": "waiting",
+        "user": "6649fb2eef0bf93dd00711ba"
+ */

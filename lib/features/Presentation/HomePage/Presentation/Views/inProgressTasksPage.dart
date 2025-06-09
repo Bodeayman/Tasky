@@ -40,7 +40,7 @@ class _InprogresstaskspageState extends State<Inprogresstaskspage> {
     switch (status.toLowerCase()) {
       case 'waiting':
         return TaskProgress.waiting;
-      case 'in_progress':
+      case 'inprogress':
         return TaskProgress.inProgress;
       case 'finished':
         return TaskProgress.finished;
@@ -59,7 +59,7 @@ class _InprogresstaskspageState extends State<Inprogresstaskspage> {
           return Center(child: Text('Error: ${state.error}'));
         } else if (state is TaskLoaded) {
           final inProgressTasks = state.tasks
-              .where((task) => task.status.toLowerCase() == 'in_progress')
+              .where((task) => task.status.toLowerCase() == 'inprogress')
               .toList();
 
           if (inProgressTasks.isEmpty) {
@@ -74,14 +74,14 @@ class _InprogresstaskspageState extends State<Inprogresstaskspage> {
                 final task = inProgressTasks[index];
 
                 return TaskTile(
-                  id: task.id,
-                  name: task.title,
-                  desc: task.desc,
-                  dueDate: task.createdAt.toLocal().toString().split(' ')[0],
-                  priority: mapPriority(task.priority),
-                  progress: mapProgress(task.status),
-                  imagePath: task.image,
-                );
+                    id: task.id,
+                    name: task.title,
+                    desc: task.desc,
+                    dueDate: task.createdAt.toLocal().toString().split(' ')[0],
+                    priority: mapPriority(task.priority),
+                    progress: mapProgress(task.status),
+                    imagePath: task.image,
+                    user: task.user);
               },
             ),
           );

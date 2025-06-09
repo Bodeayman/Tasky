@@ -78,6 +78,8 @@ class _SignPageState extends State<SignPage> {
                           height: 10,
                         ),
                         IntlPhoneField(
+                          showCountryFlag: true,
+
                           controller: phoneController,
                           decoration: InputDecoration(
                             labelText: 'Phone Number',

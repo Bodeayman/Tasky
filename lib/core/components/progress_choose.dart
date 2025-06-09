@@ -12,7 +12,7 @@ class ProgressChoose extends StatefulWidget {
   });
 
   final bool progressChooseActive;
-  final String? value; // Can be "waiting", "inprogress", or "finished"
+  final String? value; // Can be "low", "TaskProgress.waiting", etc.
 
   @override
   _ProgressChooseState createState() => _ProgressChooseState();
@@ -27,38 +27,18 @@ class _ProgressChooseState extends State<ProgressChoose> {
     'Finished',
   ];
 
-  /// Maps backend value to dropdown label
-  String _mapValueToLabel(String? value) {
-    switch (value?.toLowerCase()) {
-      case 'waiting':
-        return 'Waiting';
-      case 'inprogress':
-        return 'Inprogress';
-      case 'finished':
-        return 'Finished';
-      default:
-        return 'Waiting';
-    }
-  }
-
-  /// Maps dropdown label to backend value
-  String _mapLabelToValue(String label) {
-    switch (label) {
-      case 'Waiting':
-        return 'waiting';
-      case 'Inprogress':
-        return 'inprogress';
-      case 'Finished':
-        return 'finished';
-      default:
-        return 'waiting';
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    selectedProgress = _mapValueToLabel(widget.value);
+
+    final input = widget.value?.toLowerCase();
+    debugPrint(input);
+    selectedProgress = switch (input) {
+      'waiting' || 'TaskProgress.waiting' => 'Waiting',
+      'inprogress' || 'taskprogress.inprogress' => 'Inprogress',
+      'finished' || 'taskprogress.finished' => 'Finished',
+      _ => 'Waiting',
+    };
   }
 
   @override
@@ -84,7 +64,13 @@ class _ProgressChooseState extends State<ProgressChoose> {
                   selectedProgress = newValue;
                 });
 
-                final mappedValue = _mapLabelToValue(newValue);
+                final mappedValue = switch (newValue) {
+                  'Waiting' => 'waiting',
+                  'Inprogress' => 'inprogress',
+                  'Finished' => 'finished',
+                  _ => 'low',
+                };
+
                 context.read<AddingTaskCubit>().setProgress(mappedValue);
               }
             },

@@ -13,7 +13,8 @@ class TaskTile extends StatelessWidget {
       required this.dueDate,
       required this.priority,
       required this.progress,
-      required this.imagePath});
+      required this.imagePath,
+      required this.user});
   final String id;
   final String name;
   final String desc;
@@ -21,6 +22,7 @@ class TaskTile extends StatelessWidget {
   final TaskBadges priority;
   final TaskProgress progress;
   final String imagePath;
+  final String user;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +59,9 @@ class TaskTile extends StatelessWidget {
                         priority: priority.toString(),
                         status: progress.toString(),
                         title: name,
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now(),
-                        user: "",
+                        createdAt: DateTime.tryParse(dueDate) ?? DateTime.now(),
+                        updatedAt: DateTime.tryParse(dueDate) ?? DateTime.now(),
+                        user: user,
                         id: id),
                   ),
                 ),
