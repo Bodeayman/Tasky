@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/colors.dart';
-import 'package:tasky/features/Presentation/AddTaskPage/Manager/adding_task_cubit.dart';
+import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 
 class ProgressChoose extends StatefulWidget {
   const ProgressChoose({
