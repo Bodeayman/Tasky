@@ -13,21 +13,20 @@ dependencies:
   hive: any
   hive_flutter: any
   http: any
-  shared_preferences: any
   flutter_svg: any
   google_fonts : any
   crypto: any
   image_picker : any
   intl_phone_field : any
   qr_flutter : any
-  qr_code_scanner : any
   flutter_bloc : any
-  mobile_scanner : any
+  mobile_scanner: ^3.5.2
   dartz : any
   dotted_border : ^2.0.0
-  flutter_secure_storage : any
-  flutter_secure_storage_windows: any
+  flutter_secure_storage: ^9.0.0
+  shared_preferences: ^2.2.2
   intl : any
+  qr_code_scanner: ^1.0.1
 
 
 

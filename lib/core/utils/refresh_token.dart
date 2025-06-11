@@ -14,7 +14,8 @@ Future<bool> refreshAccessToken() async {
     Uri.parse('$baseUrl/auth/refresh-token?token=$refreshToken'),
     headers: {'Content-Type': 'application/json'},
   );
-
+  debugPrint(refreshToken);
+  debugPrint(response.body);
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
     final newAccessToken = data['access_token'];

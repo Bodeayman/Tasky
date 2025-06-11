@@ -1,4 +1,5 @@
 {
     "iis.configDir": "",
-    "cmake.sourceDirectory": "C:/Bode/tasky/tasky/linux/flutter"
+    "cmake.sourceDirectory": "C:/Bode/tasky/tasky/linux/flutter",
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

@@ -112,17 +112,19 @@ class TaskDetailsInTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 64,
+      width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               switch (progress) {

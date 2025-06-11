@@ -84,21 +84,40 @@ class _HomePageState extends State<HomePage> {
                         'Content-Type': 'application/json',
                       },
                     );
-                    if (response.statusCode == 401) {
-                      refreshAccessToken();
-                      throw Exception("Failed to Logout, Try again please");
+                    if (response.statusCode != 200) {
+                      await refreshAccessToken();
+                      final token = await getAccessToken();
+
+                      final response = await http.post(
+                        Uri.parse('$baseUrl/auth/logout'),
+                        headers: {
+                          'Authorization': 'Bearer $token',
+                          'Content-Type': 'application/json',
+                        },
+                      );
+                      if (response.statusCode == 401) {
+                        throw Exception("Failed to Logout, Try again please");
+                      }
                     }
 
                     ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Logged out")));
+                      const SnackBar(
+                        content: Text("Logged out"),
+                      ),
+                    );
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const Phonelogin(),
                       ),
                     );
                   } catch (e) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(e.toString())));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          e.toString(),
+                        ),
+                      ),
+                    );
                   }
                 },
               ),

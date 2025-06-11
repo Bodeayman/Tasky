@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/constants.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/features/AddTaskPage/Views/AddTaskPage.dart';
+import 'package:tasky/features/QrScanner/Views/qr_scanner_view.dart';
 
 class Fab extends StatelessWidget {
   const Fab({
@@ -36,7 +37,8 @@ class Fab extends StatelessWidget {
           right: 19,
           child: InkWell(
             borderRadius: BorderRadius.circular(15),
-            onTap: () => {},
+            onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const QRScannerPage())),
             child: Container(
               decoration: BoxDecoration(
                   color: priorityColor,

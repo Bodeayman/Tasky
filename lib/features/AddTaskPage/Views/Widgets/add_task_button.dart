@@ -16,7 +16,6 @@ import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 
 class AddTaskButton extends StatefulWidget {
   const AddTaskButton({super.key});
-
   @override
   State<AddTaskButton> createState() => _AddTaskButtonState();
 }

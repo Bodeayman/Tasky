@@ -40,9 +40,22 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
 
   void setImagePath(String newImagePath) {
     final currentState = state as AddingTaskInitial;
+    debugPrint(newImagePath);
+
     emit(
       AddingTaskInitial(currentState.priority, currentState.date,
           currentState.progress, newImagePath),
+    );
+  }
+
+  void resetAll() {
+    emit(
+      AddingTaskInitial(
+        'medium',
+        DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'low',
+        'path.png',
+      ),
     );
   }
 

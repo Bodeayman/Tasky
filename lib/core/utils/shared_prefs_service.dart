@@ -1,10 +1,29 @@
+import 'dart:io';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-/// Initialize secure storage (now works across all platforms if flutter_secure_storage_windows is used)
-const FlutterSecureStorage secureStorage = FlutterSecureStorage();
+const secureStorage = FlutterSecureStorage();
 
-/// Check if user has completed onboarding
+Future<void> saveTokens(String accessToken, String refreshToken) async {
+  await secureStorage.write(key: 'access_token', value: accessToken);
+  await secureStorage.write(key: 'refresh_token', value: refreshToken);
+}
+
+Future<String?> getAccessToken() async {
+  return await secureStorage.read(key: 'access_token');
+}
+
+Future<String?> getRefreshToken() async {
+  return await secureStorage.read(key: 'refresh_token');
+}
+
+Future<void> clearTokens() async {
+  await secureStorage.delete(key: 'access_token');
+  await secureStorage.delete(key: 'refresh_token');
+}
+
 Future<bool> onBoarding() async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getBool("onBoard") ?? false;
@@ -14,29 +33,4 @@ Future<bool> onBoarding() async {
 Future<void> setOnBoarding(bool value) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setBool("onBoard", value);
-}
-
-/// Save access and refresh tokens
-Future<void> saveTokens(String accessToken, String refreshToken) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('access_token', accessToken);
-  await secureStorage.write(key: 'refresh_token', value: refreshToken);
-}
-
-/// Get access token (from SharedPreferences)
-Future<String?> getAccessToken() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('access_token');
-}
-
-/// Get refresh token (from secure storage)
-Future<String?> getRefreshToken() async {
-  return await secureStorage.read(key: 'refresh_token');
-}
-
-/// Clear both tokens
-Future<void> clearTokens() async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.remove('access_token');
-  await secureStorage.delete(key: 'refresh_token');
 }

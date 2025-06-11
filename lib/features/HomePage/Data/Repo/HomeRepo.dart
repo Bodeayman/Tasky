@@ -25,7 +25,7 @@ class HomeRepo {
       if (response.statusCode != 200) {
         await refreshAccessToken();
         final token = await getAccessToken();
-
+        debugPrint("This is the second time, and the token is $token");
         final response = await http.get(
           Uri.parse('$baseUrl/todos?page=1'),
           headers: {
@@ -33,6 +33,8 @@ class HomeRepo {
             'Content-Type': 'application/json',
           },
         );
+        debugPrint(response.body.toString());
+
         if (response.statusCode != 200) {
           throw Exception(
             "Failed to load tasks, Maybe an Authentication Problem",

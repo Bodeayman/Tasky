@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasky/features/PhoneLogin/Presentation/Manager/cubit/phone_login_cubit.dart';
 import 'package:tasky/features/PhoneLogin/Presentation/Views/phoneLoginForm.dart';
 
 class Phonelogin extends StatefulWidget {
@@ -14,20 +16,23 @@ class _PhoneloginState extends State<Phonelogin> {
   final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Image.asset("assets/girlImage.png")),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: PhoneLoginForm(formkey: _formkey),
-            )
-          ],
+    return BlocProvider(
+      create: (context) => PhoneLoginCubit(),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 50),
+                  child: Image.asset("assets/girlImage.png")),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: PhoneLoginForm(formkey: _formkey),
+              )
+            ],
+          ),
         ),
       ),
     );

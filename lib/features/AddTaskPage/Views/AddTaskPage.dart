@@ -192,6 +192,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   );
                                   final token = await getAccessToken();
                                   debugPrint(state.date.toString());
+                                  debugPrint(state.imagePath);
                                   final response = await http.post(
                                     Uri.parse('$baseUrl/todos'),
                                     body: {
@@ -212,6 +213,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     );
                                   }
                                   context.read<TaskCubit>().fetchTasks();
+
+                                  context.read<AddingTaskCubit>().resetAll();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text("Added Task Successfully"),
@@ -229,6 +232,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 }
                               } else {
                                 try {
+                                  context
+                                      .read<AddingTaskCubit>()
+                                      .setImagePath(widget.taskModel!.image);
+                                  debugPrint(widget.taskModel!.image);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text("Editing"),
@@ -237,6 +244,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   final token = await getAccessToken();
                                   debugPrint(
                                     [
+                                      widget.taskModel?.image,
                                       state.progress,
                                       state.priority,
                                       titleController.text,

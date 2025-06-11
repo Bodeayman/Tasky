@@ -27,9 +27,7 @@ class TaskDetails extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.more_vert,
-            ),
+            icon: const Icon(Icons.more_vert),
             onPressed: () => showMenu(
               context: context,
               items: [
@@ -44,9 +42,7 @@ class TaskDetails extends StatelessWidget {
                   ),
                   child: const Text(
                     "Edit",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 PopupMenuItem(
@@ -54,9 +50,7 @@ class TaskDetails extends StatelessWidget {
                     try {
                       final token = await getAccessToken();
                       final response = await http.delete(
-                        Uri.parse(
-                          '$baseUrl/todos/${taskModel.id}',
-                        ),
+                        Uri.parse('$baseUrl/todos/${taskModel.id}'),
                         headers: {
                           'Authorization': 'Bearer $token',
                         },
@@ -64,8 +58,7 @@ class TaskDetails extends StatelessWidget {
                       if (response.statusCode == 401) {
                         await refreshAccessToken();
                         throw Exception(
-                          "Failed to Delete the Task, Please Try again",
-                        );
+                            "Failed to Delete the Task, Please Try again");
                       }
                       context.read<TaskCubit>().refreshTasks();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -77,9 +70,7 @@ class TaskDetails extends StatelessWidget {
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(
-                            e.toString(),
-                          ),
+                          content: Text(e.toString()),
                         ),
                       );
                     }
@@ -103,121 +94,106 @@ class TaskDetails extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(15),
-        child: ListView(
-          scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(height: 20),
-            Expanded(
-              child: SizedBox(
-                height: 200,
-                child: Image.network(
-                  "$baseUrl/images/${taskModel.image}",
-                  errorBuilder: (context, error, stackTrace) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        color: Colors.red,
-                        child: const Center(
-                          child: Text(
-                            "Error",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 200,
+              width: double.infinity,
+              child: Image.network(
+                "$baseUrl/images/${taskModel.image}",
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      color: Colors.red,
+                      child: const Center(
+                        child: Text(
+                          "Error",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
-            Container(height: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(height: 20),
+            Text(
+              taskModel.title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              taskModel.desc,
+              style: GoogleFonts.dmSans(
+                color: const Color(0xff24252C),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                height: 24 / 14,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                color: priorityColor,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    taskModel.title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  Container(
-                    height: 10,
-                  ),
-                  Text(taskModel.desc,
-                      style: GoogleFonts.dmSans(
-                        color: const Color(0xff24252C),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        height: 24 / 14,
-                      )),
-                  Container(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: priorityColor,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "End date",
-                                style: GoogleFonts.dmSans(fontSize: 9),
-                              ),
-                              Text(
-                                taskModel.createdAt != null
-                                    ? "${taskModel.createdAt.year}-${taskModel.createdAt.month.toString().padLeft(2, '0')}-${taskModel.createdAt.day.toString().padLeft(2, '0')}"
-                                    : "No Date",
-                                style: GoogleFonts.dmSans(fontSize: 14),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: Image.asset(
-                              "assets/calendarIcon.png",
-                              color: mainColor,
-                            ),
-                          ),
-                        ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "End date",
+                        style: GoogleFonts.dmSans(fontSize: 9),
                       ),
-                    ),
+                      Text(
+                        taskModel.createdAt != null
+                            ? "${taskModel.createdAt.year}-${taskModel.createdAt.month.toString().padLeft(2, '0')}-${taskModel.createdAt.day.toString().padLeft(2, '0')}"
+                            : "No Date",
+                        style: GoogleFonts.dmSans(fontSize: 14),
+                      ),
+                    ],
                   ),
-                  Container(
-                    height: 10,
-                  ),
-                  ProgressChoose(
-                    progressChooseActive: false,
-                    value: taskModel.status,
-                  ),
-                  Container(height: 10),
-                  PriorityChoose(
-                    PriorityChooseActive: false,
-                    value: taskModel.priority,
-                  ),
-                  const SizedBox(height: 20),
                   SizedBox(
-                    width: double.infinity,
-                    child: Center(
-                      child: QrImageView(
-                        data: taskModel.id,
-                        version: QrVersions.auto,
-                      ),
+                    width: 24,
+                    height: 24,
+                    child: Image.asset(
+                      "assets/calendarIcon.png",
+                      color: mainColor,
                     ),
                   ),
                 ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            ProgressChoose(
+              progressChooseActive: false,
+              value: taskModel.status,
+            ),
+            const SizedBox(height: 10),
+            PriorityChoose(
+              PriorityChooseActive: false,
+              value: taskModel.priority,
+            ),
+            const SizedBox(height: 20),
+            Center(
+              child: QrImageView(
+                data: taskModel.id,
+                version: QrVersions.auto,
               ),
             ),
           ],
