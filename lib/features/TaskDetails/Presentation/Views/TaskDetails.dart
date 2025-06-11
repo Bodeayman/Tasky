@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tasky/core/components/priority_choose.dart';
 import 'package:tasky/core/components/progress_choose.dart';
 import 'package:tasky/features/AddTaskPage/Views/AddTaskPage.dart';
@@ -105,6 +106,26 @@ class TaskDetails extends StatelessWidget {
               height: 200,
               width: double.infinity,
               child: Image.network(
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return Hero(tag: taskModel.id, child: child);
+                  }
+                  return Hero(
+                    tag: taskModel.id,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: double.infinity,
+                        height: 200, // adjust to your real size
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  );
+                },
                 "$baseUrl/images/${taskModel.image}",
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
@@ -144,6 +165,17 @@ class TaskDetails extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
+            // Column(
+            //   children: [
+            //     Text(taskModel.desc),
+            //     Text(taskModel.title),
+            //     Text(taskModel.user),
+            //     Text(taskModel.image),
+            //     Text(taskModel.id),
+            //     Text(taskModel.priority),
+            //     Text(taskModel.status),
+            //   ],
+            // ),
             Container(
               decoration: BoxDecoration(
                 color: priorityColor,

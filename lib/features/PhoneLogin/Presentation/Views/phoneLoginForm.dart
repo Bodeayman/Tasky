@@ -1,17 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:tasky/core/utils/constants.dart';
-import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
-import 'package:tasky/core/utils/url.dart';
-import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/homePage.dart';
-import 'package:tasky/features/PhoneLogin/Presentation/Manager/cubit/phone_login_cubit.dart';
-import 'package:tasky/features/PhoneLogin/Presentation/Manager/phone_login_func.dart';
+import 'package:tasky/features/PhoneLogin/Presentation/Manager/phone_login_cubit.dart';
 import 'package:tasky/features/SignUpPage/Presentation/Views/SignPage.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -44,7 +37,6 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
             child: Column(
               children: [
                 SizedBox(
-                  width: double.infinity,
                   child: IntlPhoneField(
                     showCountryFlag: true,
                     controller: phoneController,
@@ -69,7 +61,6 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                   height: 20,
                 ),
                 SizedBox(
-                  width: double.infinity,
                   child: TextFormField(
                     validator: (val) {
                       if (val!.trim() == "" || val.isEmpty) {
@@ -104,7 +95,7 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
           ),
           /* The work field will be here */
           SizedBox(
-            width: double.infinity,
+            width: 335,
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Container(

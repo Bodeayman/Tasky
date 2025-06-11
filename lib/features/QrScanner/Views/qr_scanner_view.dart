@@ -23,8 +23,8 @@ class _QRScannerPageState extends State<QRScannerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Scan QR Code")),
-      body: MobileScanner(
-        onDetect: (capture) async {
+      body: MobileScanner(onDetect: (capture) async {
+        try {
           if (scanned) return;
 
           final barcode = capture.barcodes.first;
@@ -50,8 +50,16 @@ class _QRScannerPageState extends State<QRScannerPage> {
               setState(() => scanned = false);
             }
           }
-        },
-      ),
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                e.toString(),
+              ),
+            ),
+          );
+        }
+      }),
     );
   }
 

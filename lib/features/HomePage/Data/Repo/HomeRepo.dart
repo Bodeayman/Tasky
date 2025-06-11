@@ -9,12 +9,13 @@ import 'package:tasky/features/HomePage/Data/Models/Task.dart';
 import 'package:dartz/dartz.dart';
 
 class HomeRepo {
-  Future<Either<String, List<TaskModel>>> fetchTasks() async {
+  Future<Either<String, List<TaskModel>>> fetchTasks(
+      {required int page}) async {
     try {
       final token = await getAccessToken();
 
       final response = await http.get(
-        Uri.parse('$baseUrl/todos?page=1'),
+        Uri.parse('$baseUrl/todos?page=$page'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -25,9 +26,8 @@ class HomeRepo {
       if (response.statusCode != 200) {
         await refreshAccessToken();
         final token = await getAccessToken();
-        debugPrint("This is the second time, and the token is $token");
         final response = await http.get(
-          Uri.parse('$baseUrl/todos?page=1'),
+          Uri.parse('$baseUrl/todos?page=$page'),
           headers: {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
@@ -41,18 +41,8 @@ class HomeRepo {
           );
         }
       }
-      if (jsonDecode(response.body) == []) {
-        throw Exception(
-          "No Tasks Found",
-        );
-      }
-
       final List<dynamic> data = jsonDecode(response.body);
-      final List<TaskModel> tasks = data
-          .map(
-            (json) => TaskModel.fromJson(json),
-          )
-          .toList();
+      final tasks = data.map((json) => TaskModel.fromJson(json)).toList();
 
       return right(tasks);
     } catch (e) {

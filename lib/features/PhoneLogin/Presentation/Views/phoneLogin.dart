@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tasky/features/PhoneLogin/Presentation/Manager/cubit/phone_login_cubit.dart';
+import 'package:tasky/features/PhoneLogin/Presentation/Manager/phone_login_cubit.dart';
 import 'package:tasky/features/PhoneLogin/Presentation/Views/phoneLoginForm.dart';
 
 class Phonelogin extends StatefulWidget {

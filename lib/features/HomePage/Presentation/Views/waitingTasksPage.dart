@@ -5,7 +5,6 @@ import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskTile.dart';
-import 'package:tasky/features/TaskDetails/Presentation/Views/TaskDetails.dart';
 
 class Waitingtaskspage extends StatefulWidget {
   const Waitingtaskspage({super.key});
@@ -15,10 +14,26 @@ class Waitingtaskspage extends StatefulWidget {
 }
 
 class _WaitingtaskspageState extends State<Waitingtaskspage> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    context.read<TaskCubit>().fetchTasks();
+    context.read<TaskCubit>().fetchInitialTasks();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<TaskCubit>().fetchMoreTasks();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   TaskBadges mapPriority(String priority) {
@@ -56,7 +71,6 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
         } else if (state is TaskError) {
           return Center(child: Text('Error: ${state.error}'));
         } else if (state is TaskLoaded) {
-          // Filter only waiting tasks
           final waitingTasks = state.tasks
               .where((task) => task.status.toLowerCase() == 'waiting')
               .toList();
@@ -68,18 +82,29 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
           return RefreshIndicator(
             onRefresh: () => context.read<TaskCubit>().refreshTasks(),
             child: ListView.builder(
-              itemCount: waitingTasks.length,
+              controller: _scrollController,
+              itemCount: state.reachedToEnd
+                  ? waitingTasks.length
+                  : waitingTasks.length + 1,
               itemBuilder: (context, index) {
+                if (index >= waitingTasks.length) {
+                  return const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+
                 final task = waitingTasks[index];
                 return TaskTile(
-                    id: task.id,
-                    name: task.title,
-                    desc: task.desc,
-                    dueDate: task.createdAt.toLocal().toString().split(' ')[0],
-                    priority: mapPriority(task.priority),
-                    progress: mapProgress(task.status),
-                    imagePath: task.image,
-                    user: task.user);
+                  id: task.id,
+                  name: task.title,
+                  desc: task.desc,
+                  dueDate: task.createdAt.toLocal().toString().split(' ')[0],
+                  priority: mapPriority(task.priority),
+                  progress: mapProgress(task.status),
+                  imagePath: task.image,
+                  user: task.user,
+                );
               },
             ),
           );

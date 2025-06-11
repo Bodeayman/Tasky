@@ -173,11 +173,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
               Row(
                 children: [
                   Expanded(
-                      child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: BlocBuilder<AddingTaskCubit, AddingTaskState>(
-                      builder: (context, state) {
-                        if (state is AddingTaskInitial) {
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: BlocBuilder<AddingTaskCubit, AddingTaskState>(
+                        builder: (context, state) {
                           return MaterialButton(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 110, vertical: 20),
@@ -185,42 +184,23 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             onPressed: () async {
                               if (!widget.editingPageMode) {
                                 try {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Working"),
-                                    ),
-                                  );
-                                  final token = await getAccessToken();
-                                  debugPrint(state.date.toString());
-                                  debugPrint(state.imagePath);
-                                  final response = await http.post(
-                                    Uri.parse('$baseUrl/todos'),
-                                    body: {
-                                      "image": state.imagePath,
-                                      "dueDate": state.date.toString(),
-                                      "priority": state.priority,
-                                      "title": titleController.text,
-                                      "desc": descriptionController.text,
-                                    },
-                                    headers: {
-                                      'Authorization': 'Bearer $token',
-                                    },
-                                  );
-                                  if (response.statusCode == 401) {
-                                    refreshAccessToken();
-                                    throw Exception(
-                                      "Failed to Add another Task, Please Try again",
-                                    );
-                                  }
-                                  context.read<TaskCubit>().fetchTasks();
-
+                                  await context.read<AddingTaskCubit>().addData(
+                                        state.imagePath,
+                                        state.date.toString(),
+                                        state.priority,
+                                        titleController.text,
+                                        descriptionController.text,
+                                      );
                                   context.read<AddingTaskCubit>().resetAll();
+                                  Navigator.of(context).pop();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text("Added Task Successfully"),
                                     ),
                                   );
-                                  Navigator.of(context).pop();
+                                  await context
+                                      .read<TaskCubit>()
+                                      .fetchInitialTasks();
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -235,45 +215,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   context
                                       .read<AddingTaskCubit>()
                                       .setImagePath(widget.taskModel!.image);
-                                  debugPrint(widget.taskModel!.image);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Editing"),
-                                    ),
-                                  );
-                                  final token = await getAccessToken();
-                                  debugPrint(
-                                    [
-                                      widget.taskModel?.image,
-                                      state.progress,
-                                      state.priority,
-                                      titleController.text,
-                                      descriptionController.text,
-                                      widget.taskModel?.user
-                                    ].toString(),
-                                  );
+                                  await context
+                                      .read<AddingTaskCubit>()
+                                      .editData(
+                                        widget.taskModel!.id,
+                                        widget.taskModel!.user,
+                                        widget.taskModel!.priority,
+                                        widget.taskModel!.status,
+                                        titleController.text,
+                                        descriptionController.text,
+                                      );
 
-                                  final response = await http.put(
-                                    Uri.parse(
-                                        '$baseUrl/todos/${widget.taskModel?.id}'),
-                                    body: {
-                                      "image": state.imagePath,
-                                      "status": state.progress,
-                                      "priority": state.priority,
-                                      "title": titleController.text,
-                                      "desc": descriptionController.text,
-                                      "user": widget.taskModel?.user,
-                                    },
-                                    headers: {
-                                      'Authorization': 'Bearer $token',
-                                    },
-                                  );
-                                  if (response.statusCode == 401) {
-                                    refreshAccessToken();
-                                    throw Exception(
-                                      "Failed to Add another Task, Please Try again",
-                                    );
-                                  }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text("Edited Task Successfully"),
@@ -281,7 +233,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   );
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
-                                  context.read<TaskCubit>().fetchTasks();
+                                  context.read<TaskCubit>().fetchInitialTasks();
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -293,28 +245,35 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 }
                               }
                             },
-                            child: (!widget.editingPageMode)
-                                ? const Text(
-                                    "Add Task",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    ),
-                                  )
-                                : const Text(
-                                    "Edit Task",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    ),
-                                  ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                (!widget.editingPageMode)
+                                    ? const Text(
+                                        "Add Task",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      )
+                                    : const Text(
+                                        "Edit Task",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                (state is AddingTaskLoading)
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white)
+                                    : Container(width: 0)
+                              ],
+                            ),
                           );
-                        } else {
-                          return const Center();
-                        }
-                      },
+                        },
+                      ),
                     ),
-                  ))
+                  )
                 ],
               ),
               const SizedBox(

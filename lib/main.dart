@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 import 'package:tasky/features/HomePage/Data/Repo/HomeRepo.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
+import 'package:tasky/features/PhoneLogin/Presentation/Views/phoneLogin.dart';
+import 'package:tasky/features/PhoneLogin/Presentation/Views/phoneLoginForm.dart';
 import 'package:tasky/features/ProfilePage/Data/Repo/ProfileRepo.dart';
 import 'package:tasky/features/ProfilePage/Presentation/Manager/profile_loading_cubit.dart';
 
@@ -27,7 +29,7 @@ class _MainAppState extends State<MainApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TaskCubit(HomeRepo())..fetchTasks(),
+          create: (context) => TaskCubit(HomeRepo())..fetchInitialTasks(),
         ),
         BlocProvider(
           create: (context) =>
@@ -38,8 +40,10 @@ class _MainAppState extends State<MainApp> {
         ),
       ],
       child: MaterialApp(
-        theme: ThemeData(textTheme: GoogleFonts.dmSansTextTheme()),
-        home: const SplashPage(),
+        theme: ThemeData(
+          textTheme: GoogleFonts.dmSansTextTheme(),
+        ),
+        home: const Phonelogin(),
         debugShowCheckedModeBanner: false,
       ),
     );

@@ -15,10 +15,27 @@ class Alltaskspage extends StatefulWidget {
 }
 
 class _AlltaskspageState extends State<Alltaskspage> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    context.read<TaskCubit>().fetchTasks();
+    context.read<TaskCubit>().fetchInitialTasks();
+
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<TaskCubit>().fetchMoreTasks();
+    }
   }
 
   TaskBadges mapPriority(String priority) {
@@ -52,30 +69,49 @@ class _AlltaskspageState extends State<Alltaskspage> {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
         if (state is TaskLoading && state is! TaskLoaded) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         } else if (state is TaskError) {
-          return Center(child: Text('Error: ${state.error}'));
+          return Center(
+            child: Text('Error: ${state.error}'),
+          );
         } else if (state is TaskLoaded) {
           if (state.tasks.isEmpty) {
-            return const Center(child: Text("No tasks found"));
+            return const Center(
+              child: Text("No tasks found"),
+            );
           }
 
           return RefreshIndicator(
             onRefresh: () => context.read<TaskCubit>().refreshTasks(),
             child: ListView.builder(
-              itemCount: state.tasks.length,
+              controller: _scrollController,
+              itemCount: state.reachedToEnd
+                  ? state.tasks.length
+                  : state.tasks.length + 1,
               itemBuilder: (context, index) {
+                if (index >= state.tasks.length) {
+                  return const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
                 final task = state.tasks[index];
 
                 return TaskTile(
-                    id: task.id,
-                    name: task.title,
-                    desc: task.desc,
-                    dueDate: task.createdAt.toLocal().toString().split(' ')[0],
-                    priority: mapPriority(task.priority),
-                    progress: mapProgress(task.status),
-                    imagePath: task.image,
-                    user: task.user);
+                  id: task.id,
+                  name: task.title,
+                  desc: task.desc,
+                  dueDate: task.createdAt.toLocal().toString().split(' ')[0],
+                  priority: mapPriority(task.priority),
+                  progress: mapProgress(task.status),
+                  imagePath: task.image,
+                  user: task.user,
+                );
               },
             ),
           );

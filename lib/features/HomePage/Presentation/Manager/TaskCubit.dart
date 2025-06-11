@@ -1,28 +1,51 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasky/features/HomePage/Data/Models/Task.dart';
 import 'package:tasky/features/HomePage/Data/Repo/HomeRepo.dart';
 import 'TaskState.dart';
 
 class TaskCubit extends Cubit<TaskState> {
-  TaskCubit(this.homeRepo) : super(TaskInitial());
   final HomeRepo homeRepo;
-  Future<void> fetchTasks() async {
+
+  TaskCubit(this.homeRepo) : super(TaskInitial());
+
+  Future<void> fetchInitialTasks() async {
     emit(TaskLoading());
-    var result = await homeRepo.fetchTasks();
+
+    final result = await homeRepo.fetchTasks(page: 1);
     result.fold(
-      (failure) => emit(
-        TaskError(
-          failure,
-        ),
-      ),
-      (tasks) => emit(
-        TaskLoaded(
-          tasks: tasks,
-        ),
-      ),
+      (failure) => emit(TaskError(failure)),
+      (tasks) =>
+          emit(TaskLoaded(tasks: tasks, page: 1, reachedToEnd: tasks.isEmpty)),
+    );
+  }
+
+  Future<void> fetchMoreTasks() async {
+    if (state is! TaskLoaded) return;
+
+    final currentState = state as TaskLoaded;
+
+    if (currentState.reachedToEnd) return;
+
+    // You can emit loading separately here if needed
+
+    final nextPage = currentState.page + 1;
+
+    final result = await homeRepo.fetchTasks(page: nextPage);
+    result.fold(
+      (failure) => emit(TaskError(failure)),
+      (newTasks) {
+        final allTasks = List<TaskModel>.from(currentState.tasks)
+          ..addAll(newTasks);
+        emit(TaskLoaded(
+          tasks: allTasks,
+          page: nextPage,
+          reachedToEnd: newTasks.isEmpty,
+        ));
+      },
     );
   }
 
   Future<void> refreshTasks() async {
-    await fetchTasks();
+    await fetchInitialTasks();
   }
 }

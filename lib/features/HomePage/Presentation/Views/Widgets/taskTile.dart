@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/features/HomePage/Data/Models/Task.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
@@ -38,6 +39,26 @@ class TaskTile extends StatelessWidget {
             width: 64,
             child: Image.network(
               "$baseUrl/images/$imagePath",
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return Hero(tag: id, child: child);
+                }
+                return Hero(
+                  tag: id,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      width: double.infinity,
+                      height: 200, // adjust to your real size
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                );
+              },
               errorBuilder: (context, error, stackTrace) {
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(20),

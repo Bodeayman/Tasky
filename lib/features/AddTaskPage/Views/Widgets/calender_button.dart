@@ -18,10 +18,8 @@ class _CalendarButtonState extends State<CalendarButton> {
     super.initState();
 
     final cubitState = context.read<AddingTaskCubit>().state;
-    if (cubitState is AddingTaskInitial) {
-      final cubitDate = cubitState.date;
-      _controller.text = cubitDate;
-    }
+    final cubitDate = cubitState.date;
+    _controller.text = cubitDate;
   }
 
   @override

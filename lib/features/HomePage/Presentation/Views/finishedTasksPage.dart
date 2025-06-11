@@ -5,7 +5,6 @@ import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskTile.dart';
-import 'package:tasky/features/TaskDetails/Presentation/Views/TaskDetails.dart';
 
 class Finishedtaskspage extends StatefulWidget {
   const Finishedtaskspage({super.key});
@@ -15,10 +14,26 @@ class Finishedtaskspage extends StatefulWidget {
 }
 
 class _FinishedtaskspageState extends State<Finishedtaskspage> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    context.read<TaskCubit>().fetchTasks();
+    context.read<TaskCubit>().fetchInitialTasks();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<TaskCubit>().fetchMoreTasks();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   TaskBadges mapPriority(String priority) {
@@ -67,19 +82,29 @@ class _FinishedtaskspageState extends State<Finishedtaskspage> {
           return RefreshIndicator(
             onRefresh: () => context.read<TaskCubit>().refreshTasks(),
             child: ListView.builder(
-              itemCount: finishedTasks.length,
+              controller: _scrollController,
+              itemCount: state.reachedToEnd
+                  ? finishedTasks.length
+                  : finishedTasks.length + 1,
               itemBuilder: (context, index) {
-                final task = finishedTasks[index];
+                if (index >= finishedTasks.length) {
+                  return const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
 
+                final task = finishedTasks[index];
                 return TaskTile(
-                    id: task.id,
-                    name: task.title,
-                    desc: task.desc,
-                    dueDate: task.createdAt.toLocal().toString().split(' ')[0],
-                    priority: mapPriority(task.priority),
-                    progress: mapProgress(task.status),
-                    imagePath: task.image,
-                    user: task.user);
+                  id: task.id,
+                  name: task.title,
+                  desc: task.desc,
+                  dueDate: task.createdAt.toLocal().toString().split(' ')[0],
+                  priority: mapPriority(task.priority),
+                  progress: mapProgress(task.status),
+                  imagePath: task.image,
+                  user: task.user,
+                );
               },
             ),
           );

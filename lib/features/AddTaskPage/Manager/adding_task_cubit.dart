@@ -1,12 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as context;
 import 'package:intl/intl.dart';
+import 'package:tasky/core/utils/refresh_token.dart';
+import 'package:tasky/core/utils/shared_prefs_service.dart';
+import 'package:tasky/core/utils/url.dart';
+import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
 part 'adding_task_state.dart';
 
 class AddingTaskCubit extends Cubit<AddingTaskState> {
   AddingTaskCubit()
       : super(
-          AddingTaskInitial(
+          AddingTaskState(
             'medium',
             DateFormat('yyyy-MM-dd').format(DateTime.now()),
             'low',
@@ -15,42 +21,42 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
         );
 
   void setPriority(String newPriority) {
-    final currentState = state as AddingTaskInitial;
+    final currentState = state;
     emit(
-      AddingTaskInitial(newPriority, currentState.date, currentState.progress,
+      AddingTaskState(newPriority, currentState.date, currentState.progress,
           currentState.imagePath),
     );
   }
 
   void setDate(String newDate) {
-    final currentState = state as AddingTaskInitial;
+    final currentState = state;
     emit(
-      AddingTaskInitial(currentState.priority, newDate, currentState.progress,
+      AddingTaskState(currentState.priority, newDate, currentState.progress,
           currentState.imagePath),
     );
   }
 
   void setProgress(String newProgress) {
-    final currentState = state as AddingTaskInitial;
+    final currentState = state;
     emit(
-      AddingTaskInitial(currentState.priority, currentState.date, newProgress,
+      AddingTaskState(currentState.priority, currentState.date, newProgress,
           currentState.imagePath),
     );
   }
 
   void setImagePath(String newImagePath) {
-    final currentState = state as AddingTaskInitial;
+    final currentState = state;
     debugPrint(newImagePath);
 
     emit(
-      AddingTaskInitial(currentState.priority, currentState.date,
+      AddingTaskState(currentState.priority, currentState.date,
           currentState.progress, newImagePath),
     );
   }
 
   void resetAll() {
     emit(
-      AddingTaskInitial(
+      AddingTaskState(
         'medium',
         DateFormat('yyyy-MM-dd').format(DateTime.now()),
         'low',
@@ -59,8 +65,73 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
     );
   }
 
+  Future<void> editData(
+    String taskId,
+    String user,
+    String priority,
+    String progress,
+    String title,
+    String desc,
+  ) async {
+    emit(
+      AddingTaskLoading(
+          state.priority, state.date, state.progress, state.imagePath),
+    );
+
+    final token = await getAccessToken();
+
+    final response = await http.put(
+      Uri.parse('$baseUrl/todos/$taskId'),
+      body: {
+        "image": state.imagePath,
+        "status": state.progress,
+        "priority": state.priority,
+        "title": title,
+        "desc": desc,
+        "user": user,
+      },
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 401) {
+      refreshAccessToken();
+      throw Exception(
+        "Failed to Add another Task, Please Try again",
+      );
+    }
+  }
+
+  Future<void> addData(String imagePath, String date, String priority,
+      String title, String desc) async {
+    emit(
+      AddingTaskLoading(
+          state.priority, state.date, state.progress, state.imagePath),
+    );
+    final token = await getAccessToken();
+    final response = await http.post(
+      Uri.parse('$baseUrl/todos'),
+      body: {
+        "image": state.imagePath,
+        "dueDate": state.date.toString(),
+        "priority": state.priority,
+        "title": title,
+        "desc": desc,
+      },
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 401) {
+      refreshAccessToken();
+      throw Exception(
+        "Failed to Add another Task, Please Try again",
+      );
+    }
+  }
+
   void getData() {
-    final currentState = state as AddingTaskInitial;
+    final currentState = state;
     debugPrint(currentState.date);
     debugPrint(currentState.priority);
     debugPrint(currentState.progress); // ✅ Optional: for debugging
