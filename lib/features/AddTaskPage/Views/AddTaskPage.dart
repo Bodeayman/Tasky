@@ -183,100 +183,109 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 110, vertical: 20),
                             color: mainColor,
-                            onPressed: () async {
-                              debugPrint(widget.taskModel?.image);
+                            onPressed: !context
+                                    .watch<AddingTaskCubit>()
+                                    .state
+                                    .uploadingImage
+                                ? () async {
+                                    debugPrint(widget.taskModel?.image);
 
-                              if (!widget.editingPageMode) {
-                                try {
-                                  await context.read<AddingTaskCubit>().addData(
-                                        state.imagePath,
-                                        state.date.toString(),
-                                        state.priority,
-                                        titleController.text,
-                                        descriptionController.text,
-                                      );
-                                  context.read<AddingTaskCubit>().resetAll();
-                                  Navigator.of(context).pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Added Task Successfully"),
-                                    ),
-                                  );
-                                  await context
-                                      .read<TaskCubit>()
-                                      .fetchInitialTasks();
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        e.toString(),
-                                      ),
-                                    ),
-                                  );
-                                }
-                              } else {
-                                try {
-                                  await context
-                                      .read<AddingTaskCubit>()
-                                      .editData(
-                                        widget.taskModel!.id,
-                                        widget.taskModel!.user,
-                                        widget.taskModel!.priority,
-                                        widget.taskModel!.status,
-                                        titleController.text,
-                                        descriptionController.text,
-                                      );
+                                    if (!widget.editingPageMode) {
+                                      try {
+                                        await context
+                                            .read<AddingTaskCubit>()
+                                            .addData(
+                                              state.imagePath,
+                                              state.date.toString(),
+                                              state.priority,
+                                              titleController.text,
+                                              descriptionController.text,
+                                            );
+                                        context
+                                            .read<AddingTaskCubit>()
+                                            .resetAll();
+                                        Navigator.of(context).pop();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content:
+                                                Text("Added Task Successfully"),
+                                          ),
+                                        );
+                                        await context
+                                            .read<TaskCubit>()
+                                            .fetchInitialTasks();
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              e.toString(),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      try {
+                                        await context
+                                            .read<AddingTaskCubit>()
+                                            .editData(
+                                              widget.taskModel!.id,
+                                              widget.taskModel!.user,
+                                              widget.taskModel!.priority,
+                                              widget.taskModel!.status,
+                                              titleController.text,
+                                              descriptionController.text,
+                                            );
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Edited Task Successfully"),
-                                    ),
-                                  );
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  context.read<TaskCubit>().fetchInitialTasks();
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        e.toString(),
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                            child: AbsorbPointer(
-                              absorbing: context
-                                      .read<AddingTaskCubit>()
-                                      .state
-                                      .uploadingImage
-                                  ? true
-                                  : false,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  (!widget.editingPageMode)
-                                      ? const Text(
-                                          "Add Task",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                "Edited Task Successfully"),
                                           ),
-                                        )
-                                      : const Text(
-                                          "Edit Task",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
+                                        );
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                        context
+                                            .read<TaskCubit>()
+                                            .fetchInitialTasks();
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              e.toString(),
+                                            ),
                                           ),
+                                        );
+                                      }
+                                    }
+                                  }
+                                : null,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                (!widget.editingPageMode)
+                                    ? const Text(
+                                        "Add Task",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
                                         ),
-                                  (state is AddingTaskLoading)
-                                      ? const CircularProgressIndicator(
-                                          color: Colors.white)
-                                      : Container(width: 0)
-                                ],
-                              ),
+                                      )
+                                    : const Text(
+                                        "Edit Task",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                (state is AddingTaskLoading)
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white)
+                                    : Container(width: 0)
+                              ],
                             ),
                           );
                         },
