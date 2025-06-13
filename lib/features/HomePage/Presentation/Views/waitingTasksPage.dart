@@ -27,7 +27,7 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks(context, section: "waiting");
+      context.read<TaskCubit>().fetchMoreTasks(context);
     }
   }
 
@@ -42,31 +42,23 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
         if (state is TaskLoading && state is! TaskLoaded) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         } else if (state is TaskError) {
-          return Center(
-            child: Text('Error: ${state.error}'),
-          );
+          return Center(child: Text('Error: ${state.error}'));
         } else if (state is TaskLoaded) {
           final waitingTasks = state.tasks
               .where((task) => task.status.toLowerCase() == 'waiting')
               .toList();
 
           if (waitingTasks.isEmpty) {
-            return const Center(
-              child: Text(
-                "No waiting tasks found",
-              ),
-            );
+            return const Center(child: Text("No waiting tasks found"));
           }
 
           return RefreshIndicator(
             onRefresh: () => context.read<TaskCubit>().refreshTasks(),
             child: ListView.builder(
               controller: _scrollController,
-              itemCount: state.reachedToEndWaiting
+              itemCount: state.reachedToEnd
                   ? waitingTasks.length
                   : waitingTasks.length + 1,
               itemBuilder: (context, index) {

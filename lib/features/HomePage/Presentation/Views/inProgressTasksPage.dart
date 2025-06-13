@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
-import 'package:tasky/features/HomePage/Presentation/Manager/factory_functions.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskTile.dart';
+import 'package:tasky/features/HomePage/Presentation/Manager/factory_functions.dart';
 
 class Inprogresstaskspage extends StatefulWidget {
   const Inprogresstaskspage({super.key});
@@ -27,7 +27,7 @@ class _InprogresstaskspageState extends State<Inprogresstaskspage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks(context, section: "inprogress");
+      context.read<TaskCubit>().fetchMoreTasks(context);
     }
   }
 
@@ -58,16 +58,14 @@ class _InprogresstaskspageState extends State<Inprogresstaskspage> {
             onRefresh: () => context.read<TaskCubit>().refreshTasks(),
             child: ListView.builder(
               controller: _scrollController,
-              itemCount: state.reachedToEndInProgress
+              itemCount: state.reachedToEnd
                   ? inProgressTasks.length
                   : inProgressTasks.length + 1,
               itemBuilder: (context, index) {
                 if (index >= inProgressTasks.length) {
                   return const Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
 

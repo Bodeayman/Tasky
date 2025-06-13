@@ -32,6 +32,7 @@ class HomeRepo {
             'Content-Type': 'application/json',
           },
         );
+        debugPrint(response.body.toString());
 
         if (response.statusCode != 200) {
           throw Exception(
@@ -39,6 +40,7 @@ class HomeRepo {
           );
         }
       }
+
       final List<dynamic> data = jsonDecode(response.body);
       final tasks = data.map((json) => TaskModel.fromJson(json)).toList();
 

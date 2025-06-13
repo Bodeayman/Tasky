@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
-import 'package:tasky/features/HomePage/Presentation/Manager/factory_functions.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskTile.dart';
 import 'package:tasky/features/TaskDetails/Presentation/Views/TaskDetails.dart';
+import 'package:tasky/features/HomePage/Presentation/Manager/factory_functions.dart';
 
 class Alltaskspage extends StatefulWidget {
   const Alltaskspage({super.key});
@@ -36,7 +36,7 @@ class _AlltaskspageState extends State<Alltaskspage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks(context, section: "all");
+      context.read<TaskCubit>().fetchMoreTasks(context);
     }
   }
 
@@ -63,7 +63,7 @@ class _AlltaskspageState extends State<Alltaskspage> {
 
             return ListView.builder(
               controller: _scrollController,
-              itemCount: state.reachedToEndAll
+              itemCount: state.reachedToEnd
                   ? state.tasks.length
                   : state.tasks.length + 1,
               itemBuilder: (context, index) {
