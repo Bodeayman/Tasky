@@ -70,11 +70,17 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 child: SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: Image.asset("assets/backbutton.png")),
+                  height: 24,
+                  width: 24,
+                  child: Image.asset("assets/backbutton.png"),
+                ),
                 onTap: () async {
                   try {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Logging out , Wait...."),
+                      ),
+                    );
                     final token = await getAccessToken();
 
                     final response = await http.post(
@@ -95,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                           'Content-Type': 'application/json',
                         },
                       );
+
                       if (response.statusCode == 401) {
                         throw Exception("Failed to Logout, Try again please");
                       }

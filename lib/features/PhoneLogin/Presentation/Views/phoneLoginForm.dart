@@ -18,7 +18,7 @@ class PhoneLoginForm extends StatefulWidget {
 
 class _PhoneLoginFormState extends State<PhoneLoginForm> {
   bool seePass = false;
-
+  String phoneNumber = "";
   final TextEditingController phoneController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
@@ -53,7 +53,7 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                       if (phone == null || phone.number.isEmpty) {
                         return 'Phone Number required';
                       }
-                      return null;
+                      return phoneNumber = phone.completeNumber;
                     },
                   ),
                 ),
@@ -144,17 +144,8 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                         child: (state is PhoneLoginLoading)
                             ? const SizedBox(
                                 height: 30,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Sign In",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    CircularProgressIndicator(
-                                      color: Colors.white,
-                                    )
-                                  ],
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
                                 ),
                               )
                             : const Text(

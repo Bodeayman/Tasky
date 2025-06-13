@@ -188,8 +188,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     .state
                                     .uploadingImage
                                 ? () async {
-                                    debugPrint(widget.taskModel?.image);
-
                                     if (!widget.editingPageMode) {
                                       try {
                                         await context
@@ -263,29 +261,26 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     }
                                   }
                                 : null,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                (!widget.editingPageMode)
-                                    ? const Text(
-                                        "Add Task",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
+                            child: SizedBox(
+                              height: 30,
+                              child: (state is AddingTaskLoading)
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white)
+                                  : (!widget.editingPageMode)
+                                      ? const Text(
+                                          "Add Task",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                          ),
+                                        )
+                                      : const Text(
+                                          "Edit Task",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                          ),
                                         ),
-                                      )
-                                    : const Text(
-                                        "Edit Task",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                (state is AddingTaskLoading)
-                                    ? const CircularProgressIndicator(
-                                        color: Colors.white)
-                                    : Container(width: 0)
-                              ],
                             ),
                           );
                         },

@@ -21,7 +21,8 @@ class SignPage extends StatefulWidget {
 
 class _SignPageState extends State<SignPage> {
   final String assetName = 'assets/art.svg';
-
+  bool seePassword = true;
+  String phoneNumber = "";
   final TextEditingController phoneController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
@@ -106,9 +107,12 @@ class _SignPageState extends State<SignPage> {
                                           size:
                                               20), // You can replace with actual flag
                                       SizedBox(width: 4),
-                                      Text("+20",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500)),
+                                      Text(
+                                        "+20",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                       SizedBox(width: 4),
                                       Icon(Icons.arrow_drop_down),
                                     ],
@@ -122,7 +126,7 @@ class _SignPageState extends State<SignPage> {
                               if (phone == null || phone.number.isEmpty) {
                                 return 'Phone Number required';
                               }
-                              return null;
+                              return phoneNumber = phone.completeNumber;
                             },
                           ),
                           Container(
@@ -184,9 +188,22 @@ class _SignPageState extends State<SignPage> {
                           TextFormField(
                             decoration: inputStyle.copyWith(
                               hintText: "Password...",
-                              suffixIcon: const Icon(Icons.remove_red_eye),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  seePassword
+                                      ? Icons.remove_red_eye_outlined
+                                      : Icons.remove_red_eye,
+                                ),
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      seePassword = !seePassword;
+                                    },
+                                  );
+                                },
+                              ),
                             ),
-                            obscureText: true,
+                            obscureText: seePassword,
                             controller: passwordController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -221,10 +238,10 @@ class _SignPageState extends State<SignPage> {
                                     color: const Color(0xFF5F33E1),
                                     onPressed: () async {
                                       if (formKey.currentState!.validate()) {
-                                        context
+                                        await context
                                             .read<SignPageCubit>()
                                             .addNewUser(
-                                              phoneController.text,
+                                              phoneNumber,
                                               passwordController.text,
                                               nameController.text,
                                               expController.text,
@@ -249,22 +266,12 @@ class _SignPageState extends State<SignPage> {
                                     child: (state is SignPageLoading)
                                         ? const SizedBox(
                                             height: 30,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Sign In",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                CircularProgressIndicator(
-                                                    color: Colors.white)
-                                              ],
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
                                             ),
                                           )
                                         : const Text(
-                                            "Sign Up",
+                                            "Sign In",
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),

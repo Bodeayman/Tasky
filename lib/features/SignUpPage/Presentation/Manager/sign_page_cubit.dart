@@ -8,7 +8,7 @@ part 'sign_page_state.dart';
 
 class SignPageCubit extends Cubit<SignPageState> {
   SignPageCubit() : super(SignPageInitial());
-  void addNewUser(String phone, String pass, String name, String exp,
+  Future<void> addNewUser(String phone, String pass, String name, String exp,
       String address, String choosenExp) async {
     try {
       emit(SignPageLoading());
@@ -21,8 +21,15 @@ class SignPageCubit extends Cubit<SignPageState> {
         "address": address,
         "level": choosenExp,
       });
+      if (response.statusCode != 201 || response.statusCode == 200) {
+        throw Exception(
+          "Something has occured wrong in the signin up process",
+        );
+      }
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint(
+        e.toString(),
+      );
     }
   }
 }

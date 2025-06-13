@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/utils/style/colors.dart' show mainColor;
 import 'package:tasky/features/ProfilePage/Presentation/Manager/profile_loading_cubit.dart';
@@ -103,7 +104,16 @@ class ProfilePage extends StatelessWidget {
                             trailing: (index == 2)
                                 ? IconButton(
                                     icon: Icon(Icons.copy, color: mainColor),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Clipboard.setData(
+                                          ClipboardData(text: testFields[2]));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text('Copied to clipboard')),
+                                      );
+                                    },
                                   )
                                 : null,
                           ),
