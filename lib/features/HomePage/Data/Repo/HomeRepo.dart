@@ -21,7 +21,6 @@ class HomeRepo {
           'Content-Type': 'application/json',
         },
       );
-      debugPrint(response.body.toString());
 
       if (response.statusCode != 200) {
         await refreshAccessToken();
@@ -33,7 +32,6 @@ class HomeRepo {
             'Content-Type': 'application/json',
           },
         );
-        debugPrint(response.body.toString());
 
         if (response.statusCode != 200) {
           throw Exception(

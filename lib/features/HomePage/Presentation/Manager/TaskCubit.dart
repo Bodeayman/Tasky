@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/HomePage/Data/Models/Task.dart';
 import 'package:tasky/features/HomePage/Data/Repo/HomeRepo.dart';
@@ -19,12 +20,14 @@ class TaskCubit extends Cubit<TaskState> {
     );
   }
 
-  Future<void> fetchMoreTasks() async {
+  Future<void> fetchMoreTasks(BuildContext context) async {
     if (state is! TaskLoaded) return;
 
     final currentState = state as TaskLoaded;
 
-    if (currentState.reachedToEnd) return;
+    if (currentState.reachedToEnd ||
+        currentState.tasks.length < MediaQuery.of(context).size.height / 100)
+      return;
 
     // You can emit loading separately here if needed
 

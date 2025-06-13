@@ -94,8 +94,16 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
         'Authorization': 'Bearer $token',
       },
     );
+    emit(
+      AddingTaskState(
+        state.priority,
+        state.date,
+        state.progress,
+        state.imagePath,
+      ),
+    );
     if (response.statusCode == 401) {
-      refreshAccessToken();
+      await refreshAccessToken();
       throw Exception(
         "Failed to Add another Task, Please Try again",
       );
@@ -122,8 +130,18 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
         'Authorization': 'Bearer $token',
       },
     );
+    emit(
+      AddingTaskState(
+        state.priority,
+        state.date,
+        state.progress,
+        state.imagePath,
+      ),
+    );
+    debugPrint(response.body);
+
     if (response.statusCode == 401) {
-      refreshAccessToken();
+      await refreshAccessToken();
       throw Exception(
         "Failed to Add another Task, Please Try again",
       );

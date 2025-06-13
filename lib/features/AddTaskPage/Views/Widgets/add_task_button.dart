@@ -61,16 +61,14 @@ class _AddTaskButtonState extends State<AddTaskButton> {
         debugPrint('Upload successful: $responseBody');
 
         final data = jsonDecode(responseBody);
-        final filename = data['image']; // ✅ Get filename
-        final imageUrl =
-            '$baseUrl/uploads/$filename'; // ✅ Full URL (adjust path)
+        final filename = data['image'];
+        final imageUrl = '$baseUrl/uploads/$filename';
 
         debugPrint('Full image URL: $imageUrl');
 
         context.read<AddingTaskCubit>().setImagePath(filename);
         return imageUrl;
       } else {
-        debugPrint('Upload failed: ${response.stream.bytesToString()}');
         return null;
       }
     } catch (e) {

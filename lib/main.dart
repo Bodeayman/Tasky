@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tasky/core/utils/images_functions.dart' show navigatorKey;
 import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 import 'package:tasky/features/HomePage/Data/Repo/HomeRepo.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
@@ -40,10 +41,11 @@ class _MainAppState extends State<MainApp> {
         ),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         theme: ThemeData(
           textTheme: GoogleFonts.dmSansTextTheme(),
         ),
-        home: const Phonelogin(),
+        home: const SplashPage(),
         debugShowCheckedModeBanner: false,
       ),
     );

@@ -26,7 +26,7 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks();
+      context.read<TaskCubit>().fetchMoreTasks(context);
     }
   }
 

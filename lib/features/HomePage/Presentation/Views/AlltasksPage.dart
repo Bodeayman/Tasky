@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
@@ -34,7 +35,7 @@ class _AlltaskspageState extends State<Alltaskspage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks();
+      context.read<TaskCubit>().fetchMoreTasks(context);
     }
   }
 
@@ -66,26 +67,26 @@ class _AlltaskspageState extends State<Alltaskspage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TaskCubit, TaskState>(
-      builder: (context, state) {
-        if (state is TaskLoading && state is! TaskLoaded) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is TaskError) {
-          return Center(
-            child: Text('Error: ${state.error}'),
-          );
-        } else if (state is TaskLoaded) {
-          if (state.tasks.isEmpty) {
+    return RefreshIndicator(
+      onRefresh: () => context.read<TaskCubit>().refreshTasks(),
+      child: BlocBuilder<TaskCubit, TaskState>(
+        builder: (context, state) {
+          if (state is TaskLoading && state is! TaskLoaded) {
             return const Center(
-              child: Text("No tasks found"),
+              child: CircularProgressIndicator(),
             );
-          }
+          } else if (state is TaskError) {
+            return Center(
+              child: Text('Error: ${state.error}'),
+            );
+          } else if (state is TaskLoaded) {
+            if (state.tasks.isEmpty) {
+              return const Center(
+                child: Text("No tasks found"),
+              );
+            }
 
-          return RefreshIndicator(
-            onRefresh: () => context.read<TaskCubit>().refreshTasks(),
-            child: ListView.builder(
+            return ListView.builder(
               controller: _scrollController,
               itemCount: state.reachedToEnd
                   ? state.tasks.length
@@ -113,12 +114,12 @@ class _AlltaskspageState extends State<Alltaskspage> {
                   user: task.user,
                 );
               },
-            ),
-          );
-        }
+            );
+          }
 
-        return const SizedBox.shrink();
-      },
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

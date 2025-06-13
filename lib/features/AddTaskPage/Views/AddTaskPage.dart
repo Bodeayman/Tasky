@@ -29,6 +29,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late TextEditingController descriptionController;
   @override
   void initState() {
+    debugPrint(widget.taskModel?.image);
     super.initState();
 
     titleController = widget.editingPageMode && widget.taskModel != null
@@ -182,6 +183,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 horizontal: 110, vertical: 20),
                             color: mainColor,
                             onPressed: () async {
+                              debugPrint(widget.taskModel?.image);
+
                               if (!widget.editingPageMode) {
                                 try {
                                   await context.read<AddingTaskCubit>().addData(
@@ -246,7 +249,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               }
                             },
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 (!widget.editingPageMode)
                                     ? const Text(

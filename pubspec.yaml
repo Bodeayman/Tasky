@@ -20,13 +20,12 @@ dependencies:
   intl_phone_field : any
   qr_flutter : any
   flutter_bloc : any
-  mobile_scanner: ^3.5.2
+  mobile_scanner: 7.0.1
   dartz : any
   dotted_border : ^2.0.0
   flutter_secure_storage: ^9.0.0
   shared_preferences: ^2.2.2
   intl : any
-  qr_code_scanner: ^1.0.1
   shimmer: ^3.0.0
 
 

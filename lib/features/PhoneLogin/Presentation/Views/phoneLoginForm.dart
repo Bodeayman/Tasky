@@ -108,7 +108,9 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                     builder: (context, state) {
                       return MaterialButton(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 110, vertical: 20),
+                          horizontal: 110,
+                          vertical: 20,
+                        ),
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         color: const Color(0xFF5F33E1),
                         onPressed: () async {
@@ -143,15 +145,15 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                             ? const SizedBox(
                                 height: 30,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       "Sign In",
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     CircularProgressIndicator(
-                                        color: Colors.white)
+                                      color: Colors.white,
+                                    )
                                   ],
                                 ),
                               )

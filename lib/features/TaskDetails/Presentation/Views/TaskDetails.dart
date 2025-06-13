@@ -33,14 +33,18 @@ class TaskDetails extends StatelessWidget {
               context: context,
               items: [
                 PopupMenuItem(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => AddTaskPage(
-                        editingPageMode: true,
-                        taskModel: taskModel,
+                  onTap: () => {
+                    debugPrint(taskModel.image),
+                    debugPrint(taskModel.createdAt.toString()),
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AddTaskPage(
+                          editingPageMode: true,
+                          taskModel: taskModel,
+                        ),
                       ),
                     ),
-                  ),
+                  },
                   child: const Text(
                     "Edit",
                     style: TextStyle(fontWeight: FontWeight.bold),

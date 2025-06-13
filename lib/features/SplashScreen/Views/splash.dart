@@ -12,17 +12,28 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  bool _visible = true;
+
   @override
   void initState() {
-    _checkOnBoarding();
-
     super.initState();
+    _startFading();
+    _checkOnBoarding();
+  }
+
+  void _startFading() async {
+    while (mounted) {
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
+      setState(() {
+        _visible = !_visible;
+      });
+    }
   }
 
   Future<void> _checkOnBoarding() async {
-    bool refreshTokenFound = await refreshAccessToken();
-    debugPrint(refreshTokenFound.toString());
-    if (refreshTokenFound) {
+    bool result = await refreshAccessToken();
+    if (result != false) {
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -46,9 +57,13 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF5F33E1), // Purple background color
       body: Center(
-        child: Image.asset(
-          "assets/SPLASH.png",
-          fit: BoxFit.contain,
+        child: AnimatedOpacity(
+          opacity: _visible ? 1.0 : 0.0,
+          duration: const Duration(seconds: 1),
+          child: Image.asset(
+            "assets/SPLASH.png",
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );
