@@ -159,7 +159,7 @@ class TaskDetailsInTile extends StatelessWidget {
             desc,
             style: const TextStyle(
               fontSize: 12,
-              overflow: TextOverflow.clip,
+              overflow: TextOverflow.ellipsis,
             ),
             maxLines: 1,
           ),

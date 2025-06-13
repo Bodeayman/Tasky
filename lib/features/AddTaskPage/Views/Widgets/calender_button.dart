@@ -63,6 +63,17 @@ class _CalendarButtonState extends State<CalendarButton> {
       readOnly: true,
       keyboardType: TextInputType.datetime,
       decoration: inputStyle.copyWith(
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              width: 1,
+              color: Color.fromARGB(
+                255,
+                186,
+                186,
+                186,
+              ),
+            )),
         suffixIcon: Icon(Icons.date_range_rounded, color: mainColor),
         hintText: "choose due date...",
       ),

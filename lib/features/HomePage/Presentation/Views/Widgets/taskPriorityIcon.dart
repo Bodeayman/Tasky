@@ -23,7 +23,7 @@ class TaskPriorityIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.flag, size: 16, color: priorityColor),
+        Icon(Icons.flag_outlined, size: 16, color: priorityColor),
         const SizedBox(width: 4),
         Text(
           priorityText,

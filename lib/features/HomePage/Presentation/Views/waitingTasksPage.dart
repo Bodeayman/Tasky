@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/factory_functions.dart';
-import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
-import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskTile.dart';
 
 class Waitingtaskspage extends StatefulWidget {
@@ -20,14 +18,14 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
   @override
   void initState() {
     super.initState();
-    context.read<TaskCubit>().fetchInitialTasks();
+    context.read<TaskCubit>().fetchInitialTasks(status: 'waiting');
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks(context);
+      context.read<TaskCubit>().fetchMoreTasks();
     }
   }
 
@@ -39,54 +37,55 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TaskCubit, TaskState>(
-      builder: (context, state) {
-        if (state is TaskLoading && state is! TaskLoaded) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is TaskError) {
-          return Center(child: Text('Error: ${state.error}'));
-        } else if (state is TaskLoaded) {
-          final waitingTasks = state.tasks
-              .where((task) => task.status.toLowerCase() == 'waiting')
-              .toList();
+    return RefreshIndicator(
+      onRefresh: () => context.read<TaskCubit>().refreshTasks(),
+      child: BlocBuilder<TaskCubit, TaskState>(
+        builder: (context, state) {
+          List tasks = [];
+          bool showBottomLoader = false;
 
-          if (waitingTasks.isEmpty) {
+          if (state is TaskLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is TaskError) {
+            return Center(child: Text('Error: ${state.error}'));
+          } else if (state is TaskLoaded) {
+            tasks = state.tasks;
+            showBottomLoader = false;
+          } else if (state is TaskLoadingMore) {
+            tasks = state.tasks;
+            showBottomLoader = true;
+          }
+
+          if (tasks.isEmpty) {
             return const Center(child: Text("No waiting tasks found"));
           }
 
-          return RefreshIndicator(
-            onRefresh: () => context.read<TaskCubit>().refreshTasks(),
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: state.reachedToEnd
-                  ? waitingTasks.length
-                  : waitingTasks.length + 1,
-              itemBuilder: (context, index) {
-                if (index >= waitingTasks.length) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-
-                final task = waitingTasks[index];
-                return TaskTile(
-                  id: task.id,
-                  name: task.title,
-                  desc: task.desc,
-                  dueDate: task.createdAt.toLocal().toString().split(' ')[0],
-                  priority: mapPriority(task.priority),
-                  progress: mapProgress(task.status),
-                  imagePath: task.image,
-                  user: task.user,
+          return ListView.builder(
+            controller: _scrollController,
+            itemCount: tasks.length + (showBottomLoader ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index >= tasks.length) {
+                return const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Center(child: CircularProgressIndicator()),
                 );
-              },
-            ),
-          );
-        }
+              }
 
-        return const SizedBox.shrink();
-      },
+              final task = tasks[index];
+              return TaskTile(
+                id: task.id,
+                name: task.title,
+                desc: task.desc,
+                dueDate: task.createdAt.toLocal().toString().split(' ')[0],
+                priority: mapPriority(task.priority),
+                progress: mapProgress(task.status),
+                imagePath: task.image,
+                user: task.user,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

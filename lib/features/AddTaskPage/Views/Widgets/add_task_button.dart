@@ -110,9 +110,13 @@ class _AddTaskButtonState extends State<AddTaskButton> {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       height: 56,
-                      child: Icon(Icons.image, size: 30),
+                      child: Icon(
+                        Icons.image,
+                        size: 30,
+                        color: mainColor,
+                      ),
                     ),
                     const SizedBox(width: 10),
                     const SizedBox(width: 10),

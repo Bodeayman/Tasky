@@ -81,6 +81,7 @@ class _ProgressChooseState extends State<ProgressChoose> {
                   value,
                   style: TextStyle(
                     color: mainColor,
+                    fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),

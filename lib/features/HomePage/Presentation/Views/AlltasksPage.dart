@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
+import 'package:tasky/features/HomePage/Data/Models/Task.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
@@ -36,48 +37,47 @@ class _AlltaskspageState extends State<Alltaskspage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks(context);
+      context.read<TaskCubit>().fetchMoreTasks();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => context.read<TaskCubit>().refreshTasks(),
-      child: BlocBuilder<TaskCubit, TaskState>(
-        builder: (context, state) {
-          if (state is TaskLoading && state is! TaskLoaded) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is TaskError) {
-            return Center(
-              child: Text('Error: ${state.error}'),
-            );
-          } else if (state is TaskLoaded) {
-            if (state.tasks.isEmpty) {
-              return const Center(
-                child: Text("No tasks found"),
-              );
+        onRefresh: () => context.read<TaskCubit>().refreshTasks(),
+        child: BlocBuilder<TaskCubit, TaskState>(
+          builder: (context, state) {
+            List<TaskModel> tasks = [];
+            bool showBottomLoader = false;
+
+            if (state is TaskLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is TaskError) {
+              return Center(child: Text('Error: ${state.error}'));
+            } else if (state is TaskLoaded) {
+              tasks = state.tasks;
+              showBottomLoader = false;
+            } else if (state is TaskLoadingMore) {
+              tasks = state.tasks;
+              showBottomLoader = true;
+            }
+
+            if (tasks.isEmpty) {
+              return const Center(child: Text("No tasks found"));
             }
 
             return ListView.builder(
               controller: _scrollController,
-              itemCount: state.reachedToEnd
-                  ? state.tasks.length
-                  : state.tasks.length + 1,
+              itemCount: tasks.length + (showBottomLoader ? 1 : 0),
               itemBuilder: (context, index) {
-                if (index >= state.tasks.length) {
+                if (index >= tasks.length) {
                   return const Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
 
-                final task = state.tasks[index];
-
+                final task = tasks[index];
                 return TaskTile(
                   id: task.id,
                   name: task.title,
@@ -90,11 +90,7 @@ class _AlltaskspageState extends State<Alltaskspage> {
                 );
               },
             );
-          }
-
-          return const SizedBox.shrink();
-        },
-      ),
-    );
+          },
+        ));
   }
 }

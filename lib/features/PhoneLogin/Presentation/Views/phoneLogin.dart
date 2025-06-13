@@ -25,8 +25,11 @@ class _PhoneloginState extends State<Phonelogin> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Image.asset("assets/girlImage.png")),
+                padding: const EdgeInsets.only(top: 50),
+                child: Image.asset(
+                  "assets/girlImage.png",
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: PhoneLoginForm(formkey: _formkey),

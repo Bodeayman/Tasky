@@ -30,12 +30,12 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
       key: widget.formkey,
       child: Column(
         children: [
-          const LoginLogoInPhoneForm(),
-          Container(height: 20),
           SizedBox(
             width: 300,
             child: Column(
               children: [
+                const LoginLogoInPhoneForm(),
+                Container(height: 20),
                 SizedBox(
                   child: IntlPhoneField(
                     showCountryFlag: true,
@@ -45,7 +45,7 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(kborderSize),
                         borderSide:
-                            BorderSide(color: inputFieldBorderColor, width: 1),
+                            BorderSide(color: textFieldsColor, width: 1),
                       ),
                     ),
                     initialCountryCode: 'EG',
@@ -69,6 +69,11 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                       return null;
                     },
                     decoration: inputStyle.copyWith(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            BorderSide(width: 1, color: textFieldsColor),
+                      ),
                       hintText: "Password...",
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -213,9 +218,13 @@ class DidnotHaveAccountPhoneForm extends StatelessWidget {
               ),
             );
           },
-          child: const Text(
+          child: Text(
             "Sign Up here",
-            style: TextStyle(decoration: TextDecoration.underline),
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              color: mainColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         )
       ],

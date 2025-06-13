@@ -23,6 +23,11 @@ class TaskDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: InkWell(
+          borderRadius: BorderRadius.circular(100),
+          child: Image.asset("assets/arrow_left.png"),
+          onTap: () => Navigator.of(context).pop(),
+        ),
         title: const Text(
           "Task details",
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -54,6 +59,11 @@ class TaskDetails extends StatelessWidget {
                 PopupMenuItem(
                   onTap: () async {
                     try {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Deleting Now..."),
+                        ),
+                      );
                       await DeleteTask(taskModel.id);
                       context.read<TaskCubit>().refreshTasks();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -143,7 +153,7 @@ class TaskDetails extends StatelessWidget {
             Text(
               taskModel.title,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.start,
@@ -152,7 +162,12 @@ class TaskDetails extends StatelessWidget {
             Text(
               taskModel.desc,
               style: GoogleFonts.dmSans(
-                color: const Color(0xff24252C),
+                color: const Color.fromARGB(
+                  166,
+                  36,
+                  37,
+                  44,
+                ),
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 height: 24 / 14,

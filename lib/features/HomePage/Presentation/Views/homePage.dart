@@ -117,13 +117,8 @@ class _HomePageState extends State<HomePage> {
                 child: Text(
                   "My Tasks",
                   style: TextStyle(
-                    color: Color.fromARGB(
-                      60,
-                      36,
-                      37,
-                      44,
-                    ),
-                    fontSize: 20,
+                    color: Color.fromARGB(160, 36, 37, 44),
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.start,

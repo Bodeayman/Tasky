@@ -10,12 +10,20 @@ class TaskLoaded extends TaskState {
   final List<TaskModel> tasks;
   final bool reachedToEnd;
   final int page;
-  TaskLoaded(
-      {required this.tasks, required this.reachedToEnd, required this.page});
+
+  TaskLoaded({
+    required this.tasks,
+    required this.reachedToEnd,
+    required this.page,
+  });
+}
+
+class TaskLoadingMore extends TaskState {
+  final List<TaskModel> tasks;
+  TaskLoadingMore(this.tasks);
 }
 
 class TaskError extends TaskState {
   final String error;
-
   TaskError(this.error);
 }

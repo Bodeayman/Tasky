@@ -298,10 +298,13 @@ class _SignPageState extends State<SignPage> {
                                 ),
                               );
                             },
-                            child: const Text(
+                            child: Text(
                               "Sign In",
                               style: TextStyle(
-                                  decoration: TextDecoration.underline),
+                                decoration: TextDecoration.underline,
+                                color: mainColor,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           )
                         ],

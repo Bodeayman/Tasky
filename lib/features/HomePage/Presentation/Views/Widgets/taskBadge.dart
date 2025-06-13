@@ -38,7 +38,7 @@ class TaskBadgeTest extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: Container(
-        width: 60,
+        width: 70,
         height: 22,
         color: badgeColor,
         alignment: Alignment.center,

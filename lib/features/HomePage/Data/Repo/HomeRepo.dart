@@ -9,13 +9,22 @@ import 'package:tasky/features/HomePage/Data/Models/Task.dart';
 import 'package:dartz/dartz.dart';
 
 class HomeRepo {
-  Future<Either<String, List<TaskModel>>> fetchTasks(
-      {required int page}) async {
+  Future<Either<String, List<TaskModel>>> fetchTasks({
+    required int page,
+    String? status,
+  }) async {
     try {
       final token = await getAccessToken();
+      final queryParams = {
+        'page': '$page',
+        if (status != null) 'status': status,
+      };
 
-      final response = await http.get(
-        Uri.parse('$baseUrl/todos?page=$page'),
+      final uri =
+          Uri.parse('$baseUrl/todos').replace(queryParameters: queryParams);
+
+      var response = await http.get(
+        uri,
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -25,30 +34,26 @@ class HomeRepo {
       if (response.statusCode != 200) {
         await refreshAccessToken();
         final token = await getAccessToken();
-        final response = await http.get(
-          Uri.parse('$baseUrl/todos?page=$page'),
+        response = await http.get(
+          uri,
           headers: {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
           },
         );
-        debugPrint(response.body.toString());
 
         if (response.statusCode != 200) {
           throw Exception(
-            "Failed to load tasks, Maybe an Authentication Problem",
-          );
+              "Failed to load tasks, Maybe an Authentication Problem");
         }
       }
 
-      final List<dynamic> data = jsonDecode(response.body);
+      final data = jsonDecode(response.body) as List<dynamic>;
       final tasks = data.map((json) => TaskModel.fromJson(json)).toList();
 
       return right(tasks);
     } catch (e) {
-      return left(
-        (e.toString()),
-      );
+      return left(e.toString());
     }
   }
 }

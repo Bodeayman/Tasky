@@ -72,6 +72,7 @@ class _PriorityChooseState extends State<PriorityChoose> {
                   child: Text(
                     value,
                     style: TextStyle(
+                      fontWeight: FontWeight.bold,
                       color: mainColor,
                       fontSize: 18,
                     ),

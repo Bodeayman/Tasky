@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/homePage.dart';
+import 'package:tasky/features/IntroPage/Views/intro.dart';
 import 'package:tasky/features/PhoneLogin/Presentation/Views/phoneLogin.dart'; // Make sure this path is correct
 
 class SplashPage extends StatefulWidget {
@@ -32,6 +33,16 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _checkOnBoarding() async {
+    bool signedInBefore = await onBoarding();
+    if (!signedInBefore) {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const IntroductionPage(),
+          ),
+        );
+      }
+    }
     bool result = await refreshAccessToken();
     if (result != false) {
       if (mounted) {

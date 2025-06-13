@@ -14,6 +14,7 @@ import 'package:tasky/features/AddTaskPage/Views/Widgets/calender_button.dart';
 import 'package:tasky/core/components/priority_choose.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/style/inputStyle.dart';
+import 'package:tasky/features/HomePage/Presentation/Manager/page_cubit.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key, required this.editingPageMode, this.taskModel});
@@ -76,7 +77,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 child: Row(
                   children: [
                     Container(width: 10),
-                    const Text(
+                    Text(
+                      style: TextStyle(color: textFieldsColor),
                       "Task Title",
                     ),
                   ],
@@ -90,7 +92,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   decoration: inputStyle.copyWith(
                     hintText: "Enter title here...",
                     border: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1.0),
+                      borderSide: const BorderSide(
+                        width: 1.0,
+                        color: Color.fromARGB(
+                          255,
+                          186,
+                          186,
+                          186,
+                        ),
+                      ),
                       borderRadius: BorderRadius.circular(kborderSize),
                     ),
                   ),
@@ -101,7 +111,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 child: Row(
                   children: [
                     Container(width: 10),
-                    const Text(
+                    Text(
+                      style: TextStyle(color: textFieldsColor),
                       "Task Description",
                     ),
                   ],
@@ -114,6 +125,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 decoration: inputStyle.copyWith(
                   hintText: "Enter description here....",
                   border: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      width: 1,
+                      color: Color.fromARGB(
+                        255,
+                        186,
+                        186,
+                        186,
+                      ),
+                    ),
                     borderRadius: BorderRadius.circular(kborderSize),
                   ),
                 ),
@@ -123,7 +143,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 child: Row(
                   children: [
                     Container(width: 10),
-                    const Text(
+                    Text(
+                      style: TextStyle(color: textFieldsColor),
                       "Priority",
                     ),
                   ],
@@ -142,7 +163,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           child: Row(
                             children: [
                               Container(width: 10),
-                              const Text(
+                              Text(
+                                style: TextStyle(color: textFieldsColor),
                                 "Progress",
                               ),
                             ],
@@ -245,6 +267,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                         );
                                         Navigator.of(context).pop();
                                         Navigator.of(context).pop();
+
                                         context
                                             .read<TaskCubit>()
                                             .fetchInitialTasks();
