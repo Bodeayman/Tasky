@@ -13,18 +13,18 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
   AddingTaskCubit()
       : super(
           AddingTaskState(
-            'medium',
-            DateFormat('yyyy-MM-dd').format(DateTime.now()),
-            'low',
-            'path.png',
-          ),
+              'medium',
+              DateFormat('yyyy-MM-dd').format(DateTime.now()),
+              'waiting',
+              'path.png',
+              false),
         );
 
   void setPriority(String newPriority) {
     final currentState = state;
     emit(
       AddingTaskState(newPriority, currentState.date, currentState.progress,
-          currentState.imagePath),
+          currentState.imagePath, false),
     );
   }
 
@@ -32,7 +32,7 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
     final currentState = state;
     emit(
       AddingTaskState(currentState.priority, newDate, currentState.progress,
-          currentState.imagePath),
+          currentState.imagePath, false),
     );
   }
 
@@ -40,28 +40,24 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
     final currentState = state;
     emit(
       AddingTaskState(currentState.priority, currentState.date, newProgress,
-          currentState.imagePath),
+          currentState.imagePath, false),
     );
   }
 
-  void setImagePath(String newImagePath) {
+  void setImagePath(String? newImagePath) {
     final currentState = state;
     debugPrint(newImagePath);
 
     emit(
       AddingTaskState(currentState.priority, currentState.date,
-          currentState.progress, newImagePath),
+          currentState.progress, newImagePath ?? "path.png", false),
     );
   }
 
   void resetAll() {
     emit(
-      AddingTaskState(
-        'medium',
-        DateFormat('yyyy-MM-dd').format(DateTime.now()),
-        'low',
-        'path.png',
-      ),
+      AddingTaskState('medium', DateFormat('yyyy-MM-dd').format(DateTime.now()),
+          'waiting', 'path.png', false),
     );
   }
 
@@ -75,11 +71,11 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
   ) async {
     emit(
       AddingTaskLoading(
-          state.priority, state.date, state.progress, state.imagePath),
+          state.priority, state.date, state.progress, state.imagePath, false),
     );
 
     final token = await getAccessToken();
-
+    debugPrint("Coming from inside the cubit , ${state.imagePath}");
     final response = await http.put(
       Uri.parse('$baseUrl/todos/$taskId'),
       body: {
@@ -96,11 +92,7 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
     );
     emit(
       AddingTaskState(
-        state.priority,
-        state.date,
-        state.progress,
-        state.imagePath,
-      ),
+          state.priority, state.date, state.progress, state.imagePath, false),
     );
     if (response.statusCode == 401) {
       await refreshAccessToken();
@@ -110,11 +102,21 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
     }
   }
 
+  void addingImage() {
+    emit(AddingTaskState(
+        state.priority, state.date, state.progress, state.imagePath, true));
+  }
+
+  void finishedUploadingImages() {
+    emit(AddingTaskState(
+        state.priority, state.date, state.progress, state.imagePath, false));
+  }
+
   Future<void> addData(String imagePath, String date, String priority,
       String title, String desc) async {
     emit(
       AddingTaskLoading(
-          state.priority, state.date, state.progress, state.imagePath),
+          state.priority, state.date, state.progress, state.imagePath, false),
     );
     final token = await getAccessToken();
     final response = await http.post(
@@ -132,11 +134,7 @@ class AddingTaskCubit extends Cubit<AddingTaskState> {
     );
     emit(
       AddingTaskState(
-        state.priority,
-        state.date,
-        state.progress,
-        state.imagePath,
-      ),
+          state.priority, state.date, state.progress, state.imagePath, false),
     );
     debugPrint(response.body);
 

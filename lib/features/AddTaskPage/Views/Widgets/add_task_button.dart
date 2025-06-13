@@ -22,17 +22,23 @@ class AddTaskButton extends StatefulWidget {
 
 class _AddTaskButtonState extends State<AddTaskButton> {
   File? _image;
+  bool stillUploaded = false;
 
   Future<void> pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
     if (pickedFile != null) {
+      context.read<AddingTaskCubit>().addingImage();
+      stillUploaded = true;
+
       setState(() {
         _image = File(pickedFile.path);
       });
 
-      uploadFile(_image!);
+      await uploadFile(_image!);
+      stillUploaded = false;
+      setState(() {});
+      context.read<AddingTaskCubit>().finishedUploadingImages();
     }
   }
 
@@ -65,8 +71,13 @@ class _AddTaskButtonState extends State<AddTaskButton> {
         final imageUrl = '$baseUrl/uploads/$filename';
 
         debugPrint('Full image URL: $imageUrl');
-
         context.read<AddingTaskCubit>().setImagePath(filename);
+        debugPrint(filename);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("The image is uploaded successfully"),
+          ),
+        );
         return imageUrl;
       } else {
         return null;
@@ -114,7 +125,13 @@ class _AddTaskButtonState extends State<AddTaskButton> {
               : SizedBox(
                   width: double.infinity,
                   height: 160,
-                  child: Image.file(_image!, fit: BoxFit.fitWidth),
+                  child: Opacity(
+                    opacity: stillUploaded ? 0.5 : 1.0,
+                    child: Image.file(
+                      _image!,
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
                 ),
         ),
       ),

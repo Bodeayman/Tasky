@@ -5,10 +5,12 @@ class AddingTaskState {
   final String date;
   final String progress; // ✅ Add this
   final String imagePath;
-  AddingTaskState(this.priority, this.date, this.progress, this.imagePath);
+  final bool uploadingImage;
+  AddingTaskState(this.priority, this.date, this.progress, this.imagePath,
+      this.uploadingImage);
 }
 
 class AddingTaskLoading extends AddingTaskState {
-  AddingTaskLoading(
-      super.priority, super.date, super.progress, super.imagePath);
+  AddingTaskLoading(super.priority, super.date, super.progress, super.imagePath,
+      super.uploadingImage);
 }

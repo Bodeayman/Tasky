@@ -30,6 +30,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   void initState() {
     debugPrint(widget.taskModel?.image);
+    context.read<AddingTaskCubit>().setImagePath(widget.taskModel?.image);
     super.initState();
 
     titleController = widget.editingPageMode && widget.taskModel != null
@@ -215,9 +216,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 }
                               } else {
                                 try {
-                                  context
-                                      .read<AddingTaskCubit>()
-                                      .setImagePath(widget.taskModel!.image);
                                   await context
                                       .read<AddingTaskCubit>()
                                       .editData(
@@ -248,29 +246,37 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 }
                               }
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                (!widget.editingPageMode)
-                                    ? const Text(
-                                        "Add Task",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
+                            child: AbsorbPointer(
+                              absorbing: context
+                                      .read<AddingTaskCubit>()
+                                      .state
+                                      .uploadingImage
+                                  ? true
+                                  : false,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  (!widget.editingPageMode)
+                                      ? const Text(
+                                          "Add Task",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                          ),
+                                        )
+                                      : const Text(
+                                          "Edit Task",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                          ),
                                         ),
-                                      )
-                                    : const Text(
-                                        "Edit Task",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                (state is AddingTaskLoading)
-                                    ? const CircularProgressIndicator(
-                                        color: Colors.white)
-                                    : Container(width: 0)
-                              ],
+                                  (state is AddingTaskLoading)
+                                      ? const CircularProgressIndicator(
+                                          color: Colors.white)
+                                      : Container(width: 0)
+                                ],
+                              ),
                             ),
                           );
                         },
