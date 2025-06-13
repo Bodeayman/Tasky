@@ -10,6 +10,7 @@ class ProfileLoadingCubit extends Cubit<ProfileLoadingState> {
   ProfileLoadingCubit(this.profileRepo) : super(ProfileLoadingInitial());
   final ProfileRepo profileRepo;
   void fetchingUsersData() async {
+    emit(ProfileLoadingInitial());
     var result = await profileRepo.fetchingUsersData();
     result.fold(
       (failure) => emit(

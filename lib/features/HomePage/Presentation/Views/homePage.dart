@@ -14,6 +14,7 @@ import 'package:tasky/features/HomePage/Presentation/Views/finishedTasksPage.dar
 import 'package:tasky/features/HomePage/Presentation/Views/inProgressTasksPage.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/waitingTasksPage.dart';
 import 'package:tasky/features/PhoneLogin/Presentation/Views/phoneLogin.dart';
+import 'package:tasky/features/ProfilePage/Presentation/Manager/profile_loading_cubit.dart';
 import 'package:tasky/features/ProfilePage/Presentation/Views/profilePage.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,6 +60,7 @@ class _HomePageState extends State<HomePage> {
                     width: 24,
                     child: Image.asset("assets/profileButton.png")),
                 onTap: () {
+                  context.read<ProfileLoadingCubit>().fetchingUsersData();
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => ProfilePage(),
@@ -132,7 +134,6 @@ class _HomePageState extends State<HomePage> {
               height: 40,
               child: AllTabsWidget(),
             ),
-            Container(height: 15),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(12.0),

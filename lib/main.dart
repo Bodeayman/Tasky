@@ -33,8 +33,7 @@ class _MainAppState extends State<MainApp> {
           create: (context) => TaskCubit(HomeRepo())..fetchInitialTasks(),
         ),
         BlocProvider(
-          create: (context) =>
-              ProfileLoadingCubit(ProfileRepo())..fetchingUsersData(),
+          create: (context) => ProfileLoadingCubit(ProfileRepo()),
         ),
         BlocProvider(
           create: (context) => AddingTaskCubit(),

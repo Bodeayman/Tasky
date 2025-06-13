@@ -122,7 +122,7 @@ class _PhoneLoginFormState extends State<PhoneLoginForm> {
                           if (widget.formkey.currentState!.validate()) {
                             try {
                               await context.read<PhoneLoginCubit>().phoneLogin(
-                                    phoneController.text,
+                                    phoneNumber,
                                     passwordController.text,
                                   );
                               ScaffoldMessenger.of(context).showSnackBar(

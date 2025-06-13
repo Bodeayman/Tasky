@@ -37,33 +37,51 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () => context.read<TaskCubit>().refreshTasks(),
-      child: BlocBuilder<TaskCubit, TaskState>(
-        builder: (context, state) {
-          List tasks = [];
-          bool showBottomLoader = false;
+    return BlocBuilder<TaskCubit, TaskState>(
+      builder: (context, state) {
+        List tasks = [];
+        bool showBottomLoader = false;
 
-          if (state is TaskLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is TaskError) {
-            return Center(child: Text('Error: ${state.error}'));
-          } else if (state is TaskLoaded) {
-            tasks = state.tasks;
-            showBottomLoader = false;
-          } else if (state is TaskLoadingMore) {
-            tasks = state.tasks;
-            showBottomLoader = true;
-          }
+        if (state is TaskLoaded) {
+          tasks = state.tasks;
+        } else if (state is TaskLoadingMore) {
+          tasks = state.tasks;
+          showBottomLoader = true;
+        }
 
-          if (tasks.isEmpty) {
-            return const Center(child: Text("No waiting tasks found"));
-          }
-
-          return ListView.builder(
+        return RefreshIndicator(
+          onRefresh: () => context.read<TaskCubit>().refreshTasks(),
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
-            itemCount: tasks.length + (showBottomLoader ? 1 : 0),
+            itemCount:
+                (tasks.isEmpty ? 1 : tasks.length) + (showBottomLoader ? 1 : 0),
             itemBuilder: (context, index) {
+              if (tasks.isEmpty) {
+                if (state is TaskLoading) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height -
+                        kToolbarHeight -
+                        100,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                } else if (state is TaskError) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height -
+                        kToolbarHeight -
+                        100,
+                    child: Center(child: Text('Error: ${state.error}')),
+                  );
+                } else {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height -
+                        kToolbarHeight -
+                        100,
+                    child: const Center(child: Text("No waiting tasks found")),
+                  );
+                }
+              }
+
               if (index >= tasks.length) {
                 return const Padding(
                   padding: EdgeInsets.all(16.0),
@@ -83,9 +101,9 @@ class _WaitingtaskspageState extends State<Waitingtaskspage> {
                 user: task.user,
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

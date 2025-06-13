@@ -29,4 +29,5 @@ Future<void> loggingOut() async {
       throw Exception("Failed to Logout, Try again please");
     }
   }
+  await clearTokens();
 }
