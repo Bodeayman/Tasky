@@ -13,6 +13,7 @@ import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/style/colors.dart';
 import 'package:tasky/core/utils/url.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
+import 'package:tasky/features/TaskDetails/Presentation/Manager/Deletion.dart';
 
 class TaskDetails extends StatelessWidget {
   const TaskDetails({super.key, required this.taskModel});
@@ -53,18 +54,7 @@ class TaskDetails extends StatelessWidget {
                 PopupMenuItem(
                   onTap: () async {
                     try {
-                      final token = await getAccessToken();
-                      final response = await http.delete(
-                        Uri.parse('$baseUrl/todos/${taskModel.id}'),
-                        headers: {
-                          'Authorization': 'Bearer $token',
-                        },
-                      );
-                      if (response.statusCode == 401) {
-                        await refreshAccessToken();
-                        throw Exception(
-                            "Failed to Delete the Task, Please Try again");
-                      }
+                      await DeleteTask(taskModel.id);
                       context.read<TaskCubit>().refreshTasks();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

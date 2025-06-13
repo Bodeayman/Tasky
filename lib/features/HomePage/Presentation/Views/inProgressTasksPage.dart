@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
+import 'package:tasky/features/HomePage/Presentation/Manager/factory_functions.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskTile.dart';
@@ -26,7 +27,7 @@ class _InprogresstaskspageState extends State<Inprogresstaskspage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks(context);
+      context.read<TaskCubit>().fetchMoreTasks(context, section: "inprogress");
     }
   }
 
@@ -34,32 +35,6 @@ class _InprogresstaskspageState extends State<Inprogresstaskspage> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-  }
-
-  TaskBadges mapPriority(String priority) {
-    switch (priority.toLowerCase()) {
-      case 'low':
-        return TaskBadges.low;
-      case 'medium':
-        return TaskBadges.medium;
-      case 'high':
-        return TaskBadges.high;
-      default:
-        return TaskBadges.low;
-    }
-  }
-
-  TaskProgress mapProgress(String status) {
-    switch (status.toLowerCase()) {
-      case 'waiting':
-        return TaskProgress.waiting;
-      case 'inprogress':
-        return TaskProgress.inProgress;
-      case 'finished':
-        return TaskProgress.finished;
-      default:
-        return TaskProgress.waiting;
-    }
   }
 
   @override
@@ -83,14 +58,16 @@ class _InprogresstaskspageState extends State<Inprogresstaskspage> {
             onRefresh: () => context.read<TaskCubit>().refreshTasks(),
             child: ListView.builder(
               controller: _scrollController,
-              itemCount: state.reachedToEnd
+              itemCount: state.reachedToEndInProgress
                   ? inProgressTasks.length
                   : inProgressTasks.length + 1,
               itemBuilder: (context, index) {
                 if (index >= inProgressTasks.length) {
                   return const Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 }
 

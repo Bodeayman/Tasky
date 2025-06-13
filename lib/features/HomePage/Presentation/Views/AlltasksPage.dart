@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/AddTaskPage/Manager/adding_task_cubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskCubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/TaskState.dart';
+import 'package:tasky/features/HomePage/Presentation/Manager/factory_functions.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskBadge.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskPriorityIcon.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/taskTile.dart';
@@ -35,33 +36,7 @@ class _AlltaskspageState extends State<Alltaskspage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      context.read<TaskCubit>().fetchMoreTasks(context);
-    }
-  }
-
-  TaskBadges mapPriority(String priority) {
-    switch (priority.toLowerCase()) {
-      case 'low':
-        return TaskBadges.low;
-      case 'medium':
-        return TaskBadges.medium;
-      case 'high':
-        return TaskBadges.high;
-      default:
-        return TaskBadges.low;
-    }
-  }
-
-  TaskProgress mapProgress(String status) {
-    switch (status.toLowerCase()) {
-      case 'waiting':
-        return TaskProgress.waiting;
-      case 'inprogress':
-        return TaskProgress.inProgress;
-      case 'finished':
-        return TaskProgress.finished;
-      default:
-        return TaskProgress.waiting;
+      context.read<TaskCubit>().fetchMoreTasks(context, section: "all");
     }
   }
 
@@ -88,7 +63,7 @@ class _AlltaskspageState extends State<Alltaskspage> {
 
             return ListView.builder(
               controller: _scrollController,
-              itemCount: state.reachedToEnd
+              itemCount: state.reachedToEndAll
                   ? state.tasks.length
                   : state.tasks.length + 1,
               itemBuilder: (context, index) {

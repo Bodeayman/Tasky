@@ -5,6 +5,7 @@ import 'package:tasky/core/utils/pageControllerHandler.dart';
 import 'package:tasky/core/utils/refresh_token.dart';
 import 'package:tasky/core/utils/shared_prefs_service.dart';
 import 'package:tasky/core/utils/url.dart';
+import 'package:tasky/features/HomePage/Presentation/Manager/logout.dart';
 import 'package:tasky/features/HomePage/Presentation/Manager/page_cubit.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/AlltasksPage.dart';
 import 'package:tasky/features/HomePage/Presentation/Views/Widgets/allTabs.dart';
@@ -81,32 +82,7 @@ class _HomePageState extends State<HomePage> {
                         content: Text("Logging out , Wait...."),
                       ),
                     );
-                    final token = await getAccessToken();
-
-                    final response = await http.post(
-                      Uri.parse('$baseUrl/auth/logout'),
-                      headers: {
-                        'Authorization': 'Bearer $token',
-                        'Content-Type': 'application/json',
-                      },
-                    );
-                    if (response.statusCode != 200) {
-                      await refreshAccessToken();
-                      final token = await getAccessToken();
-
-                      final response = await http.post(
-                        Uri.parse('$baseUrl/auth/logout'),
-                        headers: {
-                          'Authorization': 'Bearer $token',
-                          'Content-Type': 'application/json',
-                        },
-                      );
-
-                      if (response.statusCode == 401) {
-                        throw Exception("Failed to Logout, Try again please");
-                      }
-                    }
-
+                    await loggingOut();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Logged out"),

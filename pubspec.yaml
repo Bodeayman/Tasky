@@ -27,6 +27,13 @@ dependencies:
   shared_preferences: ^2.2.2
   intl : any
   shimmer: ^3.0.0
+  flutter_launcher_icons: ^0.13.1  
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/ICON.png"
 
 
 
