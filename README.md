@@ -17,12 +17,12 @@
 
 ## Screenshots
 Here are some screenshots from the project:
-<img src="assets/screenshots/IMG-20250725-WA0006.jpg" width="300"/>
-<img src="assets/screenshots/IMG-20250725-WA0007.jpg" width="300"/>
-<img src="assets/screenshots/IMG-20250725-WA0008.jpg" width="300"/>
-<img src="assets/screenshots/IMG-20250725-WA0010.jpg" width="300"/>
-<img src="assets/screenshots/IMG-20250725-WA0011.jpg" width="300"/>
-<img src="assets/screenshots/IMG-20250725-WA0012.jpg" width="300"/>
-<img src="assets/screenshots/IMG-20250725-WA0013.jpg" width="300"/>
+<img src="assets/Screenshots/IMG-20250725-WA0006.jpg" width="300"/>
+<img src="assets/Screenshots/IMG-20250725-WA0007.jpg" width="300"/>
+<img src="assets/Screenshots/IMG-20250725-WA0008.jpg" width="300"/>
+<img src="assets/Screenshots/IMG-20250725-WA0010.jpg" width="300"/>
+<img src="assets/Screenshots/IMG-20250725-WA0011.jpg" width="300"/>
+<img src="assets/Screenshots/IMG-20250725-WA0012.jpg" width="300"/>
+<img src="assets/Screenshots/IMG-20250725-WA0013.jpg" width="300"/>
 
 
